@@ -1,0 +1,130 @@
+{template 'header'}
+<div class="page home" id="page-app-my-favotite">
+	<header class="bar bar-nav common-bar-nav">
+		<a class="pull-left icon fa fa-arrow-left back" href="javascript:;"></a>
+		<h1 class="title">我的收藏</h1>
+	</header>
+	{template 'nav'}
+	<div class="content">
+		<div class="store-list" {if empty($stores)}style="position:relative; background: #eee"{/if}>
+		{if empty($stores)}
+			<div class="common-no-con">
+				<img src= "{MODULE_URL}resource/app/img/store_no_con.png" alt="" />
+				<p>您还没有收藏过店铺呢！</p>
+			</div>
+		{else}
+			{loop $stores $store}
+				<div class="list-item sborder">
+					<a href="{$store['url']}" class="external">
+						<div class="store-info row no-gutter">
+							<div class="store-img col-25">
+								<img src="{php echo tomedia($store['logo']);}" alt="{$store['title']}">
+							</div>
+							<div class="col-75">
+								<div class="row no-gutter">
+									<div class="col-60 text-ellipsis">{$store['title']}</div>
+									<div class="col-40 money-info text-right">
+										{if $store['token_status'] == 1}
+											<span>券</span>
+										{/if}
+										{if $store['invoice_status'] == 1}
+											<span>票</span>
+										{/if}
+										<span>付</span>
+									</div>
+								</div>
+								<div class="rel-info">
+									<div class="row no-gutter">
+										<div class="col-60">
+											{if $store['is_in_business_hours']}
+												<div class="star-rank">
+													<span class="star-rank-outline">
+														<span class="star-rank-active" style="width:{$store['score_cn']}%"></span>
+														<span class="star-rank-value">{$store['score']}</span>
+													</span>
+													<span class="sailed">已售 {$store['sailed']} 份</span>
+												</div>
+											{else}
+												<div class="order-status">
+													<span class="badge bg-default">店铺休息中</span>
+												</div>
+											{/if}
+										</div>
+										{if $store['delivery_mode'] == 2}
+											<div class="plateform-delivery"><span>平台专送</span></div>
+										{/if}
+									</div>
+									<div class="delivery-conditions">
+										起送￥{$store['send_price']}<span class="pipe">|</span>配送￥{$store['delivery_price']}<span class="pipe">|</span>约{$store['delivery_time']}分钟
+									</div>
+								</div>
+							</div>
+						</div>
+					</a>
+					<div class="activity-containter">
+						{if $store['activity']['activity_num'] > 0}
+							<div class="dashed-line"></div>
+						{/if}
+						{if $store['activity']['activity_num'] > 2}
+							<div class="activity-num">{$store['activity']['activity_num']}个活动 <i class="fa fa-arrow-down"></i></div>
+						{/if}
+						{php $num = 0;}
+						{if $store['activity']['first_order_status'] == 1}
+							{php $num++;}
+							<div class="xin">
+								新用户在线支付
+								{loop $store['activity']['first_order_data'] $first}
+								满{$first['condition']}元减{$first['back']},
+								{/loop}
+							</div>
+						{/if}
+						{if $store['activity']['discount_status'] == 1}
+							{php $num++;}
+							<div class="minus">
+								在线支付
+								{loop $store['activity']['discount_data'] $discount}
+								满{$discount['condition']}元减{$discount['back']},
+								{/loop}
+							</div>
+						{/if}
+						{if $store['activity']['grant_status'] == 1}
+							{php $num++;}
+							<div class="activity-row zeng {if $num > 2}hide{/if}">
+								在线支付
+								{loop $store['activity']['grant_data'] $grant}
+								满{$grant['condition']}元赠{$grant['back']},
+								{/loop}
+							</div>
+						{/if}
+						{if $store['activity']['collect_coupon_status'] == 1}
+							{php $num++;}
+							<div class="activity-row coupon {if $num > 2}hide{/if}">
+								进店可领取代金券
+							</div>
+						{/if}
+						{if $store['delivery_free_price'] > 0}
+							{php $num++;}
+							<div class="activity-row free {if $num > 2}hide{/if}">
+								满{$store['delivery_free_price']}元免配送费
+							</div>
+						{/if}
+						{if !empty($store['hot_goods'])}
+							<div class="dashed-line"></div>
+							<div class="hot">
+								热销:
+								{loop $store['hot_goods'] $good}
+								{$good['title']}
+								{/loop}
+							</div>
+						{/if}
+					</div>
+				</div>
+			{/loop}
+		{/if}
+		</div>
+	</div>
+</div>
+
+
+{template 'common'}
+{template 'footer'}

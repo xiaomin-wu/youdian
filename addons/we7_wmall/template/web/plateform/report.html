@@ -1,0 +1,125 @@
+{template 'public/header'}
+{template 'plateform/nav'}
+<ul class="nav nav-tabs">
+	<li {if $op == 'list'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptfreport', array('op' => 'list'));}">投诉记录</a></li>
+</ul>
+
+{if $op == 'list'}
+<div class="main">
+	<div class="panel panel-info">
+		<div class="panel-heading">筛选</div>
+		<div class="panel-body">
+			<form action="./index.php" method="get" class="form-horizontal" role="form">
+				<input type="hidden" name="c" value="site">
+				<input type="hidden" name="a" value="entry">
+				<input type="hidden" name="m" value="we7_wmall">
+				<input type="hidden" name="do" value="ptfreport"/>
+				<input type="hidden" name="op" value="list"/>
+				<input type="hidden" name="status" value="{$status}"/>
+				<input type="hidden" name="addtime" value="{$addtime}"/>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-1 control-label">处理状态</label>
+					<div class="col-sm-9 col-xs-9 col-md-9">
+						<div class="btn-group">
+							<a href="{php echo filter_url('status:-1');}" class="btn {if $status == -1}btn-primary{else}btn-default{/if}">全部投诉</a>
+							<a href="{php echo filter_url('status:1');}" class="btn {if $status == 1}btn-primary{else}btn-default{/if}">已处理</a>
+							<a href="{php echo filter_url('status:0');}" class="btn {if $status == 0}btn-primary{else}btn-default{/if}">未处理</a>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-1 control-label">投诉时间</label>
+					<div class="col-sm-9 col-xs-9 col-md-9">
+						<div class="btn-group">
+							<a href="{php echo filter_url('addtime:-1');}" class="btn {if $addtime == -1}btn-primary{else}btn-default{/if}">不限</a>
+							<a href="{php echo filter_url('addtime:7');}" class="btn {if $addtime == 7}btn-primary{else}btn-default{/if}">一周内</a>
+							<a href="{php echo filter_url('addtime:15');}" class="btn {if $addtime == 15}btn-primary{else}btn-default{/if}">半月内</a>
+							<a href="{php echo filter_url('addtime:31');}" class="btn {if $addtime == 31}btn-primary{else}btn-default{/if}">一月内</a>
+							<a href="{php echo filter_url('addtime:93');}" class="btn {if $addtime == 93}btn-primary{else}btn-default{/if}">三月内</a>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<form class="form-horizontal" action="" method="post">
+		<div class="panel panel-default">
+			<div class="panel-body table-responsive" style="overflow:inherit">
+				<table class="table table-hover">
+					<thead class="navbar-inner">
+					<tr>
+						<th>投诉商家</th>
+						<th>投诉人手机号</th>
+						<th width="400">投诉内容</th>
+						<th>处理状态</th>
+						<th>投诉时间</th>
+						<th class="text-right">操作</th>
+					</tr>
+					</thead>
+					<tbody>
+					{loop $reports $report}
+					<tr>
+						<td>{$stores[$report['sid']]['title']}</td>
+						<td>{$report['mobile']}</td>
+						<td>
+							<span class="label label-danger" style="cursor: pointer" data-toggle="popover" title="投诉详情" data-content="{$report['note']}">
+								{$report['title']}
+							</span>
+							{if !empty($report['thumbs'])}
+								<div style="margin-top: 10px;">
+									{loop $report['thumbs'] $thumb}
+										<img src="{php echo tomedia($thumb);}" data-toggle="popover" data-html="true" data-placement="bottom" data-content='<img src="{php echo tomedia($thumb);}">' alt="" width="80" height="80"/>
+									{/loop}
+								</div>
+							{/if}
+						</td>
+						<td>
+							{if $report['status'] == 1}
+								<span class="label label-success">
+									已处理
+								</span>
+							{else}
+								<span class="label label-danger">
+									未处理
+								</span>
+							{/if}
+						</td>
+						<td>
+							<span class="label label-info">
+								{php echo date('Y-m-d H:i', $report['addtime']);}
+							</span>
+						</td>
+						<td class="text-right">
+							<a href="javascript:;" data-status="1" data-id="{$report['id']}" class="btn btn-default btn-status">设为已处理</a>
+							<a href="javascript:;" data-status="0" data-id="{$report['id']}" class="btn btn-default btn-status">设为未处理</a>
+						</td>
+					</tr>
+					{/loop}
+					</tbody>
+				</table>
+			</div>
+		</div>
+		{$pager}
+	</form>
+</div>
+{/if}
+<script>
+$(function(){
+	$('.btn-status').click(function(){
+		if(!confirm('确定变更状态吗')) {
+			return false;
+		}
+		var id = $(this).data('id');
+		var status = $(this).data('status');
+		var params = {
+			id: id,
+			status: status
+		};
+		$.post("{php echo $this->createWebUrl('ptfreport', array('op' => 'status'))}", params, function(data){
+			location.reload();
+		});
+	});
+});
+</script>
+{template 'common'}
+{template 'public/footer'}

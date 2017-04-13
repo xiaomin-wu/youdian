@@ -1,0 +1,79 @@
+{template 'public/header'}
+{template 'store/nav'}
+{template 'store/trade-nav'}
+<div class="clearfix">
+	<div class="panel panel-info">
+		<div class="panel-heading">筛选</div>
+		<div class="panel-body">
+			<form action="./index.php" method="get" class="form-horizontal" role="form" id="current">
+				<input type="hidden" name="c" value="site">
+				<input type="hidden" name="a" value="entry">
+				<input type="hidden" name="m" value="we7_wmall_plus">
+				<input type="hidden" name="do" value="trade"/>
+				<input type="hidden" name="op" value="bill"/>
+				<input type="hidden" name="sid" value="{$sid}"/>
+				<div class="form-group clearfix">
+					<label class="col-xs-12 col-sm-2 col-md-2 control-label">统计时间</label>
+					<div class="col-sm-9 col-xs-9 col-md-9">
+						<div class="btn-group">
+							<a href="{php echo filter_url('days:7');}" class="btn {if $days == 7}btn-primary{else}btn-default{/if}">近7天</a>
+							<a href="{php echo filter_url('days:30');}" class="btn {if $days == 30}btn-primary{else}btn-default{/if}">近30天</a>
+							<a href="{php echo filter_url('days:60');}" class="btn {if $days == 60}btn-primary{else}btn-default{/if}">近60天</a>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<form class="form-horizontal" action="" method="post">
+		<table class="table table-bordered table-hover text-center" style="background: #fff">
+			<thead class="navbar-inner">
+			<tr>
+				<th colspan="3"><strong class="text-danger">对账单以天为单位,只统计已完成的订单</strong></th>
+				<th colspan="2" class="text-center">应收金额</th>
+				<th colspan="3" class="text-center">应付金额</th>
+				<th colspan="2"></th>
+			</tr>
+			<tr>
+				<th>账期</th>
+				<th>已完成单数</th>
+				<th>已取消单数</th>
+				<th>用户支付</th>
+				<th>补贴(平台)</th>
+				<th>补贴(商家)</th>
+				<th>平台服务费</th>
+				<th>平台配送费</th>
+				<th>实际到账</th>
+				<th style="width:150px; text-align:right;">详情</th>
+			</tr>
+			</thead>
+			<tbody>
+			{loop $records $record}
+			<tr>
+				<td><strong>{$record['stat_day']}</strong></td>
+				<td><strong>{php echo intval($record['success_total']);}</strong></td>
+				<td><strong>{php echo intval($cancel_records[$record['stat_day']]['cancel_total']);}</strong></td>
+				<td><span class="text-success">+￥{php echo round($record['final_fee'], 2);}</span></td>
+				<td><span class="text-success">+￥{php echo round($record['plateform_discount_fee'], 2);}</span></td>
+				<td><span class="text-danger">-￥{php echo round($record['store_discount_fee'], 2);}</span></td>
+				<td><span class="text-danger">-￥{php echo round($record['plateform_serve_fee'], 2);}</span></td>
+				<td><span class="text-danger">-￥{php echo round($record['plateform_delivery_fee'], 2);}</span></td>
+				<td><strong class="text-success">￥{php echo round($record['store_final_fee'], 2);}</strong></td>
+				<td style="text-align:right;">
+					<a href="{php echo $this->createWebUrl('trade', array('op' => 'order', 'stat_day' => $record['stat_day']))}" class="btn btn-default btn-sm" title="查看订单" data-toggle="tooltip" data-placement="top" target="_blank">查看订单</a>
+				</td>
+			</tr>
+			{/loop}
+			</tbody>
+		</table>
+		{$pager}
+	</form>
+</div>
+<script>
+	require(['daterangepicker'], function($) {
+		$('#current .daterange').on('apply.daterangepicker', function(ev, picker) {
+			$('#current')[0].submit();
+		});
+	});
+</script>
+{template 'public/footer'}

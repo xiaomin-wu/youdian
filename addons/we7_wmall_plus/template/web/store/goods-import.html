@@ -1,0 +1,95 @@
+{template 'public/header'}
+{template 'store/nav'}
+{if $op == 'index'}
+<div class="main">
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<form action="{php echo $this->createWebUrl('import', array('op' => 'index'));}" method="post" class="form-inline form-file" enctype="multipart/form-data">
+				<div class="form-group">
+					<input type="file" name="file" value="">
+				</div>
+				<input type="submit" name="submit" value="导入" class="btn btn-primary"/>
+				<input type="hidden" name="token" value="{$_W['token']}"/>
+				<a class="btn btn-primary" href="{$_W['siteroot']}/addons/we7_wmall_plus/resource/excel/cgoods.xlsx">下载导入模板</a>
+			</form>
+		</div>
+	</div>
+</div>
+{/if}
+
+{if $op == 'sync'}
+<div class="main" ng-controller="processor">
+	<div class="alert alert-info form-horizontal ng-cloak">
+		<dl class="dl-horizontal">
+			<dt>整体进度</dt>
+			<dd>{{pragress}}</dd>
+			<dt>正在更新商品</dt>
+			<dd>{{good.title}}</dd>
+		</dl>
+	</div>
+	<table class="table table-hover table-bordered" ng-show="import.length > 0" style="background: #fff">
+		<thead>
+			<tr>
+				<th colspan="4" class="text-center">商品信息导入统计表</th>
+			</tr>
+			<tr>
+				<th>商品名称</th>
+				<th>条形码</th>
+				<th>销售价格</th>
+				<th>导入状态</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="goods in import" ng-class="{code_miss: 'bg-danger', detail_miss: 'bg-warning', success: ''}[goods.error]">
+				<td>{{goods.title}}</td>
+				<td>{{goods.code}}</td>
+				<td>{{goods.price}}</td>
+				<td>{{goods.info}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<script>
+require(['angular'], function(angular){
+	angular.module('app', []).controller('processor', function($scope, $http){
+		$scope.result = {
+			success: '导入成功, 商品详情已更新',
+			code_miss: '导入成功, 没有商品条形码,无法更新详情',
+			detail_miss: '导入成功, 没有从商品库里找到商品详情'
+		};
+		$scope.goods = {php echo json_encode($goods['goods']);};
+		$scope.code = {php echo json_encode($goods['code']);};
+		$scope.import = [];
+		var total = $scope.code.length;
+		var i = 0;
+		var proc = function() {
+			var code = $scope.code.pop();
+			if(!code) {
+				util.message('更新商品信息完成', '', 'success');
+			}
+			$scope.good = $scope.goods[code];
+			$scope.pragress = i + '/' + total;
+			var params = {code: code};
+			$http.post(location.href, params).success(function(dat){
+				i++;
+				console.log(dat);
+				$scope.good.error = dat;
+				$scope.good.info = $scope.result[dat];
+				console.log($scope.good.info);
+				$scope.import.push($scope.good);
+				proc();
+			}).error(function(){
+				i++;
+				$scope.good.error = dat;
+				$scope.good.info = $scope.result[dat];
+				$scope.import.push($scope.good);
+				proc();
+			});
+		}
+		proc();
+	});
+	angular.bootstrap(document, ['app']);
+});
+</script>
+{/if}
+{template 'public/footer'}

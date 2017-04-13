@@ -1,0 +1,72 @@
+{template 'public/header'}
+{template 'store/nav'}
+{template 'store/trade-nav'}
+<div class="panel panel-default">
+	<div class="panel-heading">
+		{$store['title']}
+	</div>
+	<div class="account-stat">
+		<div class="account-stat-btn">
+			<div class="col-3">7日收入<small>(只统计在线支付的订单, 截止到今日0时)</small>
+				<span>{$stat['week_total']}</span>
+			</div>
+			<div class="col-3">
+				待结算<small>(用户已经支付, 但订单还没有完成)</small>
+				<span>{$stat['wait_total']}</span>
+				<a href="{php echo $this->createWebUrl('trade', array('op' => 'currentlog', 'status' => 2, 'is_pay' => 1));}">待结算记录</a>
+			</div>
+			<div class="col-3">
+				可用余额
+				<span>{$account['amount']}</span>
+				<a href="{php echo $this->createWebUrl('trade', array('op' => 'getcash'));}" class="btn btn-primary">提现</a>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="clearfix">
+	<form class="form-horizontal" action="" method="post" id="">
+		<div class="panel panel-default">
+			<div class="panel-heading">近期交易记录 <a href="{php echo $this->createWebUrl('trade', array('op' => 'currentlog'));}">更多</a></div>
+			<div class="panel-body table-responsive">
+				<table class="table table-hover">
+					<thead class="navbar-inner">
+					<tr>
+						<th>时间</th>
+						<th>订单号</th>
+						<th>下单人/手机号</th>
+						<th>金额</th>
+						<th>订单状态</th>
+						<th>交易状态</th>
+						<th style="width:150px; text-align:right;">操作</th>
+					</tr>
+					</thead>
+					<tbody>
+					{loop $records $record}
+					<tr>
+						<td>{php echo date('Y-m-d H:i', $record['addtime']);}</td>
+						<td>{$record['orderid']}</td>
+						<td>{$record['username']}<br>{$record['mobile']}</td>
+						<td>
+							<strong class="text-success">+{$record['fee']}</strong>
+						</td>
+						<td>
+							<span class="{$order_status[$record['order_status']]['css']}">{$order_status[$record['order_status']]['text']}</span>
+						</td>
+						<td>
+							<span class="{$order_trade_status[$record['trade_status']]['css']}">{$order_trade_status[$record['trade_status']]['text']}</span>
+						</td>
+
+						<td style="text-align:right;">
+							<a href="{php echo $this->createWebUrl('order', array('op' => 'detail', 'id' => $record['orderid']))}" class="btn btn-default btn-sm" title="查看订单" data-toggle="tooltip" data-placement="top" target="_blank">查看订单</a>
+						</td>
+					</tr>
+					{/loop}
+					</tbody>
+				</table>
+			</div>
+		</div>
+		{$pager}
+	</form>
+</div>
+{template 'common'}
+{template 'public/footer'}

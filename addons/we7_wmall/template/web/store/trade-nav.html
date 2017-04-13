@@ -1,0 +1,12 @@
+<div class="panel panel-default">
+	<div class="panel-body">
+		<ul class="nav nav-pills">
+			<li {if $op == 'index'}class="active"{/if}><a href="{php echo $this->createWebUrl('trade', array('op' => 'index'));}">我的收入</a></li>
+			<li {if $op == 'currentlog'}class="active"{/if}><a href="{php echo $this->createWebUrl('trade', array('op' => 'currentlog'));}">交易记录</a></li>
+			<li {if $op == 'inout'}class="active"{/if}><a href="{php echo $this->createWebUrl('trade', array('op' => 'inout'));}">收支明细</a></li>
+			<li {if $op == 'getcashaccount'}class="active"{/if}><a href="{php echo $this->createWebUrl('trade', array('op' => 'getcashaccount'));}">提现账户</a></li>
+			<li {if $op == 'getcashlog'}class="active"{/if}><a href="{php echo $this->createWebUrl('trade', array('op' => 'getcashlog'));}">提现记录</a></li>
+			<li {if $op == 'getcash'}class="active"{/if}><a href="{php echo $this->createWebUrl('trade', array('op' => 'getcash'));}">申请提现</a></li>
+		</ul>
+	</div>
+</div>

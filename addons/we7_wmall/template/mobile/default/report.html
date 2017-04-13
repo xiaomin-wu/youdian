@@ -1,0 +1,91 @@
+{template 'header'}
+{if $op == 'index'}
+<div class="page report">
+	<header class="bar bar-nav common-bar-nav">
+		<a class="pull-left fa fa-arrow-left back" href="javascript:;"></a>
+		<h1 class="title">举报商家</h1>
+		<button class="button button-link button-nav pull-right" id="btnSubmit">提交</button>
+	</header>
+	{template 'nav'}
+	<div class="content">
+		<div class="list-block">
+			<ul>
+				<li>举报商家：{$store['title']}</li>
+				{loop $reports $report}
+					<li>
+						<label class="label-checkbox item-content">
+							<input type="radio" name="title" checked value="{$report}">
+							<div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+							<div class="item-inner">
+								<div class="item-title-row">
+									<div class="item-title">{$report}</div>
+								</div>
+							</div>
+						</label>
+					</li>
+				{/loop}
+			</ul>
+		</div>
+		<div class="list-block report-msg">
+			<textarea placeholder="必填。描述详细。" name="note"></textarea>
+		</div>
+		<div class="content-block-title">有图有真相</div>
+		{php echo tpl_mutil_image('images', '', 3);}
+		<div class="content-block-title">手机号,仅平台管理员可见</div>
+		<div class="report-phone">
+			<input type="text" name="mobile" value="{$_W['member']['mobile']}" placeholder="手机号码：仅平台管理员可见">
+		</div>
+	</div>
+</div>
+{/if}
+<script>
+$(function(){
+	$('#btnSubmit').click(function(){
+		var $this = $(this);
+		if($this.hasClass('disabled')) {
+			return false;
+		}
+		var title = $(':radio[name="title"]:checked').val();
+		if(!title) {
+			$.toast('投诉类型不能为空');
+			return false;
+		}
+		var note = $('textarea[name="note"]').val();
+		if(!note) {
+			$.toast('投诉内容不能为空');
+			return false;
+		}
+		var mobile = $(':text[name="mobile"]').val();
+		var reg = /^1[34578][0-9]{9}$/;
+		if(!reg.test(mobile)) {
+			$.toast("手机号格式错误");
+			return false;
+		}
+		var params = {
+			sid: "{$sid}",
+			title: title,
+			note: note,
+			mobile: mobile,
+			thumbs: []
+		};
+		$('.tpl-image .image-item input').each(function(){
+			var value = $.trim($(this).val());
+			if(value) {
+				params.thumbs.push(value);
+			}
+		});
+		$this.addClass('disabled');
+		$.post("{php echo $this->createMobileUrl('report', array('op' => 'post'))}", params, function(data){
+			var result = $.parseJSON(data);
+			if(result.message.errno != 0) {
+				$this.removeClass('disabled');
+				$.toast(result.message.message);
+				return false;
+			}
+			$.toast('投诉成功', "{php echo $this->createMobileUrl('store', array('sid' => $sid))}");
+		});
+	});
+});
+</script>
+{template 'common'}
+{template 'footer'}

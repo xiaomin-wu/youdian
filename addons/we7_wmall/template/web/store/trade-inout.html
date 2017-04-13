@@ -1,0 +1,90 @@
+{template 'public/header'}
+{template 'store/nav'}
+{template 'store/trade-nav'}
+<div class="clearfix">
+	<div class="panel panel-info">
+		<div class="panel-heading">筛选</div>
+		<div class="panel-body">
+			<form action="./index.php" method="get" class="form-horizontal" role="form" id="current">
+				<input type="hidden" name="c" value="site">
+				<input type="hidden" name="a" value="entry">
+				<input type="hidden" name="m" value="we7_wmall">
+				<input type="hidden" name="do" value="trade"/>
+				<input type="hidden" name="op" value="inout"/>
+				<input type="hidden" name="sid" value="{$sid}"/>
+				<input type="hidden" name="trade_type" value="{$trade_type}"/>
+				<div class="form-group clearfix">
+					<label class="col-xs-12 col-sm-2 col-md-2 control-label">创建时间</label>
+					<div class="col-sm-7 col-lg-8 col-md-8 col-xs-12">
+						{php echo tpl_form_field_daterange('addtime', array('start' => date('Y-m-d', $starttime), 'end' => date('Y-m-d', $endtime)));}
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<form class="form-horizontal" action="" method="post" id="">
+		<ul class="order-nav order-nav-tabs">
+			<li {if $trade_type == 0}class="active"{/if}><a href="{php echo filter_url('trade_type:0');}">全部</a></li>
+			<li {if $trade_type == 1}class="active"{/if}><a href="{php echo filter_url('trade_type:1');}">订单入账</a></li>
+			<li {if $trade_type == 2}class="active"{/if}><a href="{php echo filter_url('trade_type:2');}">申请提现</a></li>
+			<li {if $trade_type == 3}class="active"{/if}><a href="{php echo filter_url('trade_type:3');}">其他变动</a></li>
+		</ul>
+		<div class="panel panel-default">
+			<div class="panel-body table-responsive">
+				<table class="table table-hover">
+					<thead class="navbar-inner">
+					<tr>
+						<th>时间</th>
+						<th>类型</th>
+						<th>收入|支出(元)</th>
+						<th>账户余额</th>
+						<th style="width:150px; text-align:right;">操作</th>
+					</tr>
+					</thead>
+					<tbody>
+					{loop $records $record}
+					<tr>
+						<td>{php echo date('Y-m-d H:i', $record['addtime']);}</td>
+						<td>
+							<span class="{$order_trade_type[$record['trade_type']]['css']}">{$order_trade_type[$record['trade_type']]['text']}</span>
+						</td>
+						<td>
+							<span {if !empty($record['remark'])}data-toggle="popover" title="交易备注" data-content="{$record['remark']}"{/if}>
+								{if $record['fee'] > 0}
+									<strong class="text-success">+{$record['fee']}元</strong>
+								{else}
+									<strong class="text-danger">{$record['fee']}元</strong>
+								{/if}
+								{if !empty($record['remark'])}
+									<i class="fa fa-question-circle"></i>
+								{/if}
+							</span>
+						</td>
+						<td>
+							<strong>{$record['amount']}元</strong>
+						</td>
+						<td style="text-align:right;">
+							{if $record['trade_type'] == 1}
+								<a href="{php echo $this->createWebUrl('order', array('op' => 'detail', 'id' => $record['extra']))}" class="btn btn-default btn-sm" title="查看详情" data-toggle="tooltip" data-placement="top" target="_blank">查看</a>
+							{elseif $record['trade_type'] == 2}
+								<a href="{php echo $this->createWebUrl('trade', array('op' => 'getcashlog'))}" class="btn btn-default btn-sm" title="查看详情" data-toggle="tooltip" data-placement="top" target="_blank">查看</a>
+							{/if}
+						</td>
+					</tr>
+					{/loop}
+					</tbody>
+				</table>
+			</div>
+		</div>
+		{$pager}
+	</form>
+</div>
+<script>
+	require(['daterangepicker'], function($) {
+		$('#current .daterange').on('apply.daterangepicker', function(ev, picker) {
+			$('#current')[0].submit();
+		});
+	});
+</script>
+{template 'common'}
+{template 'public/footer'}

@@ -1,0 +1,18 @@
+<ul class="nav nav-tabs">
+	<li {if $op == 'basic'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptfconfig', array('op' => 'basic'));}"> 基础设置</a></li>
+	<li {if $op == 'pay'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptfconfig', array('op' => 'pay'));}"> 支付方式设置</a></li>
+	<li {if $do == 'takeout'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptfconfig-takeout', array('op' => 'set'));}"> 外卖订单&商家设置</a></li>
+	<li {if $do == 'settle'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptfconfig-settle', array('op' => 'set'));}"> 商家入驻设置</a></li>
+	<li {if $do == 'gcategory'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptfgcategory');}"> 标签分组设置</a></li>
+	<li {if $do == 'delivery'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptfconfig-delivery', array('op' => 'set'));}"> 配送员设置</a></li>
+	<li {if $do == 'card'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptfconfig-card', array('op' => 'card_set'));}"> 配送会员卡</a></li>
+	<li {if $op == 'report'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptfconfig', array('op' => 'report'));}"> 商户举报类型</a></li>
+	<li {if $do == 'help'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptfconfig-help', array('op' => 'list'));}"> 常见问题设置</a></li>
+	{if MODULE_FAMILY != 'basic'}
+		<li {if $do == 'errander'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptfconfig-errander', array('op' => 'set'));}"> 跑腿设置</a></li>
+		<!-- <li {if $do == 'app'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptfconfig-app', array('op' => 'set'));}"> APP设置</a></li> -->
+	{/if}
+	{if !empty($_W['isfounder'])}
+		<!-- <li {if $do == 'cloud'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptfcloud', array('op' => 'auth'));}"> 云服务</a></li> -->
+	{/if}
+</ul>

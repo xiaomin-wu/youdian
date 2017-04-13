@@ -1,0 +1,87 @@
+{template 'delivery/header'}
+<div class="page my-page" id="page-app-mine">
+	{template 'delivery/nav'}
+	<div class="content">
+		<div class="banner">
+			<div class="avatar">
+				{if !empty($deliveryer['avatar'])}
+				<img src="{php echo tomedia($deliveryer['avatar']);}" alt="">
+				{else}
+				<img src="{MODULE_URL}resource/app/img/head.png" alt="">
+				{/if}
+			</div>
+			<div class="name">{$deliveryer['nickname']}</div>
+			{if $deliveryer_type != 2}
+			<div class="table activity-nav">
+				<div class="table-cell">
+					<a href="javascript:;">
+						<div class="count">{$deliveryer['credit2']}</div>
+						<div class="">账户余额</div>
+					</a>
+				</div>
+				<div class="table-cell">
+					<a href="javascript:;">
+						<div class="count">{$pft_stat['today_num']}</div>
+						<div class="">今日累计</div>
+					</a>
+				</div>
+				<div class="table-cell">
+					<a href="javascript:;">
+						<div class="count">{$pft_stat['month_num']}</div>
+						<div class="">本月累计</div>
+					</a>
+				</div>
+				<div class="table-cell">
+					<a href="javascript:;">
+						<div class="count">{$pft_stat['total_num']}</div>
+						<div class="">总累计</div>
+					</a>
+				</div>
+			</div>
+			{/if}
+		</div>
+		{if $deliveryer_type != 2}
+			<div class="grid-nav grid-money">
+				<div class="grid-money-title">
+					平台单统计
+				</div>
+				<div class="row no-gutter">
+					<div class="col-25">
+						<a href="{php echo $this->createMobileUrl('dytrade', array('op' => 'inout'));}" class="external">
+							<img src="{MODULE_URL}resource/app/img/mypage_credit.png" alt="" />
+							<span>账户明细</span>
+						</a>
+					</div>
+					<div class="col-25">
+						<a href="{php echo $this->createMobileUrl('dytrade', array('op' => 'getcash'));}" class="external">
+							<img src="{MODULE_URL}resource/app/img/mypage_getcash.png" alt="" />
+							<span>申请提现</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		{/if}
+		{if $deliveryer_type != 1}
+		<div class="grid-nav grid-money">
+			<div class="grid-money-title">
+				店内单统计
+			</div>
+			{loop $stores $store}
+			<div class="row no-gutter">
+				<div class="col-33">
+					<a href="javascript:;" class="external">
+						<span class="text">{$stat[$store['id']]['num']}单</span>
+						<span>{$store['title']}</span>
+					</a>
+				</div>
+			</div>
+			{/loop}
+		</div>
+		{/if}
+		<div class="service-tel">
+			<a href="tel:{$_W['we7_wmall']['config']['mobile']}" class="color-danger">平台热线: {$_W['we7_wmall']['config']['mobile']}</a>
+		</div>
+	</div>
+</div>
+{template 'common'}
+{template 'footer'}

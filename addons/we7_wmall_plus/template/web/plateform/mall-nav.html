@@ -1,0 +1,7 @@
+<ul class="nav nav-tabs">
+	<li {if $do == 'ad'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptfad');}"> 全屏引导页</a></li>
+	<li {if $do == 'slide'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptfslide');}"> 幻灯片</a></li>
+	<li {if $do == 'category'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptfcategory');}"> 导航图标</a></li>
+	<li {if $do == 'nav'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptfnav');}"> 图片魔方</a></li>
+	<li {if $do == 'notice'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptfnotice');}"> 公告</a></li>
+</ul>

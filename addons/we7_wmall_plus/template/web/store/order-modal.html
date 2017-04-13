@@ -1,0 +1,56 @@
+<table class="table table-hover table-bordered">
+	<tr>
+		<th width="120">商品质量{$comment['goods_quality']}</th>
+		<td>
+			<?php
+				for($i = 0; $i < $comment['goods_quality']; $i++) {
+					echo '<i class="fa fa-star"></i>';
+				}
+				for($i = $comment['goods_quality']; $i < 5; $i++) {
+					echo '<i class="fa fa-star-o"></i>';
+				}
+			?>
+		</td>
+	</tr>
+	<tr>
+		<th>配送服务</th>
+		<td>
+			<?php
+				for($i = 0; $i < $comment['delivery_service']; $i++) {
+					echo '<i class="fa fa-star"></i>';
+				}
+				for($i = $comment['delivery_service']; $i < 5; $i++) {
+					echo '<i class="fa fa-star-o"></i>';
+				}
+			?>
+		</td>
+	</tr>
+	<tr>
+		<th>评价</th>
+		<td>{$comment['note']}</td>
+	</tr>
+	{if !empty($comment['data']['good'])}
+		<tr>
+			<th>点赞商品</th>
+			<td>
+				{loop $comment['data']['good'] $good}
+					{$good} &nbsp;
+				{/loop}
+			</td>
+		</tr>
+	{/if}
+	{if !empty($comment['data']['bad'])}
+		<tr>
+			<th>差评商品</th>
+			<td>
+				{loop $comment['data']['bad'] $bad}
+					{$bad} &nbsp;
+				{/loop}
+			</td>
+		</tr>
+	{/if}
+	<tr>
+		<th>店家回复</th>
+		<td>{$comment['reply']}</td>
+	</tr>
+</table>

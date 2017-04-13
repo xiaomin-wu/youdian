@@ -1,0 +1,4 @@
+<ul class="nav nav-tabs">
+	<li {if $op == 'set'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptfdeliveryer', array('op' => 'set'));}"> 配送员设置</a></li>
+	<li {if $op == 'account'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptfdeliveryer', array('op' => 'list'));}"> 配送员</a></li>
+</ul>

@@ -1,0 +1,182 @@
+{template 'delivery/header'}
+<div class="page order-info" id="page-delivery-order">
+	<header class="bar bar-nav common-bar-nav">
+		<a class="icon fa fa-arrow-left pull-left external" href="{php echo $this->createMobileUrl('dyorder-errander');}"></a>
+		<h1 class="title">跑腿订单</h1>
+		<a class="icon tel pull-right external" href="tel:{$store['telephone']}"></a>
+	</header>
+	<div class="content">
+		<div id="order-detail" class="tab active">
+			<div class="order-state border-1px-tb">
+				<div class="order-state-con">
+					<div class="guide">
+						<img src="{MODULE_URL}resource/app/img/order_status_service.png" alt="" />
+					</div>
+					<div class="order-state-detail">
+						<div class="clearfix">订单{$order['delivery_status_cn']}<span class="pull-right date">{php echo date('H:i', $order['addtime']);}</span></div>
+						<div class="tips clearfix">{$log['note']}</div>
+					</div>
+				</div>
+			</div>
+			<div class="content-block-title">订单收入</div>
+			<div class="list-block other-info" style="margin: 0">
+				<ul class="border-1px-tb">
+					<li class="item-content">
+						<div class="item-inner border-1px-b">
+							<div class="item-title">配送费</div>
+							<div class="item-after">￥{$order['deliveryer_fee']}</div>
+						</div>
+					</li>
+					<li class="item-content">
+						<div class="item-inner border-1px-b">
+							<div class="item-title">小费</div>
+							<div class="item-after">￥{$order['delivery_tips']}</div>
+						</div>
+					</li>
+					<li class="item-content">
+						<div class="item-inner">
+							<div class="item-title">本单收入</div>
+							<div class="item-after">￥{$order['deliveryer_total_fee']}</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="content-block-title">物品信息</div>
+			<div class="list-block other-info" style="margin: 0">
+				<ul class="border-1px-tb">
+					{if $order['order_type'] == 'buy'}
+						<li class="item-content">
+								<div class="item-inner border-1px-b">
+									<div class="item-title">购买商品</div>
+									<div class="item-after">{$order['goods_name']}</div>
+								</div>
+							</li>
+						<li class="item-content">
+							<div class="item-inner border-1px-b">
+								<div class="item-title">购买地址</div>
+								<div class="item-after">{$order['buy_address']}</div>
+							</div>
+						</li>
+						<li class="item-content">
+							<div class="item-inner">
+								<div class="item-title">商品预期价格</div>
+								<div class="item-after">{$order['goods_price']}</div>
+							</div>
+						</li>
+						{else}
+							<li class="item-content">
+								<div class="item-inner border-1px-b">
+									<div class="item-title">物品信息</div>
+									<div class="item-after">{$order['goods_name']}</div>
+								</div>
+							</li>
+							<li class="item-content">
+								<div class="item-inner border-1px-b">
+									<div class="item-title">取货地址</div>
+									<div class="item-after">{$order['buy_address']}</div>
+								</div>
+							</li>
+							<li class="item-content">
+								<div class="item-inner border-1px-b">
+									<div class="item-title">物品价值</div>
+									<div class="item-after">{$order['goods_price']}</div>
+								</div>
+							</li>
+							<li class="item-content">
+								<div class="item-inner">
+									<div class="item-title">物品重量</div>
+									<div class="item-after">{$order['goods_weight']}</div>
+								</div>
+							</li>
+						{/if}
+					</li>
+				</ul>
+				{if $order['order_type'] != 'buy'}
+					<div class="table border-no">
+						<a href="tel:{$order['buy_mobile']}" class="table-cell external">呼叫取货联系人</a>
+						<a href="http://m.amap.com/?q={$order['buy_location_x']},{$order['buy_location_y']}&name={$order['buy_address']}" class="table-cell external">导航</a>
+					</div>
+				{/if}
+			</div>
+			<div class="content-block-title">收货地址</div>
+			<div class="list-block other-info border-1px-tb" style="margin: 0">
+				<ul class="border-1px-b">
+					<li class="item-content">
+						<div class="item-inner border-1px-b">
+							<div class="item-title">收货地址</div>
+							<div class="item-after">{$order['accept_address']}</div>
+						</div>
+					</li>
+					<li class="item-content">
+						<div class="item-inner">
+							<div class="item-title">联系人</div>
+							<div class="item-after">{$order['accept_mobile']}</div>
+						</div>
+					</li>
+				</ul>
+				<div class="table border-no border-1px-b">
+					<a href="tel:{$order['accept_mobile']}" class="table-cell external border-1px-r">呼叫收货人</a>
+					<a href="http://m.amap.com/?q={$order['accept_location_x']},{$order['accept_location_y']}&name={$order['accept_address']}" class="table-cell external">导航</a>
+				</div>
+			</div>
+			<div class="content-block-title">其他信息</div>
+			<div class="list-block other-info">
+				<ul class="border-1px-tb">
+					<li class="item-content">
+						<div class="item-inner border-1px-b">
+							<div class="item-title">配送时间</div>
+							<div class="item-after">{$order['delivery_time']}</div>
+						</div>
+					</li>
+					{if $order['deliveryer_id'] > 0}
+						<li class="item-content">
+							<div class="item-inner border-1px-b">
+								<div class="item-title">配送员</div>
+								<div class="item-after">{$deliveryer['deliveryer']['title']}</div>
+							</div>
+						</li>
+					{/if}
+					<li class="item-content">
+						<div class="item-inner border-1px-b">
+							<div class="item-title">订单号</div>
+							<div class="item-after">{$order['order_sn']}</div>
+						</div>
+					</li>
+					<li class="item-content">
+						<div class="item-inner border-1px-b">
+							<div class="item-title">下单时间</div>
+							<div class="item-after">{php echo date('Y-m-d H:i:s', $order['addtime']);}</div>
+						</div>
+					</li>
+					<li class="item-content">
+						<div class="item-inner border-1px-b">
+							<div class="item-title">支付方式</div>
+							<div class="item-after">{$order['pay_type_cn']}</div>
+						</div>
+					</li>
+					<li class="item-content">
+						<div class="item-inner">
+							<div class="item-title">备注信息</div>
+							<div class="item-after">{if empty($order['note'])}无{else}{$order['note']}{/if}</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+$(function(){
+	$(document).on('click', '.btn-user-location', function(e){
+		var location_x = $(this).data('location-x');
+		var location_y = $(this).data('location-y');
+		if(!location_x || !location_y) {
+			$.toast('获取顾客位置失败');
+			e.preventDefault();
+			return false;
+		}
+	});
+});
+</script>
+{template 'delivery/common'}
+{template 'delivery/footer'}

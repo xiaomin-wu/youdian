@@ -1,0 +1,97 @@
+{template 'header'}
+<div class="page order" id="page-app-order">
+	<header class="bar bar-nav">
+		<a class="pull-left back" href="javascript:;"><i class="fa fa-arrow-left"></i></a>
+		<h1 class="title">我的订单</h1>
+	</header>
+	{template 'nav'}
+	<div class="content infinite-scroll" data-distance="50" data-min="{$min}">
+		<div class="order-list">
+			{if empty($orders)}
+				<div class="common-no-con">
+					<img src= "{MODULE_URL}resource/app/img/order_no_con.png" alt="" />
+					<p>您还没有订单，赶紧点一份！</p>
+					<div class="btn">
+						<a href="{php echo $this->createMobileUrl('index');}">现在点一份</a>
+					</div>
+				</div>
+			{else}
+				{loop $orders $order}
+					<div class="order-container">
+						<div class="order-inner">
+							<div class="store-info" style="position: relative">
+								<a class="external" href="{php echo $this->createMobileUrl('goods', array('sid' => $order['sid']));}">
+									<img src="{php echo tomedia($order['logo']);}" alt="" />
+									<span class="store-title">{$order['title']}</span>
+									<span class="fa fa-arrow-right"></span>
+								</a>
+								{if $order['delivery_mode'] == 2}
+									<div class="plateform-delivery"><span>平台专送</span></div>
+								{/if}
+							</div>
+							<a class="goods-info row no-gutter external" href="{php echo $this->createMobileUrl('order', array('op' => 'detail', 'id' => $order['id']));}">
+								<div class="col-75">
+									<div class="goods-title">{$order['goods']['goods_title']}等<span>{$order['num']}</span>件商品</div>
+									<div class="date">{php echo date('Y-m-d H:i', $order['addtime']);}</div>
+								</div>
+								<div class="col-25 text-right">
+									<div class="price">￥{$order['final_fee']}</div>
+									<div class="status no-pay">{$order_status[$order['status']]['text']}</div>
+								</div>
+							</a>
+							{if !$order['is_pay'] && $order['status'] != 6}
+								<div class="order-status">
+									<div class="pic">
+										<img src="{MODULE_URL}resource/app/img/order_status_money.png" alt="" />
+									</div>
+									<div class="order-status-detail">
+										<div class="arrow-left"></div>
+										<div class="clearfix">待支付<span class="pull-right date">{php echo date('H:i', $order['addtime']);}</span></div>
+										<div class="tips">请在提交订单后{$order['pay_time_limit']}分钟内完成支付</div>
+									</div>
+								</div>
+							{/if}
+						</div>
+						<div class="order-btn table">
+							{if !$order['is_pay'] && !in_array($order['status'], array(5, 6))}
+								<a href="{php echo $this->createMobileUrl('pay', array('id' => $order['id'], 'order_type' => 'order', 'type' => 1));}" class="table-cell external">立即支付</a>
+							{/if}
+							{if $order['status'] == 1}
+								<a href="javascript:;" class="order-cancel table-cell" data-id="{$order['id']}">取消订单</a>
+								{if $order['is_pay'] == 1}
+									<a href="javascript:;" class="order-remind table-cell" data-id="{$order['id']}">催单</a>
+								{/if}
+							{elseif in_array($order['status'], array(2, 3, 4))}
+								{if $order['order_type'] == 1}
+									<a href="javascript:;" class="order-end table-cell" data-id="{$order['id']}" data-type="1">确认送达</a>
+								{elseif $order['order_type'] == 2}
+									<a href="javascript:;" class="order-end table-cell" data-id="{$order['id']}" data-type="2">我已提货</a>
+								{/if}
+								{if $order['is_pay'] == 1}
+									<a href="javascript:;" class="order-remind table-cell" data-id="{$order['id']}">催单</a>
+								{/if}
+							{elseif in_array($order['status'], array(5))}
+								<a href="{php echo $this->createMobileUrl('goods', array('f' => '1', 'id' => $order['id'], 'sid' => $order['sid']));}" class="table-cell external" data-id="{$order['id']}">再来一单</a>
+								{if !$order['is_comment']}
+									<a href="{php echo $this->createMobileUrl('order', array('op' => 'comment', 'id' => $order['id']));}" class="table-cell">去评价</a>
+								{else}
+									<a href="{php echo $this->createMobileUrl('comment');}" class="table-cell">查看评价</a>
+								{/if}
+							{elseif in_array($order['status'], array(6))}
+								<a href="{php echo $this->createMobileUrl('goods', array('f' => '1', 'id' => $order['id'], 'sid' => $order['sid']));}" class="table-cell external" data-id="{$order['id']}">再来一单</a>
+							{/if}
+							{if $order['is_refund'] == 1}
+								<a href="{php echo $this->createMobileUrl('order', array('op' => 'detail', 'id' => $order['id']));}" class="table-cell">查看退款</a>
+							{/if}
+						</div>
+					</div>
+				{/loop}
+			{/if}
+		</div>
+		<div class="infinite-scroll-preloader hide">
+			<div class="preloader"></div>
+		</div>
+	</div>
+</div>
+{template 'common'}
+{template 'footer'}

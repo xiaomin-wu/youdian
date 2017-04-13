@@ -1,0 +1,502 @@
+{template 'public/header'}
+{template 'plateform/nav'}
+{template 'plateform/order-nav'}
+{if $op == 'list'}
+<div class="main">
+	<div class="panel panel-info">
+		<div class="panel-heading">筛选</div>
+		<div class="panel-body">
+			<form action="" class="form-inline search-container pull-left" id="order-takeout">
+				<input type="hidden" name="c" value="site">
+				<input type="hidden" name="a" value="entry">
+				<input type="hidden" name="m" value="we7_wmall">
+				<input type="hidden" name="do" value="ptforder-errander"/>
+				<input type="hidden" name="op" value="list"/>
+				<input type="hidden" name="fields" value=""/>
+				<div class="input-group">
+					<select name="is_pay" class="form-control">
+						<option value="-1" {if $is_pay == -1}selected{/if}>支付状态</option>
+						<option value="1" {if $is_pay == 1}selected{/if}>已支付</option>
+						<option value="0" {if $is_pay == 0}selected{/if}>未支付</option>
+					</select>
+					<select name="status" class="form-control">
+						<option value="0" {if $status == 0}selected{/if}>所有订单</option>
+						<option value="1" {if $status == 1}selected{/if}>待接单</option>
+						<option value="2" {if $status == 2}selected{/if}>正在进行中</option>
+						<option value="3" {if $status == 3}selected{/if}>已完成订单</option>
+						<option value="4" {if $status == 4}selected{/if}>已取消订单</option>
+					</select>
+					<span class="input-group-btn border-no-radius">
+						{php echo tpl_form_field_daterange('addtime', array('start' => date('Y-m-d', $starttime), 'end' => date('Y-m-d', $endtime)));}
+					</span>
+					<input type="text" name="keyword" value="{$keyword}" class="form-control" placeholder="输入用户名/手机号/订单编号">
+					<span class="input-group-btn">
+						<button class="btn btn-success"><i class="fa fa-search"></i> 搜 索</button>
+						<a class="btn btn-primary btn-export" href="javascript:;"><i class="fa fa-download"></i> 导出订单</a>
+					</span>
+				</div>
+			</form>
+			<div class="pull-right hide">
+				<a class="btn btn-default btn-refresh" href="javascript:;"><i class="fa fa-refresh"></i> 自动刷新</a>
+				<a class="btn btn-default" href="javascript:;"><i class="fa fa-bell"></i> 播放铃声</a>
+			</div>
+		</div>
+	</div>
+	<form class="form-horizontal" data-order="{php echo json_encode($data);}" style="margin-top: 20px;" action="{php echo $this->createWebUrl('order', array('op' => 'status'));}" id="form-order" method="post">
+		<div class="panel panel-default">
+			<div class="panel-body table-responsive" style="overflow:inherit">
+				<table class="table table-hover">
+					<thead class="navbar-inner">
+						<tr>
+							<th width="60">订单ID</th>
+							<th>商品信息</th>
+							<th width="300">订单类型/购买/取货地址/收货人信息</th>
+							<th>订单价格</th>
+							<th>最终价格</th>
+							<th>支付方式</th>
+							<th>订单状态</th>
+							<th>下单时间</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						{loop $data $dca}
+						<tr>
+							<td><b>{$dca['id']}</b></td>
+							<td>
+								{$dca['goods_name']}
+								{if !empty($dca['goods_price'])}
+									<br>
+									预期商品价格: {$dca['goods_price']}元
+								{/if}
+							</td>
+							<td>
+								<span class="label {$errander_types[$dca['order_type']]['css']}">{$errander_types[$dca['order_type']]['text']}</span>
+								<span class="label label-danger">距离：{if !empty($dca['distance'])}{$dca['distance']}km{else}未知{/if}</span>
+								<span class="label label-info">收获码：{$dca['code']}</span>
+								{if $dca['order_type'] == 'buy'}
+									<br>
+									<span class="label label-info label-br">
+										购买地址: {if !empty($dca['buy_address'])}{$dca['buy_address']}{else}自由选择{/if}
+									</span>
+								{elseif $dca['order_type'] == 'delivery'}
+									<br>
+									<span class="label label-info label-br">
+									发货地址: {$dca['buy_address']}
+									</span>
+									<span class="label label-info label-br">
+									联系人: {$dca['buy_username']} &nbsp; 手机号: {$dca['buy_mobile']}
+									</span>
+								{else}
+									<br>
+									<span class="label label-info label-br">
+									取货地址: {$dca['buy_address']}
+									</span>
+									<br/>
+									<span class="label label-info label-br">
+									联系人: {$dca['buy_username']} &nbsp; 手机号: {$dca['buy_mobile']}
+									</span>
+								{/if}
+								<br/>
+								<span class="label label-default label-br">
+									收货地址: {$dca['accept_address']}
+								</span>
+								<br/>
+								<span class="label label-default label-br">
+									收货人: {$dca['accept_username']} &nbsp; 手机号: {$dca['accept_mobile']}
+								</span>
+							</td>
+							<td>
+								配送费: {$dca['delivery_fee']}元
+								<br>
+								小费: {$dca['delivery_tips']}元
+								<br>
+								合计: {$dca['total_fee']}元
+							</td>
+							<td>
+								<span class="label label-info">{$dca['total_fee']}元</span>
+							</td>
+							<td>
+								{if !$dca['is_pay']}
+									<span class="label label-danger">未支付</span>
+								{else}
+									<span class="{$pay_types[$dca['pay_type']]['css']}">{$pay_types[$dca['pay_type']]['text']}</span>
+								{/if}
+							</td>
+							<td>
+								<span class="{$errander_order_status[$dca['status']]['css']}">
+									{$errander_order_status[$dca['status']]['text']}
+								</span>
+								{if $dca['refund_status'] == 1}
+									<br>
+									<span class="label label-danger label-br">有退款申请</span>
+								{elseif $dca['refund_status'] == 3}
+									<br>
+									<span class="label label-success label-br">退款成功</span>
+								{/if}
+								{if $dca['deliveryer_id'] > 0}
+									<br>
+									<span class="label label-info label-br">配送员: {$deliveryers[$dca['deliveryer_id']]['deliveryer']['title']}</span>
+								{/if}
+							</td>
+							<td>{php echo date('Y-m-d H:i', $dca['addtime'])}</td>
+							<td class="text-right">
+								<div class="btn-group">
+									{if $dca['status'] == 1}
+										<a href="javascript:;" class="btn btn-success btn-dispatch" data-id="{$dca['id']}" title="调度" data-toggle="tooltip" data-placement="top">调度</a>
+									{/if}
+									{if $dca['status'] == 2}
+										<a href="{php echo $this->createWeburl('ptforder-errander', array('op' => 'end', 'id' => $dca['id']))}" class="btn btn-default" data-id="{$dca['id']}" title="完成订单" data-toggle="tooltip" data-placement="top" onclick="if(!confirm('确定完成订单吗')) return false;">完成</a>
+									{/if}
+									{if $dca['status'] == 1 || $dca['status'] == 2}
+										<a href="{php echo $this->createWeburl('ptforder-errander', array('op' => 'cancel', 'id' => $dca['id']))}" class="btn btn-default" title="取消订单" data-toggle="tooltip" data-placement="top" onclick="if(!confirm('确定取消订单吗')) return false;">取消</a>
+									{/if}
+									{if $dca['refund_status'] == 1}
+										<a href="{php echo $this->createWeburl('ptforder-errander', array('op' => 'begin_refund', 'id' => $dca['id']))}" class="btn btn-danger" title="退款" data-toggle="tooltip" data-placement="top" onclick="if(!confirm('确定退款吗')) return false;">退款</a>
+									{/if}
+									{if $record['refund_status'] == 2}
+										<a href="{php echo $this->createWebUrl('ptforder-errander', array('op' => 'query_refund', 'id' => $dca['id']))}" class="btn btn-default btn-sm" title="查询退款状态" data-toggle="tooltip" data-placement="top">查询退款</a>
+									{/if}
+									{if $dca['status'] == 4}
+										<a href="{php echo $this->createWeburl('ptforder-errander', array('op' => 'del', 'id' => $dca['id']))}" class="btn btn-default" title="删除订单" data-toggle="tooltip" data-placement="top" onclick="if(!confirm('确定订单订单吗')) return false;">删除</a>
+									{/if}
+									<a href="{php echo $this->createWeburl('ptforder-errander', array('op' => 'detail', 'id' => $dca['id']))}" class="btn btn-default" title="查看详情" data-toggle="tooltip" data-placement="top">详情</a>
+								</div>
+							</td>
+						</tr>
+						{/loop}
+					</tbody>
+				</table>
+			</div>
+		</div>
+		{$pager}
+	</form>
+</div>
+
+<div class="modal fade" id="order-dispatch">
+	<div class="modal-dialog" style="width: 85%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h3 class="modal-title">订单调度</h3>
+			</div>
+			<div class="modal-body" style="min-height: 530px">
+				<form action="">
+					<div class="col-lg-9">
+						<div id="allmap" style="height: 500px">
+						</div>
+					</div>
+					<div class="col-lg-3 table-responsive">
+						<table class="table table-hover table-bordered">
+							<thead>
+								<th width="100"></th>
+								<th>配送员</th>
+								<th>操作</th>
+							</thead>
+							<tbody class="deliveryer-list">
+							</tbody>
+						</table>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script id="tpl-deliveryer-list" type="text/html">
+	<{# for(var i = 0, len = d.length; i < len; i++){ }>
+		<tr>
+			<td>
+				<img src="<{d[i]['deliveryer'].avatar}>" class="thumbnail" alt=""/>
+			</td>
+			<td>
+				<strong><{d[i]['deliveryer'].title}></strong>
+			</td>
+			<td>
+				<a href="javascript:;" data-deliveryer-id="<{d[i]['deliveryer'].id}>" data-order-id="<{d[i].order_id}>" class="btn btn-primary btn-dispatch-submit">分配</a>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="3">配送员-<strong class="text-danger"><{d[i].store2deliveryer_distance}></strong>-门店-<strong class="text-danger"><{d[i].store2user_distance}></strong>-收货人</td>
+		</tr>
+	<{# } }>
+</script>
+<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=550a3bf0cb6d96c3b43d330fb7d86950&plugin=AMap.Driving"></script>
+<script>
+var map = new AMap.Map('allmap', {
+	resizeEnable: true,
+	zoom: 13,
+	center: [{$config['errander']['map']['location_y']}, {$config['errander']['map']['location_x']}]
+});
+var driving = new AMap.Driving({
+	policy:AMap.DrivingPolicy.LEAST_TIME,
+	map: map
+});
+
+$(function(){
+	$(document).on('click', '.btn-dispatch', function(){
+		var id = $(this).data('id');
+		$.post("{php echo $this->createWebUrl('ptforder-errander', array('op' => 'analyse'))}", {id: id}, function(data){
+			var result = $.parseJSON(data);
+			if(result.message.errno != 0) {
+				util.message(result.message.message);
+				return false;
+			}
+			var order = result.message.message;
+			var gettpl = $('#tpl-deliveryer-list').html();
+			laytpl(gettpl).render(order.deliveryers, function(html){
+				$('#order-dispatch').find('.deliveryer-list').html(html);
+			});
+			if(order.buy_location_y && order.buy_location_x) {
+				driving.search(new AMap.LngLat(order.buy_location_y, order.buy_location_x), new AMap.LngLat(order.accept_location_y, order.accept_location_x));
+			} else {
+				marker = new AMap.Marker({
+					position: [order.accept_location_y, order.accept_location_x],
+					offset: new AMap.Pixel(-27, -74),
+					content: '<div class="marker-end-route"></div>'
+				});
+				marker.setMap(map);
+			}
+			$.each(order.deliveryers, function(k, v){
+				var deliveryer = v.deliveryer;
+				if(deliveryer.location_x && deliveryer.location_y) {
+					marker = new AMap.Marker({
+						position: [deliveryer.location_y, deliveryer.location_x],
+						offset: new AMap.Pixel(-26, -80),
+						content: '<div class="marker-deliveyer-route"><img src="'+ v.deliveryer.avatar +'" alt=""/></div>'
+					});
+					marker.setMap(map);
+				}
+			});
+			$('#order-dispatch').modal('show');
+		});
+	});
+
+	$(document).on('click', '.btn-dispatch-submit', function(){
+		var order_id = $(this).data('order-id');
+		var deliveryer_id = $(this).data('deliveryer-id');
+		if(!order_id || !deliveryer_id) {
+			return false;
+		}
+		util.loading();
+		$.post("{php echo $this->createWebUrl('ptforder-errander', array('op' => 'dispatch'))}", {order_id: order_id, deliveryer_id: deliveryer_id}, function(data){
+			var result = $.parseJSON(data);
+			util.loaded();
+			if(result.message.errno != 0) {
+				util.message(result.message.message);
+				return false;
+			} else {
+				location.reload();
+			}
+			$('#order-dispatch').modal('hide');
+		});
+	});
+
+	$(document).on('click', '.item-deliveryer', function(){
+		var deliveryer = $(this).data('info');
+		if(!deliveryer) {
+			util.message('配送员信息错误');
+			return false;
+		}
+	});
+});
+</script>
+{elseif $op == 'detail'}
+<form class="form-horizontal" role="form">
+	<div class="page-trade-order">
+		<div class="order-list">
+			<div class="freight-content">
+				<div class="freight-template-item panel panel-default">
+					<div class="panel-body clearfix">
+						<div class="col-xs-12 col-sm-6 order-infos">
+							<h4>订单信息</h4>
+							<div class="form-group clearfix">
+								<label class="col-md-3 control-label">订单编号：</label>
+								<div class="col-md-9 form-control-static">
+									{$order['order_sn']}
+								</div>
+							</div>
+							<div class="form-group clearfix">
+								<label class="col-md-3 control-label">下单时间：</label>
+								<div class="col-md-9 form-control-static">
+									{php echo date('Y-m-d H:i', $order['addtime']);}
+								</div>
+							</div>
+							<div class="form-group clearfix">
+								<label class="col-md-3 control-label">订单状态：</label>
+								<div class="col-md-9 form-control-static">
+									<span class="{$order_status[$order['status']]['css']}">{$order_status[$order['status']]['text']}</span>
+								</div>
+							</div>
+							<div class="form-group clearfix">
+								<label class="col-md-3 control-label">付款方式：</label>
+								<div class="col-md-9 form-control-static">
+									{if !$order['is_pay']}
+										<span class="label label-danger">未支付</span>
+									{else}
+										<span class="{$pay_types[$order['pay_type']]['css']}">{$pay_types[$order['pay_type']]['text']}</span>
+									{/if}
+								</div>
+							</div>
+							<div class="form-group clearfix">
+								<label class="col-md-3 control-label">配送：</label>
+								<div class="col-md-9 form-control-static">
+									{$order['delivery_time']}
+								</div>
+							</div>
+							<div class="parting-line"></div>
+							<div class="form-group clearfix">
+								<label class="col-md-3 control-label">备注：</label>
+								<div class="col-md-9 form-control-static">
+									{$order['note']}
+								</div>
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<h4>配送信息</h4>
+							<div class="form-group clearfix">
+								<label class="col-md-3 control-label">订单类型：</label>
+								<div class="col-md-9 form-control-static">
+									<span class="{$order_types[$order['order_type']]['css']}">{$order_types[$order['order_type']]['text']}</span>
+								</div>
+							</div>
+							<div class="form-group clearfix">
+								{if $order['order_type'] == 'buy'}
+									<label class="col-md-3 control-label">购买地址：</label>
+									<div class="col-md-9 form-control-static">
+										{if !empty($order['buy_address'])}{$order['buy_address']}{else}用户未指定位置， 您可以自由寻找商户购买商品{/if}
+									</div>
+								{elseif $order['order_type'] == 'delivery'}
+									<label class="col-md-3 control-label">发货地址：</label>
+									<div class="col-md-9 form-control-static">
+										{$order['buy_address']}
+										<br>
+										{$order['buy_username']} ~ {$order['buy_mobile']}
+									</div>
+								{else}
+									<label class="col-md-3 control-label">取货地址：</label>
+									<div class="col-md-9 form-control-static">
+										{$order['buy_address']}
+										<br>
+										{$order['buy_username']} ~ {$order['buy_mobile']}
+									</div>
+								{/if}
+							</div>
+							<div class="form-group clearfix">
+								<label class="col-md-3 control-label">收货人信息：</label>
+								<div class="col-md-9 form-control-static">
+									{$order['accept_address']}
+									<br>
+									{$order['accept_username']} ~ {$order['accept_mobile']}
+								</div>
+							</div>
+							<div class="form-group clearfix">
+								<label class="col-md-3 control-label">订单费用：</label>
+								<div class="col-md-9 form-control-static">
+									配送费：￥ {$order['delivery_fee']}元 + 小费：￥ {$order['delivery_tips']}元 = 合计：￥ {$order['total_fee']}元
+								</div>
+							</div>
+							{if $order['refund_status'] > 0}
+								<div class="form-group clearfix">
+									<label class="col-md-3 control-label">退款状态：</label>
+									<div class="col-md-9 form-control-static">
+										<span>{$order['refund_status_cn']}</span>
+									</div>
+								</div>
+								{if $order['refund_status'] == 3}
+									<div class="form-group clearfix">
+										<label class="col-md-3 control-label">退回方式：</label>
+										<div class="col-md-9 form-control-static">
+											<span>{$order['refund_channel_cn']}</span>
+										</div>
+									</div>
+									<div class="form-group clearfix">
+										<label class="col-md-3 control-label">退回账户：</label>
+										<div class="col-md-9 form-control-static">
+											<span>{$order['refund_account']}</span>
+										</div>
+									</div>
+								{/if}
+							{/if}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{if !empty($logs)}
+		<div class="panel panel-default">
+			<div class="panel-heading">订单日志</div>
+			<div class="panel-body table-responsive">
+				<table class="table table-hover table-log">
+					{loop $logs $log}
+					<tr>
+						<td>
+							<p><i class="fa fa-info-circle"></i> <strong>{php echo date('Y-m-d H:i', $log['addtime']);} {$log['title']}</strong></p> 
+							<p style="padding-left:15px; ">{$log['note']}</p> 
+						</td>
+					</tr>
+					{/loop}
+				</table>
+			</div>
+		</div>
+	{/if}
+</form>
+{/if}
+
+<div class="modal fade" id="order-export" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog ">
+		<form action="">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">导出订单</h4>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label>附加会员字段</label>
+						<br/>
+						{loop $fields $key $field}
+							<label class="checkbox-inline">
+								<input type="checkbox" name="fields[]" value="{$key}"> {$field}
+							</label>
+						{/loop}
+					</div>
+				</div>
+				<div class="modal-footer text-center">
+					<input type="hidden" name="token" value="{$_W['token']}">
+					<a class="btn btn-default" data-dismiss="modal" aria-label="Close">取消</a>
+					<a class="btn btn-primary btn-export-submit" href="javascript:;">确定导出</a>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+require(['trade', 'bootstrap'], function(trade){
+	$('.btn-export').click(function(){
+		$('#order-export').modal('show');
+		$('.btn-export-submit').click(function(){
+			var fields = [];
+			$(':checkbox[name="fields[]"]:checked').each(function(){
+				if($(this).val()) {
+					fields.push($(this).val());
+				}
+			});
+			fields = fields.join('|');
+			$('#order-takeout input[name="fields"]').val(fields);
+			$('#order-takeout input[name="op"]').val('export');
+			$('#order-takeout').submit();
+			$('#order-takeout input[name="op"]').val('list');
+			$('#order-export').modal('hide');
+		});
+	});
+});
+</script>
+{template 'common'}
+{template 'public/footer'}

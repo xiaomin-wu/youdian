@@ -1,0 +1,200 @@
+{template 'public/header'}
+<ul class="nav nav-tabs">
+	<li {if $do == 'page-store'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptfpage-store');}"> 门店专题</a></li>
+	<li {if $do == 'page-goods'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptfpage-goods');}"> 商品专题</a></li>
+</ul>
+<div class="panel panel-default">
+	<div class="panel-body">
+		<ul class="nav nav-pills">
+			<li {if $op == 'list'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptfpage-store', array('op' => 'list'));}"> 专题列表</a></li>
+			<li {if $op == 'post'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptfpage-store', array('op' => 'post'));}"> {if empty($_GPC['id'])}新建专题{else}编辑专题{/if}</a></li>
+		</ul>
+	</div>
+</div>
+{if $op == 'post'}
+<form class="form-horizontal form" id="form1" action="" method="post" enctype="multipart/form-data">
+	<div class="panel panel-default">
+		<div class="panel-heading">专题信息</div>
+		<div class="panel-body">
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">* </span>背景色</label>
+				<div class="col-sm-9 col-xs-12">
+					{php echo tpl_form_field_color('bgcolor',$activity['bgcolor']);}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">* </span>专题名称</label>
+				<div class="col-sm-9 col-xs-12">
+					<input type="text" name="title" value="{$activity['title']}" class="form-control"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">* </span>活动图片</label>
+				<div class="col-sm-9 col-xs-12">
+					{php echo tpl_form_field_image('thumb', $activity['thumb']);}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">* </span>活动规则</label>
+				<div class="col-sm-9 col-xs-12">
+					{php echo itpl_ueditor('content', $activity['content']);}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">* </span>活动商家</label>
+				<div class="col-sm-9 col-xs-12">
+					<div class="panel panel-default">
+						<div class="panel-body table-responsive">
+							<table class="table table-hover">
+								<thead class="navbar-inner">
+								<tr>
+									<th>缩略图</th>
+									<th>名称</th>
+									<th style="width: 200px">入住时间</th>
+									<th style="text-align:right;">操作</th>
+								</tr>
+								</thead>
+								<tbody id="store-activity">
+								{if empty($_GPC['id'])}
+								<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td class="text-right">
+										<a href="javascript:;" class="btn btn-default btn-select">选择</a>
+									</td>
+								</tr>
+								{else}
+									{loop $activity['item'] $item}
+									<tr>
+										<td><img width="20px" height="20px" src="{$item['logo']}" alt=""></td>
+										<td>{$item['title']}</td>
+										<td>{$item['addtime']}</td>
+										<td class="text-right">
+											<a href="javascript:;" class="btn btn-default btn-select">选择</a>
+										</td>
+									</tr>
+									{/loop}
+								{/if}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				</div>
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">分享设置</div>
+		<div class="panel-body">
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">* </span>分享标题</label>
+				<div class="col-sm-9 col-xs-12">
+					<input type="text" class="form-control" name='share_title' value="{$activity['share']['title']}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">* </span>分享图标</label>
+				<div class="col-sm-9 col-xs-12">
+					{php echo tpl_form_field_image('share_thumb', $activity['share']['thumb']);}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">分享内容</label>
+				<div class="col-sm-9 col-xs-12">
+					<textarea name="share_content" id="" cols="30" rows="10" class="form-control">{$activity['share']['content']}</textarea>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-9 col-xs-9 col-md-9">
+			<input type="hidden" name="token" value="{$_W['token']}">
+			<input name="submit" id="submit" type="submit" value="提交" class="btn btn-primary col-lg-1">
+		</div>
+	</div>
+</form>
+<script>
+	$(document).on('click' ,'.btn-select', function(){
+		var btn = $(this);
+		tiny.selectstore(function(stores){
+			$('#store-activity').html('');
+			$.each(stores, function(idx, store){
+				html = ['<tr>',
+						'	<td ><img src=' + store.logo + ' width="20" height="20"></td>',
+						'	<td>' + store.title + '</td>',
+						'	<td>' + store.addtime + '</td>',
+						'	<td class="text-right">',
+						'	<a href="javascript:;" class="btn btn-default btn-select">选择</a>',
+						' 	<input type="hidden" name="item_ids[]" value='+ store.id +'>',
+						'	</td>',
+						'	</tr>'].join("");
+				$("#store-activity"). append(html);
+			});
+		}, {mutil: 1});
+	});
+</script>
+{/if}
+
+{if $op == 'list'}
+<div class="panel panel-default">
+	<div class="panel-heading">专题列表</div>
+	<div class="panel-body table-responsive">
+		<table class="table table-hover">
+			<thead class="navbar-inner">
+			<tr>
+				<th>专题信息</th>
+				<th>背景色</th>
+				<th>添加时间</th>
+				<th style="text-align:right;">操作</th>
+			</tr>
+			</thead>
+			<tbody>
+			{loop $activitys $activity}
+			<tr>
+				<td>{$activity['title']}</td>
+				<td>
+					<div class="row row-fix">
+						<div class="col-xs-8 col-sm-8" style="padding-right:0;">
+							<div class="input-group">
+								<input class="form-control" type="text" name="bgcolor" value="{$activity['bgcolor']}">
+								<span class="input-group-addon" style="width:35px;border-left:none;background-color:{$activity['bgcolor']}"></span>
+							</div>
+						</div>
+					</div>
+				</td>
+				<td>
+					{php echo date('Y-m-d',$activity['addtime'])}
+				</td>
+				<td class="text-right">
+					<a href="{php echo $this->createWebUrl('ptfpage-store' ,array('op' => 'post','id' => $activity['id']))}" class="btn btn-default btn-sm"><i class="fa fa-edit"> </i></a>
+					<a href="{php echo $this->createWebUrl('ptfpage-store' ,array('op' => 'del','id' => $activity['id']))}" class="btn btn-default btn-del" title="删除" data-toggle="tooltip" data-placement="top"><i class="fa fa-times"> </i></a>
+				</td>
+			</tr>
+			{/loop}
+			</tbody>
+		</table>
+	</div>
+</div>
+<script>
+	$(function(){
+		$(document).on('click', '.btn-image', function(){
+			var btn = $(this);
+			var ipt = btn.parent().prev();
+			var val = ipt.val();
+			var img = ipt.parent().parent().find(".input-group-addon img");
+			util.image(val, function(url){
+				if(url.url){
+					if(img.length > 0){
+						img.get(0).src = url.url;
+					}
+					ipt.val(url.attachment);
+					ipt.attr("filename",url.filename);
+					ipt.attr("url",url.url);
+				}
+			}, null);
+		})
+	})
+</script>
+{/if}
+{template 'public/footer'}

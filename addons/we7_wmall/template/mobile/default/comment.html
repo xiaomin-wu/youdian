@@ -1,0 +1,76 @@
+{template 'header'}
+<div class="page my-comment" id="page-app-my-comment">
+	<header class="bar bar-nav">
+		<a class="pull-left icon fa fa-arrow-left back" href="javascript:;"></a>
+		<h1 class="title">我的评论</h1>
+	</header>
+	{template 'nav'}
+	<div class="content infinite-scroll" data-distance="50" data-min="{$min}">
+		{if empty($comments)}
+			<div class="common-no-con">
+				<img src= "{MODULE_URL}resource/app/img/comment_no_con.png" alt="" />
+				<p>您还没有评论过，快去评论吧！</p>
+			</div>
+		{else}
+			<div class="comment-list">
+				{loop $comments $key $comment}
+					<div class="comment-inner">
+						<div class="store-title">
+							{$comment['title']}<span class="date color-muted">{php echo date('Y-m-d H:i', $comment['addtime']);}</span>
+						</div>
+						<div>
+							<div class="star-rank">
+								<span class="star-rank-outline">
+									<span class="star-rank-active" style="width:{$comment['score']}%"></span>
+								</span>
+							</div>
+							<span class="color-muted hide">送货速度:40分钟</span>
+						</div>
+						<div class="color-muted">送货：{$comment['delivery_service']}分&nbsp;&nbsp;商品：{$comment['goods_quality']}分</div>
+						{if !empty($comment['note'])}
+							<div class="comment-info">{$comment['note']}</div>
+						{/if}
+						{if !empty($comment['data']['good'])}
+							<div class="comment-favor-oppose">
+								<i class="icon favor"></i>
+								{loop $comment['data']['good'] $good}
+									<span>{$good}</span>
+								{/loop}
+							</div>
+						{/if}
+						{if !empty($comment['data']['bad'])}
+							<div class="comment-favor-oppose">
+								<i class="icon oppose"></i>
+								{loop $comment['data']['bad'] $bad}
+								<span>{$bad}</span>
+								{/loop}
+							</div>
+						{/if}
+						{if !empty($comment['thumbs'])}
+							<div class="comment-images-containter row">
+								{loop $comment['thumbs'] $thumb}
+								<div class="col-33 comment-images-item">
+									<img src="{$thumb}" alt=""/>
+								</div>
+								{/loop}
+							</div>
+						{/if}
+						{if !empty($comment['reply'])}
+							<div class="store-comment">
+								<div class="clearfix store-comment-top">
+									店家回复：<span class="pull-right">{php echo date('Y-m-d H:i', $comment['replytime']);}</span>
+								</div>
+								<div class="info">{$comment['reply']}</div>
+							</div>
+						{/if}
+					</div>
+				{/loop}
+			</div>
+			<div class="infinite-scroll-preloader hide">
+				<div class="preloader"></div>
+			</div>
+		{/if}
+	</div>
+</div>
+{template 'common'}
+{template 'footer'}

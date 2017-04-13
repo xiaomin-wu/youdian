@@ -1,0 +1,173 @@
+{template 'header'}
+<style>
+	.activity .activity-item{
+		padding: 0.6rem;
+		background-color: #fff;
+		margin-left: 0;
+	}
+	.activity .activity-item:nth-child(2n-1){
+		margin-left: 6%;
+	}
+	.activity .activity-item .store-title{
+		padding: 0 1.3rem;
+		margin: 0 auto;
+		margin-bottom: 0.3rem;
+		color: #333;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		text-align: center;
+	}
+	.activity .activity-list{
+		background-color: #fff;
+	}
+	.activity .activity-item .goods-image{
+		position: relative;
+	}
+	.activity .activity-item .goods-image img{
+		width: 100%;
+		height: 8rem;
+	}
+	.activity .activity-item .goods-image .store-rest{
+		background-color: #ccc;
+		color: #fff;
+		border-radius:0.1rem;
+		position: absolute;
+		right: -0.2rem;
+		bottom: 2rem;
+		font-size: 0.7rem;
+	}
+	.activity .activity-item .goods-title{
+		margin-top: .3rem;
+		height: 2.4rem;
+		line-hieght: 1.2rem;
+	}
+	.activity .activity-item .month-soldnum{
+		color: #999;
+		font-size: 0.7rem;
+		margin-top: 0.3rem;
+	}
+	.activity .activity-item .price-buybtn{
+		margin-top: .3rem;
+		margin-bottom: .3rem;
+	}
+	.activity .activity-item .price-buybtn .price{
+		color: #fe4d3d;
+		font-size: 1rem;
+	}
+	.activity .activity-item .price-buybtn .origin-price{
+		color: #ccc;
+		font-size: 0.6rem;
+		margin-left: 0.2rem;
+		text-decoration: line-through;
+	}
+	.activity .activity-item .price-buybtn .buybtn{
+		background-color: #fe4d3d;
+		color: #fff;
+		padding: 0.2rem 0.8rem;
+		border-radius:0.2rem;
+	}
+	.activity .activity-item .price-buybtn .breakbtn{
+		background-color: #ccc;
+		color: #fff;
+		padding: 0.2rem 0.4rem;
+		border-radius:0.2rem;
+	}
+	.activity .activity-rule{
+		margin: 0.6rem;
+		background: #fff;
+		padding: 0.2rem 0.8rem;
+		border-radius: 0.2rem;
+	}
+	.activity .activity-rule .activity-rule-title{
+		text-align: center;
+		font-weight: bold;
+		padding: 0.5rem 0;
+	}
+	.activity .activity-rule .activity-rule-content{
+		padding: 0.5rem 1rem;
+		font-size: 0.7rem;
+	}
+</style>
+<div class="page">
+	<header class="bar bar-nav common-bar-nav">
+		<a class="pull-left back" href="javascript:;"><i class="fa fa-arrow-left"></i></a>
+		<h1 class="title"></h1>
+	</header>
+	{template 'nav'}
+	<div class="content activity">
+		<div class="activity_banner border-1px-t">
+			<a href=""><img src="http://p1.meituan.net/codeman/6ec8e5d2975710b2057c8b85bc8fc8bf427708.png" alt=""></a>
+		</div>
+		<div class="activity-list row clearfix">
+			<div class="activity-item col-50 border-1px-r border-1px-b">
+				<div class="store-title">麦当劳（太原时代广场2餐厅）</div>
+				<div class="goods-image">
+					<img src="http://p1.meituan.net/270.176.90/xianfu/41d75ade1492b429bc8567310eeb21348192.jpg" alt="">
+				</div>
+				<div class="goods-title">经典麦辣鸡腿汉堡配中薯套餐</div>
+				<div class="month-soldnum">月售:235份</div>
+				<div class="price-buybtn clearfix">
+					<div class="price pull-left"><span class="now-price">￥18</span><span class="origin-price">￥25</span></div>
+					<span class="buybtn pull-right">抢购</span>
+				</div>
+			</div>
+			<div class="activity-item col-50 border-1px-r border-1px-b">
+				<div class="store-title">麦当劳（太原时代广场2餐厅）</div>
+				<div class="goods-image">
+					<img src="http://p1.meituan.net/270.176.90/xianfu/41d75ade1492b429bc8567310eeb21348192.jpg" alt="">
+					<div class="store-rest">商家休息中</div>
+				</div>
+				<div class="goods-title">经典麦辣鸡腿汉堡配中薯套餐</div>
+				<div class="month-soldnum">月售:235份</div>
+				<div class="price-buybtn clearfix">
+					<div class="price pull-left"><span class="now-price">￥18</span><span class="origin-price">￥25</span></div>
+					<span class="breakbtn pull-right">请稍后</span>
+				</div>
+			</div>
+			<div class="activity-item col-50 border-1px-r border-1px-b">
+				<div class="store-title">麦当劳（太原时代广场2餐厅）</div>
+				<div class="goods-image">
+					<img src="http://p1.meituan.net/270.176.90/xianfu/41d75ade1492b429bc8567310eeb21348192.jpg" alt="">
+				</div>
+				<div class="goods-title">经典麦辣鸡腿汉堡配中薯套餐</div>
+				<div class="month-soldnum">月售:235份</div>
+				<div class="price-buybtn clearfix">
+					<div class="price pull-left"><span class="now-price">￥18</span><span class="origin-price">￥25</span></div>
+					<span class="buybtn pull-right">抢购</span>
+				</div>
+			</div>
+			<div class="activity-item col-50 border-1px-r border-1px-b">
+				<div class="store-title">麦当劳（太原时代广场2餐厅）</div>
+				<div class="goods-image">
+					<img src="http://p1.meituan.net/270.176.90/xianfu/41d75ade1492b429bc8567310eeb21348192.jpg" alt="">
+					<div class="store-rest">商家休息中</div>
+				</div>
+				<div class="goods-title">经典麦辣鸡腿汉堡配中薯套餐</div>
+				<div class="month-soldnum">月售:235份</div>
+				<div class="price-buybtn clearfix">
+					<div class="price pull-left"><span class="now-price">￥18</span><span class="origin-price">￥25</span></div>
+					<span class="breakbtn pull-right">请稍后</span>
+				</div>
+			</div>
+			<div class="activity-item col-50 border-1px-r border-1px-b">
+				<div class="store-title">麦当劳（太原时代广场2餐厅）</div>
+				<div class="goods-image">
+					<img src="http://p1.meituan.net/270.176.90/xianfu/41d75ade1492b429bc8567310eeb21348192.jpg" alt="">
+				</div>
+				<div class="goods-title">经典麦辣鸡腿汉堡配中薯套餐</div>
+				<div class="month-soldnum">月售:235份</div>
+				<div class="price-buybtn clearfix">
+					<div class="price pull-left"><span class="now-price">￥18</span><span class="origin-price">￥25</span></div>
+					<span class="buybtn pull-right">抢购</span>
+				</div>
+			</div>
+		</div>
+		<div class="activity-rule">
+			<div class="activity-rule-title border-1px-b">活动规则</div>
+			<div class="activity-rule-content">1.活动范围：全国；<br> 3.满减优惠可与美团红包、满返代金券等多种优惠同时使用，但不与折扣菜优惠同享；<br> 4.优惠仅限美团外卖及美团App下单且选择在线支付的订单享受。<br> </div>
+		</div>
+	</div>
+</div>
+{template 'common'}
+{template 'footer'}

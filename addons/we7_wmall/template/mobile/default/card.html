@@ -1,0 +1,243 @@
+{template 'header'}
+{if $op == 'index'}
+	{if $_W['member']['setmeal_id'] > 0}
+		<div class="page card-center">
+			<header class="bar bar-nav common-bar-nav">
+				<a class="pull-left back" href="javascript:;"><i class="fa fa-arrow-left"></i></a>
+				<h1 class="title">会员中心</h1>
+			</header>
+			<nav class="bar bar-tab footer-bar">
+				<div class="pay-btn"><a href="{php echo $this->createMobileUrl('card', array('op' => 'apply'));}">马上续费</a></div>
+			</nav>
+			<div class="content">
+				<div class="user-info">
+					<div class="list-block media-list">
+						<ul>
+							<li>
+								<div class="item-content">
+									<div class="item-media"><img src="{php echo tomedia($_W['member']['avatar']);}" style='width: 2.2rem;'></div>
+									<div class="item-inner">
+										<div class="item-title-row">
+											<div class="item-title">
+												{$_W['member']['nickname']}
+												{if $_W['member']['setmeal_id'] > 0 && $_W['member']['setmeal_endtime'] > TIMESTAMP}
+													<img src="{MODULE_URL}resource/app/img/vip_effective.png" alt="">
+												{else}
+													<img src="{MODULE_URL}resource/app/img/vip_deprecated.png" alt="">
+												{/if}
+
+											</div>
+										</div>
+										<div class="item-subtitle">平台会员(免配送费)</div>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="card-img">
+					<img src="{MODULE_URL}resource/app/img/card-setmeal.png" alt="">
+					<div class="card-info">
+						<p class="use-date">会员期限：<span>{php echo date('Y-m-d', $_W['member']['setmeal_starttime']);}</span>至<span>{php echo date('Y-m-d', $_W['member']['setmeal_endtime']);}</span></p>
+						<p class="use-times">每日可免费配送：<span>{$_W['member']['setmeal_day_free_limit']}单</span></p>
+					</div>
+				</div>
+				<div class="card-box">
+					<div class="left open-popup" data-popup=".popup-card-privilege">
+						<img src="{MODULE_URL}resource/app/img/card-mian.png" alt="">
+						<p>平台配送免配送费</p>
+					</div>
+					<div class="right">
+						<img src="{MODULE_URL}resource/app/img/card-more.png" alt="">
+						<p>敬请期待</p>
+					</div>
+				</div>
+				<p class="card-agreement">
+					<a href="javascript:;" class="open-popup" data-popup=".popup-card-agreement">
+						<i class="fa fa-question-circle"></i> 会员卡规则
+					</a>
+				</p>
+			</div>
+		</div>
+	{else}
+		<div class="page card-info">
+			<header class="bar bar-nav common-bar-nav">
+				<a class="pull-left back" href="javascript:;"><i class="fa fa-arrow-left"></i></a>
+				<h1 class="title">开通会员</h1>
+			</header>
+			<div class="content">
+				<div class="card-img"><img src="{MODULE_URL}resource/app/img/card.png" alt=""></div>
+				<div class="card-box">
+					<div class="left">
+						<img src="{MODULE_URL}resource/app/img/card-mian.png" alt="">
+						<p>平台配送免配送费</p>
+					</div>
+					<div class="right">
+						<img src="{MODULE_URL}resource/app/img/card-more.png" alt="">
+						<p>敬请期待</p>
+					</div>
+				</div>
+				<p class="card-agreement">
+					<a href="javascript:;" class="open-popup" data-popup=".popup-card-agreement">
+						<i class="fa fa-question-circle"></i>会员卡规则
+					</a>
+				</p>
+				<div class="card-button">
+					<a href="{php echo $this->createMobileUrl('card', array('op' => 'apply'));}" class="button button-fill button-round">开通会员</a>
+				</div>
+			</div>
+		</div>
+	{/if}
+{/if}
+
+{if $op == 'apply'}
+<div class="page card-apply">
+	<header class="bar bar-nav common-bar-nav">
+		<a class="pull-left back" href="javascript:;"><i class="fa fa-arrow-left"></i></a>
+		<h1 class="title">购买会员卡</h1>
+	</header>
+	<div class="cart">
+		<div>¥<b id="cart-money">0</b></div>
+		<span id="cart-submit">去支付</span>
+	</div>
+	<div class="content">
+		<form method="post" id="card-form" action="{php echo $this->createMobileUrl('card', array('op' => 'pay'));}">
+			<div class="block-title">会员选择</div>
+			<div class="row setmeal-list">
+				{if !empty($cards)}
+					{loop $cards $card}
+						<div class="col-33 setmeal-item" data-price="{$card['price']}" data-day-free-limit="{$card['day_free_limit']}" data-id="{$card['id']}" data-endtime="{$card['endtime']}">
+							<span class="money">{$card['price']}元</span>
+							<span class="name">{$card['title']}</span>
+						</div>
+					{/loop}
+				{else}
+				{/if}
+			</div>
+			<div class="block-info">
+				<div>当前选择会员有效期为<span>{php echo date('Y-m-d', $endtime);}</span>至<span id="setmeal-endtime"></span></div>
+			</div>
+			<div class="list-block">
+				<ul class="list-privilege">
+					<li class="item-content">
+						<div class="item-inner">
+							<div class="item-title">
+								仅支持平台配送商户使用
+							</div>
+						</div>
+					</li>
+					<li class="item-content">
+						<div class="item-inner">
+							<div class="item-title">
+								下单配送费直接扣除
+							</div>
+						</div>
+					</li>
+					<li class="item-content">
+						<div class="item-inner">
+							<div class="item-title">
+								每日仅限<span id="day-free-limit"></span>单享受特权
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="list-block">
+				<ul class="pay-type">
+					{loop $payment $key $row}
+						{if $row == 1 && !in_array($key, array('delivery'))}
+							<li>
+								<label class="label-checkbox item-content">
+									<div class="item-inner">
+										<div class="item-title-row">
+											<div class="item-title">{$pay_types[$key]['text']}</div>
+										</div>
+									</div>
+									<input type="radio" name="pay_type" value="{$key}" checked>
+									<div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+								</label>
+							</li>
+						{/if}
+					{/loop}
+				</ul>
+			</div>
+		</form>
+	</div>
+</div>
+{/if}
+<div class="popup popup-card-agreement">
+	<div class="page card-agreement">
+		<header class="bar bar-nav common-bar-nav">
+			<a class="pull-left close-popup" href="javascript:;"><i class="fa fa-arrow-left"></i></a>
+			<h1 class="title">会员规则详解</h1>
+		</header>
+		<div class="content" style="background: #FFF">
+			<div class="content-padded">
+				{$config['card_agreement']}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="popup popup-card-privilege">
+	<div class="page card-privilege">
+		<header class="bar bar-nav common-bar-nav">
+			<a class="pull-left close-popup" href="javascript:;"><i class="fa fa-arrow-left"></i></a>
+			<h1 class="title">免费送餐特权</h1>
+		</header>
+		<div class="content">
+			<div class="tequan-pic"><img src="{MODULE_URL}resource/app/img/card-privilege.jpg" alt=""></div>
+			<p class="tequan-info">特权说明</p>
+			<ul class="tequan-list">
+				<li>仅支持平台配送商户使用</li>
+				<li>下单配送费直接扣除</li>
+				<li>每日仅限{$_W['member']['setmeal_day_free_limit']}单享受特权</li>
+				<li>免费送金额不设限制</li>
+			</ul>
+			<div class="card-button"><a href="{php echo $this->createMobileUrl('index');}" class="button button-fill button-round">现在去购物</a></div>
+		</div>
+	</div>
+</div>
+<script>
+$(function(){
+	$(document).on('click', '.setmeal-item', function(){
+		$('.setmeal-item').removeClass('active');
+		$(this).addClass('active');
+		var endtime = $(this).data('endtime');
+		var price = $(this).data('price');
+		var day_free_limit = $(this).data('day-free-limit');
+
+		$('#day-free-limit').html(day_free_limit);
+		$('#setmeal-endtime').html(endtime);
+		$('#cart-money').html(price);
+	});
+	$('.setmeal-item:first').trigger('click');
+
+	$(document).on('click', '#cart-submit', function(){
+		var $this = $(this);
+		if($this.hasClass('disabled')) {
+			return false;
+		}
+		var setmeal_id = $('.setmeal-item.active').data('id');
+		if(!setmeal_id) {
+			$.toast('会员卡套餐错误');
+			return false;
+		}
+		var pay_type = $(':radio[name="pay_type"]:checked').val();
+		$this.addClass('disabled');
+		$.post("{php echo $this->createMobileUrl('card', array('op' => 'pay'));}", {setmeal_id: setmeal_id, pay_type: pay_type}, function(data){
+			var result = $.parseJSON(data);
+			if(result.message.errno != 0) {
+				$this.removeClass('disabled');
+				$.toast(result.message.message);
+			} else {
+				$.toast('下单成功');
+				location.href = "{php echo $this->createMobileUrl('pay', array('order_type' => 'card'));}&id=" + result.message.message;
+			}
+			return false;
+		});
+	});
+});
+</script>
+{template 'common'}
+{template 'footer'}

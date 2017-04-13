@@ -1,0 +1,127 @@
+{template 'header'}
+<div class="page home" id="page-app-store-search">
+	<header class="bar bar-nav">
+		<a class="pull-left back" href="javascript:;"><i class="fa fa-arrow-left"></i></a>
+		<a class="pull-right search-block" href="{php echo $this->createMobileUrl('hunt');}">
+			<i class="fa fa-search"></i>
+		</a>
+		<h1 class="title">
+			{if !empty($categorys[$_GPC['cid']]['title'])}{$categorys[$_GPC['cid']]['title']}{else}全部商家{/if}
+		</h1>
+	</header>
+	{template 'nav'}
+	<div class="content">
+		<div class="hide bind-data" data-lat="{$lat}" data-lng="{$lng}" data-cid="{$_GPC['cid']}" data-dis="{$_GPC['dis']}" data-order="{$_GPC['order']}">dd</div>
+		<div class="buttons-tab select-tab">
+			<a href="javascript:;" class="button">{if !empty($categorys[$_GPC['cid']]['title'])}{$categorys[$_GPC['cid']]['title']}{else}商家分类{/if} <span class="fa"></span></a>
+			<div class="drop-menu-list">
+				<div class="list-block">
+					<ul>
+						<li><a class="list-button item-link" href="{php echo $this->createMobileUrl('search', array('cid' => 0, 'order' => $_GPC['order'], 'dis' => $_GPC['dis']));}">全部</a></li>
+						{loop $categorys $row}
+							<li>
+								<a class="list-button item-link" href="{$row['link']}">
+									{$row['title']}
+									{if $_GPC['cid'] == $row['id']}<i class="fa fa-selected"></i>{/if}
+								</a>
+							</li>
+						{/loop}
+					</ul>
+				</div>
+			</div>
+			<a href="javascript:;" class="button">{if !empty($orderbys[$_GPC['order']]['title'])}{$orderbys[$_GPC['order']]['title']}{else}智能排序{/if} <span class="fa"></span></a>
+			<div class="drop-menu-list">
+				<div class="list-block">
+					<ul>
+						<li><a class="list-button item-link" href="{php echo $this->createMobileUrl('search', array('order' => '', 'cid' => $_GPC['cid'], 'dis' => $_GPC['dis']));}"><span class="icon"></span>全部</a></li>
+						{loop $orderbys $row}
+						<li>
+							<a class="list-button item-link"  href="{php echo $this->createMobileUrl('search', array('order' => $row['key'], 'cid' => $_GPC['cid'], 'dis' => $_GPC['dis']));}">
+								{$row['title']}
+								{if $_GPC['order'] == $row['key']}<i class="fa fa-selected"></i>{/if}
+							</a>
+						</li>
+						{/loop}
+					</ul>
+				</div>
+			</div>
+			<a href="javascript:;" class="button">{if !empty($discounts[$_GPC['dis']]['title'])}{$discounts[$_GPC['dis']]['title']}{else}优惠活动{/if} <span class="fa"></span></a>
+			<div class="drop-menu-list">
+				<div class="list-block">
+					<ul>
+						<li><a class="list-button item-link" href="{php echo $this->createMobileUrl('search', array('dis' => '', 'cid' => $_GPC['cid'], 'order' => $_GPC['order']));}"><span class="icon"></span>全部</a></li>
+						{loop $discounts $row}
+						<li>
+							<a class="list-button item-link" href="{php echo $this->createMobileUrl('search', array('dis' => $row['key'], 'cid' => $_GPC['cid'], 'order' => $_GPC['order']));}">
+								<span class="{$row['css']}"></span>
+								{$row['title']}
+								{if $_GPC['dis'] == $row['key']}<i class="fa fa-selected"></i>{/if}
+							</a>
+						</li>
+						{/loop}
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="store-list store-empty" id="store-list">
+			<div class="common-no-con">
+				<img src= "{MODULE_URL}resource/app/img/store_no_con.png" alt="" />
+				<p>努力加载中...</p>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=550a3bf0cb6d96c3b43d330fb7d86950"></script>
+<script>
+$(function(){
+	$(document).on("pageInit", "#page-app-store-search", function(e, id, page) {
+		var $this = $(page).find('.bind-data');
+		var params = {
+			lat: $this.data('lat'),
+			lng: $this.data('lng'),
+			dis: $this.data('dis'),
+			cid: $this.data('cid'),
+			order: $this.data('order')
+		}
+		if(!params.lat || !params.lng) {
+			var map, geolocation;
+			map = new AMap.Map('allmap');
+			map.plugin('AMap.Geolocation', function() {
+				geolocation = new AMap.Geolocation({
+					enableHighAccuracy: true //是否使用高精度定位，默认:true
+				});
+				geolocation.getCurrentPosition();
+				AMap.event.addListener(geolocation, 'complete', getStoreList);//返回定位信息
+				AMap.event.addListener(geolocation, 'error', function(){alert('定位出错')});      //返回定位出错信息
+			});
+
+		} else {
+			getStoreList();
+		}
+		function getStoreList() {
+			$.post("{php echo $this->createMobileUrl('search', array('op' => 'list'));}", params, function(data){
+				var result = $.parseJSON(data);
+				if(result.message.error != 0) {
+					$.toast(result.message.message);
+					return false;
+				}
+				if(result.message.message.length == 0) {
+					$('#store-list').addClass('store-empty');
+					$('#store-list .common-no-con').find('p').html('没有符合条件的商户');
+					$('#store-list .common-no-con').removeClass('hide');
+				} else {
+					var gettpl = $('#tpl-store-list').html();
+					laytpl(gettpl).render(result.message.message, function(html){
+						$('#store-list').removeClass('store-empty');
+						$('#store-list .common-no-con').addClass('hide');
+						$('#store-list').append(html);
+						return;
+					});
+				}
+			});
+		}
+	});
+});
+</script>
+{template 'common'}
+{template 'footer'}

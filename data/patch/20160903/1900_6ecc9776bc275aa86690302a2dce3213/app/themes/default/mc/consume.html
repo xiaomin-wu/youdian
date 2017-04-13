@@ -1,0 +1,49 @@
+{php define('MUI', true);}
+{template 'common/header'}
+<div class="mui-content scan-pay">
+	<form action="{php echo url('mc/card/consume')}" method="post" id="pay-form">
+		<div class="mui-pa10 mui-bg-white">
+			<h5 class="mui-desc-title">设置付款金额</h5>
+			<div class="mui-input-row"><input type="text" value="" name="fee" placeholder="输入金额"/></div>
+			<div style="display:none">
+				<div class="mui-input-row"><input type="text" value="" name="body" placeholder="添加收款理由"/></div>
+				<div class="mui-text-right mui-text-success mui-mb10 hide-body">收起</div>
+			</div>
+			<div class="mui-text-right mui-text-success mui-mb10 add-body" style="display:none;">添加付款理由</div>
+			<button class="mui-btn mui-btn-success mui-btn-block">发起付款</button>
+			<input type="hidden" name="token" value="{$_W['token']}"/>
+			<input type="hidden" name="submit" value="{$_W['token']}"/>
+		</div>
+	</form>
+</div>
+<script>
+require(['jquery.qrcode'], function(){
+	$('#pay-form').submit(function(){
+		var fee = $.trim($('#pay-form :text[name="fee"]').val());
+		reg = /^[0-9]+([.]{1}[0-9]{1,2})?$/;
+		if(!fee) {
+			util.toast('付款金额应大于0', '', 'error');
+			return false;
+		}
+		if (!reg.test(fee)) {
+			$('#pay-form :text[name="fee"]').val('');
+			util.toast('付款金额有误', '', 'error')
+			return false;
+		}
+		return true;
+	});
+
+	$('.add-body').click(function(){
+		$(this).prev().show();
+		$(this).hide();
+	});
+
+	$('.hide-body').click(function(){
+		$(this).parent().hide();
+		$('.add-body').show();
+	});
+});
+</script>
+{template 'mc/footer'}
+{template 'common/footer'}
+

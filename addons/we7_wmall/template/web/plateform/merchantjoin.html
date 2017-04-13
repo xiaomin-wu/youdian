@@ -1,0 +1,28 @@
+{template 'common/header'}
+<div class="clearfix">
+	<form class="form-horizontal form" id="form1" action="" method="post">
+		<div class="panel panel-default">
+			<div class="panel-heading">商户入驻申请设置</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+					<div class="col-sm-9 col-xs-9 col-md-9">
+						<div class="alert alert-info">
+							商户入驻申请需要提交的信息包括: 商户名, 商户经营类目, 商户地址, 申请人姓名, 申请人手机号
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">是否验证申请人手机号</label>
+					<div class="col-sm-9 col-xs-9 col-md-9">
+						<label class="radio-inline"><input type="radio" name="status" value="1" {if $item['status'] == 1 || !$item['status']}checked{/if}> 显示</label>
+						<label class="radio-inline"><input type="radio" name="status" value="2" {if $item['status'] === 2}checked{/if}> 隐藏</label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+
+{template 'common'}
+{template 'common/footer'}

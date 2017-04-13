@@ -1,0 +1,200 @@
+2017-04-02 01:11:54 trace :
+------------
+String:
+<xml><ToUserName><![CDATA[gh_a79fdd3c76dc]]></ToUserName>
+<FromUserName><![CDATA[outkyxAE2u0lrIgT_F2QStTbce1M]]></FromUserName>
+<CreateTime>1491066714</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[VIEW]]></Event>
+<EventKey><![CDATA[http://www.lginfo.net/youdian/app/index.php?i=2&c=entry&eid=110]]></EventKey>
+<MenuId>421146275</MenuId>
+</xml>
+
+2017-04-02 01:11:54 params :
+------------
+String:
+array (
+  'rule' => -2,
+  'module' => '',
+  'message' => 
+  array (
+    'tousername' => 'gh_a79fdd3c76dc',
+    'fromusername' => 'outkyxAE2u0lrIgT_F2QStTbce1M',
+    'createtime' => '1491066714',
+    'msgtype' => 'event',
+    'event' => 'VIEW',
+    'eventkey' => 'http://www.lginfo.net/youdian/app/index.php?i=2&c=entry&eid=110',
+    'menuid' => '421146275',
+    'from' => 'outkyxAE2u0lrIgT_F2QStTbce1M',
+    'to' => 'gh_a79fdd3c76dc',
+    'time' => '1491066714',
+    'type' => 'text',
+    'content' => 'http://www.lginfo.net/youdian/app/index.php?i=2&c=entry&eid=110',
+    'redirection' => true,
+    'source' => 'VIEW',
+  ),
+)
+
+2017-04-02 01:11:54 response :
+------------
+
+2017-04-02 07:40:02 trace :
+------------
+String:
+<xml><ToUserName><![CDATA[gh_a79fdd3c76dc]]></ToUserName>
+<FromUserName><![CDATA[outkyxKUlp9eu2o2IOj3wmlvNejU]]></FromUserName>
+<CreateTime>1491090002</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[VIEW]]></Event>
+<EventKey><![CDATA[http://www.lginfo.net/youdian/app/index.php?i=2&c=entry&eid=110]]></EventKey>
+<MenuId>421146275</MenuId>
+</xml>
+
+2017-04-02 07:40:02 params :
+------------
+String:
+array (
+  'rule' => -2,
+  'module' => '',
+  'message' => 
+  array (
+    'tousername' => 'gh_a79fdd3c76dc',
+    'fromusername' => 'outkyxKUlp9eu2o2IOj3wmlvNejU',
+    'createtime' => '1491090002',
+    'msgtype' => 'event',
+    'event' => 'VIEW',
+    'eventkey' => 'http://www.lginfo.net/youdian/app/index.php?i=2&c=entry&eid=110',
+    'menuid' => '421146275',
+    'from' => 'outkyxKUlp9eu2o2IOj3wmlvNejU',
+    'to' => 'gh_a79fdd3c76dc',
+    'time' => '1491090002',
+    'type' => 'text',
+    'content' => 'http://www.lginfo.net/youdian/app/index.php?i=2&c=entry&eid=110',
+    'redirection' => true,
+    'source' => 'VIEW',
+  ),
+)
+
+2017-04-02 07:40:02 response :
+------------
+
+2017-04-02 10:35:07 trace :
+------------
+String:
+<xml><ToUserName><![CDATA[gh_a79fdd3c76dc]]></ToUserName>
+<FromUserName><![CDATA[outkyxKZzY8oLR3gVZiiDMyYxM-A]]></FromUserName>
+<CreateTime>1491100507</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[VIEW]]></Event>
+<EventKey><![CDATA[http://www.lginfo.net/youdian/app/index.php?i=2&c=entry&eid=110]]></EventKey>
+<MenuId>421146275</MenuId>
+</xml>
+
+2017-04-02 10:35:07 params :
+------------
+String:
+array (
+  'rule' => -2,
+  'module' => '',
+  'message' => 
+  array (
+    'tousername' => 'gh_a79fdd3c76dc',
+    'fromusername' => 'outkyxKZzY8oLR3gVZiiDMyYxM-A',
+    'createtime' => '1491100507',
+    'msgtype' => 'event',
+    'event' => 'VIEW',
+    'eventkey' => 'http://www.lginfo.net/youdian/app/index.php?i=2&c=entry&eid=110',
+    'menuid' => '421146275',
+    'from' => 'outkyxKZzY8oLR3gVZiiDMyYxM-A',
+    'to' => 'gh_a79fdd3c76dc',
+    'time' => '1491100507',
+    'type' => 'text',
+    'content' => 'http://www.lginfo.net/youdian/app/index.php?i=2&c=entry&eid=110',
+    'redirection' => true,
+    'source' => 'VIEW',
+  ),
+)
+
+2017-04-02 10:35:07 response :
+------------
+
+2017-04-02 18:18:31 trace :
+------------
+String:
+<xml><ToUserName><![CDATA[gh_a79fdd3c76dc]]></ToUserName>
+<FromUserName><![CDATA[outkyxE1uR7_VHLviK60sB4qjXhg]]></FromUserName>
+<CreateTime>1491128310</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[VIEW]]></Event>
+<EventKey><![CDATA[http://www.lginfo.net/youdian/app/index.php?i=2&c=entry&eid=110]]></EventKey>
+<MenuId>421146275</MenuId>
+</xml>
+
+2017-04-02 18:18:31 params :
+------------
+String:
+array (
+  'rule' => -2,
+  'module' => '',
+  'message' => 
+  array (
+    'tousername' => 'gh_a79fdd3c76dc',
+    'fromusername' => 'outkyxE1uR7_VHLviK60sB4qjXhg',
+    'createtime' => '1491128310',
+    'msgtype' => 'event',
+    'event' => 'VIEW',
+    'eventkey' => 'http://www.lginfo.net/youdian/app/index.php?i=2&c=entry&eid=110',
+    'menuid' => '421146275',
+    'from' => 'outkyxE1uR7_VHLviK60sB4qjXhg',
+    'to' => 'gh_a79fdd3c76dc',
+    'time' => '1491128310',
+    'type' => 'text',
+    'content' => 'http://www.lginfo.net/youdian/app/index.php?i=2&c=entry&eid=110',
+    'redirection' => true,
+    'source' => 'VIEW',
+  ),
+)
+
+2017-04-02 18:18:31 response :
+------------
+
+2017-04-02 21:54:17 trace :
+------------
+String:
+<xml><ToUserName><![CDATA[gh_a79fdd3c76dc]]></ToUserName>
+<FromUserName><![CDATA[outkyxKZzY8oLR3gVZiiDMyYxM-A]]></FromUserName>
+<CreateTime>1491141257</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[VIEW]]></Event>
+<EventKey><![CDATA[http://www.lginfo.net/youdian/app/index.php?i=2&c=entry&eid=110]]></EventKey>
+<MenuId>421146275</MenuId>
+</xml>
+
+2017-04-02 21:54:17 params :
+------------
+String:
+array (
+  'rule' => -2,
+  'module' => '',
+  'message' => 
+  array (
+    'tousername' => 'gh_a79fdd3c76dc',
+    'fromusername' => 'outkyxKZzY8oLR3gVZiiDMyYxM-A',
+    'createtime' => '1491141257',
+    'msgtype' => 'event',
+    'event' => 'VIEW',
+    'eventkey' => 'http://www.lginfo.net/youdian/app/index.php?i=2&c=entry&eid=110',
+    'menuid' => '421146275',
+    'from' => 'outkyxKZzY8oLR3gVZiiDMyYxM-A',
+    'to' => 'gh_a79fdd3c76dc',
+    'time' => '1491141257',
+    'type' => 'text',
+    'content' => 'http://www.lginfo.net/youdian/app/index.php?i=2&c=entry&eid=110',
+    'redirection' => true,
+    'source' => 'VIEW',
+  ),
+)
+
+2017-04-02 21:54:17 response :
+------------
+

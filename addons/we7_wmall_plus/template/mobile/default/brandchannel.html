@@ -1,0 +1,508 @@
+{template 'header'}
+<style>
+	.page{
+		font-family: Arial,Helvetica,sans-serif;
+	}
+	.page .content .brand-wall .brand-item{
+		float: left;
+		width: 25%;
+		padding: 0.5rem 0;
+		border: 1px solid #EFEFEF;
+		border-width: 0 1px 1px 0;
+		background: #fff;
+	}
+	.page .content .brand-wall .brand-item img{
+		display: block;
+		width: 3.5rem;
+		height: 2.625rem;
+		margin: 0 auto;
+	}
+	.page .content .brand-wall .brand-item .more{
+		padding-top: 0.5rem;
+		line-height: 0.8rem;
+		background: #EFEFEF;
+		font-size: 0.6rem;
+		color: #333;
+		text-align: center;
+		display: block;
+		width: 3.5rem;
+		height: 2.625rem;
+		margin: 0 auto;
+	}
+	.page .content .brand-near .brand-title{
+		width: 7.7rem;
+		height: 0.8rem;
+		margin: 0.6rem auto;
+		text-align: center;
+		background: url(http://xs01.meituan.net/waimai_i/img/activity/brand/title_bg.7d0a5983.png) no-repeat center;
+		background-size: 100% auto;
+		font-size: 0.7rem;
+		line-height: 0.8rem;
+		color: #666;
+	}
+	.page .content .brand-near .brand-list{
+		background: #fff;
+		margin-bottom: .6rem;
+	}
+	.page .content .brand-near .brand-list .brand-info{
+		border-bottom: 1px solid #EFEFEF;
+		margin-bottom: .25rem;
+		padding-left: 0.5rem;
+		padding: 0.5rem;
+	}
+	.page .content .brand-near .brand-list .brand-info .brand-info-left{
+		width: 25%;
+	}
+	.page .content .brand-near .brand-list .brand-info .brand-info-left img{
+		margin-top: 0.1rem;
+	}
+	.page .content .brand-near .brand-list .brand-info .brand-info-right{
+		width: 75%;
+		padding-left: .5rem;
+	}
+	.page .content .brand-near .brand-list .brand-info .brand-info-right .item-name{
+		color: #333;
+		font-weight: bold;
+		white-space: nowrap;
+	}
+	.page .content .brand-near .brand-list .brand-info .brand-info-right .item-min-delivery{
+		font-size: .6rem;
+		color: #656565;
+		white-space: nowrap;
+		word-break: break-all;
+	}
+	.page .content .brand-near .brand-list .brand-info .brand-info-right .item-min-delivery .devide-span{
+		margin-left: .1rem;
+		margin-right: .08rem;
+		color: #ddd;
+	}
+	.page .content .brand-near .brand-list .brand-info .brand-info-right .item-min-delivery .item-btn{
+		float: right;
+		padding: 0 0.4rem;
+		background: #FFFFFF;
+		border: 1px solid #A9A9A9;
+		border-radius: 4px;
+		color: #666;
+		text-align: center;
+		position: relative;
+		right: .2rem;
+	}
+	.page .content .brand-near .brand-list .brand-info .brand-info-right .item-discount{
+		width: 75%;
+		font-size: .6rem;
+		color: #656565;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		margin-top: .1rem;
+	}
+	.page .content .brand-near .brand-list .recommend .recommend-list{
+		padding-bottom: 0.5rem;
+		border-bottom: 1px solid #EFEFEF;
+		margin-bottom: .5rem;
+	}
+	.page .content .brand-near .brand-list .recommend .recommend-list .recommend-item{
+		width: 33%;
+		padding: 2%;
+		border-left: 1px solid #EFEFEF;
+	}
+	.page .content .brand-near .brand-list .recommend .recommend-list .recommend-item:first-child{
+		border: 0;
+	}
+	.page .content .brand-near .brand-list .recommend .recommend-list .recommend-item .recommend-pic{
+		width: 100%;
+		text-align: center;
+	}
+	.page .content .brand-near .brand-list .recommend .recommend-list .recommend-item .recommend-pic img{
+		width: 3rem;
+		height: 3rem;
+		border-radius: 5rem;
+		margin: 0 auto;
+	}
+	.page .content .brand-near .brand-list .recommend .recommend-list .recommend-item .recommend-name{
+		text-align: center;
+		color: #222227;
+		font-size: .7rem;
+		margin-bottom: .1rem;
+		padding: 0 .1rem;
+	}
+	.page .content .brand-near .brand-list .recommend .recommend-list .recommend-item .recommend-price{
+		color: #FB4E44;
+		font-size: 0.8rem;
+		text-align: center;
+	}
+	.page .content .brand-near .brand-list .nearby-seller{
+		padding: 0 0.5rem;
+		color: #656565;
+		font-size: .7rem;
+		padding-bottom: .4rem;
+	}
+	.page .content .brand-near .brand-list .nearby-seller .recommend-reason{
+		display: inline-block;
+		margin-right: .5rem;
+		padding: 0 .1rem;
+		background: #FB4E44;
+		color: #fff;
+	}
+	.page .content .brand-warp{
+		background: #fff;
+		border-top: 1px solid #EFEFEF;
+	}
+	.page .content .brand-warp .more-item{
+		width: 33.3%;
+		float: left;
+		padding: 4% 4%;
+		border-bottom: 1px solid #EFEFEF;
+		border-right: 1px solid #EFEFEF;
+	}
+	.page .content .brand-warp .more-item:nth-child(3n){
+		border-right: 0;
+	}
+	.page .content .brand-warp .no-more{
+		text-align: center;
+		font-size: .6rem;
+		color: #666;
+		padding-bottom: 0.5rem;
+	}
+</style>
+<div class="page">
+	<header class="bar bar-nav">
+		<h1 class="title">为您优选</h1>
+	</header>
+	{template 'nav'}
+	<div class="content">
+		{if $op == 'list'}
+			<div class="banner">
+				<img src="http://xs01.meituan.net/waimai_i/img/activity/brand/banner.30c77576.jpg" alt="">
+			</div>
+			<div class="brand-wall">
+				<div class="brand-item">
+					<img src="http://p0.meituan.net/150.0.0/xianfu/46c73a7d38fd7110a5a8e33696e7e1147588.jpg.webp" alt="">
+				</div>
+				<div class="brand-item">
+					<img src="http://p0.meituan.net/150.0.0/xianfu/46c73a7d38fd7110a5a8e33696e7e1147588.jpg.webp" alt="">
+				</div>
+				<div class="brand-item">
+					<img src="http://p0.meituan.net/150.0.0/xianfu/46c73a7d38fd7110a5a8e33696e7e1147588.jpg.webp" alt="">
+				</div>
+				<div class="brand-item">
+					<img src="http://p0.meituan.net/150.0.0/xianfu/46c73a7d38fd7110a5a8e33696e7e1147588.jpg.webp" alt="">
+				</div>
+				<div class="brand-item">
+					<img src="http://p0.meituan.net/150.0.0/xianfu/46c73a7d38fd7110a5a8e33696e7e1147588.jpg.webp" alt="">
+				</div>
+				<div class="brand-item">
+					<img src="http://p0.meituan.net/150.0.0/xianfu/46c73a7d38fd7110a5a8e33696e7e1147588.jpg.webp" alt="">
+				</div>
+				<div class="brand-item">
+					<img src="http://p0.meituan.net/150.0.0/xianfu/46c73a7d38fd7110a5a8e33696e7e1147588.jpg.webp" alt="">
+				</div>
+				<div class="brand-item">
+					<a href="{php echo $this->createMobileUrl('brandchannel', array('op' => 'more'));}"><span class="more">查看更多<br>(13)</span></a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="brand-near">
+			<div class="brand-title">
+				附近品牌商家
+			</div>
+			<div class="brand-list">
+				<div class="brand-info">
+				<div class="brand-info-left pull-left">
+					<img src="http://p1.meituan.net/150.120.90/xianfu/c99c260d337cc998f3bcf4b8e957383a354269.jpg" alt="">
+				</div>
+				<div class="brand-info-right pull-left">
+					<div class="item-name">
+						<span>凯萨西餐厅（锦绣苑店）</span>
+					</div>
+					<div class="item-min-delivery">
+						<span>起送价￥15</span>
+						<span class="devide-span">|</span>
+						<span>配送费￥0</span>
+						<span class="devide-span">|</span>
+						<span class="avg_delivery_time">869m</span>
+						<button class="item-btn">进店</button>
+					</div>
+					<div class="item-discount">
+						<span>满40减4;满20减2;满100减10（在线支付专享）</span>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+				<div class="recommend">
+					<div class="recommend-list">
+						<div class="recommend-item pull-left">
+							<div class="recommend-pic">
+								<img src="http://p1.meituan.net/150.120.90/xianfu/c5869193d45d6ac96e903390cc87c22042832.jpg" alt="">
+							</div>
+							<div class="recommend-name">劲爆鸡米花</div>
+							<div class="recommend-price"><span>¥8</span></div>
+						</div>
+						<div class="recommend-item pull-left">
+							<div class="recommend-pic">
+								<img src="http://p1.meituan.net/150.120.90/xianfu/c5869193d45d6ac96e903390cc87c22042832.jpg" alt="">
+							</div>
+							<div class="recommend-name">劲爆鸡米花</div>
+							<div class="recommend-price"><span>¥8</span></div>
+						</div>
+						<div class="recommend-item pull-left">
+							<div class="recommend-pic">
+								<img src="http://p1.meituan.net/150.120.90/xianfu/c5869193d45d6ac96e903390cc87c22042832.jpg" alt="">
+							</div>
+							<div class="recommend-name">劲爆鸡米花</div>
+							<div class="recommend-price"><span>¥8</span></div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+				<div class="nearby-seller">
+					<span class="recommend-reason">外卖人气</span> 附近热卖商家
+				</div>
+			</div>
+			<div class="brand-list">
+				<div class="brand-info">
+					<div class="brand-info-left pull-left">
+						<img src="http://p1.meituan.net/150.120.90/xianfu/c99c260d337cc998f3bcf4b8e957383a354269.jpg" alt="">
+					</div>
+					<div class="brand-info-right pull-left">
+						<div class="item-name">
+							<span>凯萨西餐厅（锦绣苑店）</span>
+						</div>
+						<div class="item-min-delivery">
+							<span>起送价￥15</span>
+							<span class="devide-span">|</span>
+							<span>配送费￥0</span>
+							<span class="devide-span">|</span>
+							<span class="avg_delivery_time">869m</span>
+							<button class="item-btn">进店</button>
+						</div>
+						<div class="item-discount">
+							<span>满40减4;满20减2;满100减10（在线支付专享）</span>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="recommend">
+					<div class="recommend-list">
+						<div class="recommend-item pull-left">
+							<div class="recommend-pic">
+								<img src="http://p1.meituan.net/150.120.90/xianfu/c5869193d45d6ac96e903390cc87c22042832.jpg" alt="">
+							</div>
+							<div class="recommend-name">劲爆鸡米花</div>
+							<div class="recommend-price"><span>¥8</span></div>
+						</div>
+						<div class="recommend-item pull-left">
+							<div class="recommend-pic">
+								<img src="http://p1.meituan.net/150.120.90/xianfu/c5869193d45d6ac96e903390cc87c22042832.jpg" alt="">
+							</div>
+							<div class="recommend-name">劲爆鸡米花</div>
+							<div class="recommend-price"><span>¥8</span></div>
+						</div>
+						<div class="recommend-item pull-left">
+							<div class="recommend-pic">
+								<img src="http://p1.meituan.net/150.120.90/xianfu/c5869193d45d6ac96e903390cc87c22042832.jpg" alt="">
+							</div>
+							<div class="recommend-name">劲爆鸡米花</div>
+							<div class="recommend-price"><span>¥8</span></div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+				<div class="nearby-seller">
+					<span class="recommend-reason">外卖人气</span> 附近热卖商家
+				</div>
+			</div>
+			<div class="brand-list">
+			<div class="brand-info">
+				<div class="brand-info-left pull-left">
+					<img src="http://p1.meituan.net/150.120.90/xianfu/c99c260d337cc998f3bcf4b8e957383a354269.jpg" alt="">
+				</div>
+				<div class="brand-info-right pull-left">
+					<div class="item-name">
+						<span>凯萨西餐厅（锦绣苑店）</span>
+					</div>
+					<div class="item-min-delivery">
+						<span>起送价￥15</span>
+						<span class="devide-span">|</span>
+						<span>配送费￥0</span>
+						<span class="devide-span">|</span>
+						<span class="avg_delivery_time">869m</span>
+						<button class="item-btn">进店</button>
+					</div>
+					<div class="item-discount">
+						<span>满40减4;满20减2;满100减10（在线支付专享）</span>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="recommend">
+				<div class="recommend-list">
+					<div class="recommend-item pull-left">
+						<div class="recommend-pic">
+							<img src="http://p1.meituan.net/150.120.90/xianfu/c5869193d45d6ac96e903390cc87c22042832.jpg" alt="">
+						</div>
+						<div class="recommend-name">劲爆鸡米花</div>
+						<div class="recommend-price"><span>¥8</span></div>
+					</div>
+					<div class="recommend-item pull-left">
+						<div class="recommend-pic">
+							<img src="http://p1.meituan.net/150.120.90/xianfu/c5869193d45d6ac96e903390cc87c22042832.jpg" alt="">
+						</div>
+						<div class="recommend-name">劲爆鸡米花</div>
+						<div class="recommend-price"><span>¥8</span></div>
+					</div>
+					<div class="recommend-item pull-left">
+						<div class="recommend-pic">
+							<img src="http://p1.meituan.net/150.120.90/xianfu/c5869193d45d6ac96e903390cc87c22042832.jpg" alt="">
+						</div>
+						<div class="recommend-name">劲爆鸡米花</div>
+						<div class="recommend-price"><span>¥8</span></div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+			<div class="nearby-seller">
+				<span class="recommend-reason">外卖人气</span> 附近热卖商家
+			</div>
+		</div>
+			<div class="brand-list">
+			<div class="brand-info">
+				<div class="brand-info-left pull-left">
+					<img src="http://p1.meituan.net/150.120.90/xianfu/c99c260d337cc998f3bcf4b8e957383a354269.jpg" alt="">
+				</div>
+				<div class="brand-info-right pull-left">
+					<div class="item-name">
+						<span>凯萨西餐厅（锦绣苑店）</span>
+					</div>
+					<div class="item-min-delivery">
+						<span>起送价￥15</span>
+						<span class="devide-span">|</span>
+						<span>配送费￥0</span>
+						<span class="devide-span">|</span>
+						<span class="avg_delivery_time">869m</span>
+						<button class="item-btn">进店</button>
+					</div>
+					<div class="item-discount">
+						<span>满40减4;满20减2;满100减10（在线支付专享）</span>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="recommend">
+				<div class="recommend-list">
+					<div class="recommend-item pull-left">
+						<div class="recommend-pic">
+							<img src="http://p1.meituan.net/150.120.90/xianfu/c5869193d45d6ac96e903390cc87c22042832.jpg" alt="">
+						</div>
+						<div class="recommend-name">劲爆鸡米花</div>
+						<div class="recommend-price"><span>¥8</span></div>
+					</div>
+					<div class="recommend-item pull-left">
+						<div class="recommend-pic">
+							<img src="http://p1.meituan.net/150.120.90/xianfu/c5869193d45d6ac96e903390cc87c22042832.jpg" alt="">
+						</div>
+						<div class="recommend-name">劲爆鸡米花</div>
+						<div class="recommend-price"><span>¥8</span></div>
+					</div>
+					<div class="recommend-item pull-left">
+						<div class="recommend-pic">
+							<img src="http://p1.meituan.net/150.120.90/xianfu/c5869193d45d6ac96e903390cc87c22042832.jpg" alt="">
+						</div>
+						<div class="recommend-name">劲爆鸡米花</div>
+						<div class="recommend-price"><span>¥8</span></div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+			<div class="nearby-seller">
+				<span class="recommend-reason">外卖人气</span> 附近热卖商家
+			</div>
+		</div>
+			<div class="brand-list">
+			<div class="brand-info">
+				<div class="brand-info-left pull-left">
+					<img src="http://p1.meituan.net/150.120.90/xianfu/c99c260d337cc998f3bcf4b8e957383a354269.jpg" alt="">
+				</div>
+				<div class="brand-info-right pull-left">
+					<div class="item-name">
+						<span>凯萨西餐厅（锦绣苑店）</span>
+					</div>
+					<div class="item-min-delivery">
+						<span>起送价￥15</span>
+						<span class="devide-span">|</span>
+						<span>配送费￥0</span>
+						<span class="devide-span">|</span>
+						<span class="avg_delivery_time">869m</span>
+						<button class="item-btn">进店</button>
+					</div>
+					<div class="item-discount">
+						<span>满40减4;满20减2;满100减10（在线支付专享）</span>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="recommend">
+				<div class="recommend-list">
+					<div class="recommend-item pull-left">
+						<div class="recommend-pic">
+							<img src="http://p1.meituan.net/150.120.90/xianfu/c5869193d45d6ac96e903390cc87c22042832.jpg" alt="">
+						</div>
+						<div class="recommend-name">劲爆鸡米花</div>
+						<div class="recommend-price"><span>¥8</span></div>
+					</div>
+					<div class="recommend-item pull-left">
+						<div class="recommend-pic">
+							<img src="http://p1.meituan.net/150.120.90/xianfu/c5869193d45d6ac96e903390cc87c22042832.jpg" alt="">
+						</div>
+						<div class="recommend-name">劲爆鸡米花</div>
+						<div class="recommend-price"><span>¥8</span></div>
+					</div>
+					<div class="recommend-item pull-left">
+						<div class="recommend-pic">
+							<img src="http://p1.meituan.net/150.120.90/xianfu/c5869193d45d6ac96e903390cc87c22042832.jpg" alt="">
+						</div>
+						<div class="recommend-name">劲爆鸡米花</div>
+						<div class="recommend-price"><span>¥8</span></div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+			<div class="nearby-seller">
+				<span class="recommend-reason">外卖人气</span> 附近热卖商家
+			</div>
+		</div>
+		</div>
+		{else if $op == 'more'}
+			<div class="brand-warp">
+				<div class="more-item">
+					<img src="http://p0.meituan.net/150.0.0/xianfu/735da704e383f5024f9ac9829fb1412224576.jpg.webp" alt="">
+				</div>
+				<div class="more-item">
+					<img src="http://p0.meituan.net/150.0.0/xianfu/735da704e383f5024f9ac9829fb1412224576.jpg.webp" alt="">
+				</div>
+				<div class="more-item">
+					<img src="http://p0.meituan.net/150.0.0/xianfu/735da704e383f5024f9ac9829fb1412224576.jpg.webp" alt="">
+				</div>
+				<div class="more-item">
+					<img src="http://p0.meituan.net/150.0.0/xianfu/735da704e383f5024f9ac9829fb1412224576.jpg.webp" alt="">
+				</div>
+				<div class="more-item">
+					<img src="http://p0.meituan.net/150.0.0/xianfu/735da704e383f5024f9ac9829fb1412224576.jpg.webp" alt="">
+				</div>
+				<div class="more-item">
+					<img src="http://p0.meituan.net/150.0.0/xianfu/735da704e383f5024f9ac9829fb1412224576.jpg.webp" alt="">
+				</div>
+				<div class="more-item">
+					<img src="http://p0.meituan.net/150.0.0/xianfu/735da704e383f5024f9ac9829fb1412224576.jpg.webp" alt="">
+				</div>
+				<div class="more-item">
+					<img src="http://p0.meituan.net/150.0.0/xianfu/735da704e383f5024f9ac9829fb1412224576.jpg.webp" alt="">
+				</div>
+				<div class="clearfix"></div>
+				<p class="no-more">没有更多了~</p>
+			</div>
+		{/if}
+	</div>
+</div>
+{template 'common'}
+{template 'footer'}

@@ -1,0 +1,107 @@
+{template 'header'}
+<link rel="stylesheet" href="../addons/we7_wmall_plus/resource/app/css	/jquery.circliful.css">
+<style>
+	.coupon-channel .coupon-item{
+		background:#fff;
+		margin:0 auto;
+		border-radius: .4rem;
+		padding-top: .2rem;
+		margin-bottom:.5rem;
+	}
+	.coupon-channel .coupon-item .imgs>img{
+		margin-top:1.5rem;
+		border-radius: 100%;
+	}
+	.coupon-channel .coupon-item .store-title,.coupon-channel  .coupon-item  .price,.coupon-channel  .coupon-item  .use-condition{
+		margin:0;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+	.coupon-channel .coupon-item .store-title{
+		margin-top:0.5rem;
+	}
+	.coupon-channel .coupon-item .coupon-discount{
+		font-size:1rem;
+		color:#f00;
+	}
+	.coupon-channel .coupon-item .coupon-title{
+		font-size:0.7rem;
+		padding-left:0.2rem;
+	}
+	.coupon-channel .coupon-item .use-condition{
+		color:#ccc;
+	}
+		.coupon-channel .coupon-item .rob{
+		padding-left:1rem;
+	}
+	.coupon-channel .coupon-item .rob .receive{
+		margin:0rem;
+	}
+	.coupon-channel .coupon-item .rob .receive .button-danger{
+		color:#fff;
+		background:#f00;
+		height:1.75rem;
+		line-height:1.75rem;
+		top:-0.5rem;
+	}
+	.coupon-channel .coupon-item .rob .myStat .circle-text{
+		color:#f00;
+		bottom:0.7rem;
+		right:0.1rem;
+	}
+	.coupon-channel  .coupon-item .rob .myStat  .circle-info{
+		margin:0 auto;
+		color:#f00;
+	}
+</style>
+<div class="page coupon-channel">
+	<header class="bar bar-nav common-bar-nav">
+		<a class="pull-left back" href="javascript:;"><i class="fa fa-arrow-left"></i></a>
+		<h1 class="title">新增地址</h1>
+		<button class="button button-link button-nav pull-right" id="btnSubmit">保存</button>
+	</header>
+	{template 'nav'}
+	<div class="content content-padded">
+		<div class="row coupon-item">
+			<div class="col-20">
+				<div class="imgs">
+					<img src="http://hs-album.oss.aliyuncs.com/static/1c/38/3c/image/20140729/20140729180258_59697.jpg" alt="">
+				</div>
+			</div>
+			<div class="col-50">
+				<p class="store-title">小怎么了</p>
+				<p class="price"><span class="coupon-discount">10元</span><span class="coupon-title">商家新用户代金卷</span></p>
+				<p class="use-condition">满30元可用</p>
+			</div>
+			<div class="col-30 rob">
+				<div class="myStat" data-dimension="80" data-text="已抢" data-info="5%" data-width="5" data-fontsize="18" data-percent="5" data-fgcolor="#f00" data-bgcolor="#eee" data-fill="#fff" data-total="100" data-part="5" data-icon="long-arrow-up" data-icon-size="80" data-icon-color="#fff"></div>
+				<p class="receive"><a href="#" class="button button-danger">立即领取</a></p>
+			</div>
+		</div>
+		<div class="row coupon-item">
+			<div class="col-20">
+				<div class="imgs">
+					<img src="http://hs-album.oss.aliyuncs.com/static/1c/38/3c/image/20140729/20140729180258_59697.jpg" alt="">
+				</div>
+			</div>
+			<div class="col-50">
+				<p class="store-title">小怎么了</p>
+				<p class="price"><span class="coupon-discount">10元</span><span class="coupon-title">商家新用户代金卷</span></p>
+				<p class="use-condition">满30元可用</p>
+			</div>
+			<div class="col-30 rob">
+				<div class="myStat" data-dimension="80" data-text="已抢" data-info="5%" data-width="5" data-fontsize="18" data-percent="5" data-fgcolor="#f00" data-bgcolor="#eee" data-fill="#fff" data-total="100" data-part="5" data-icon="long-arrow-up" data-icon-size="80" data-icon-color="#fff"></div>
+				<p class="receive"><a href="#" class="button button-danger">立即领取</a></p>
+			</div>
+		</div>
+	</div>
+</div>
+<script type='text/javascript' src='../addons/we7_wmall_plus/resource/app/js/jquery.circliful.min.js' charset='utf-8'></script>
+<script>
+	$( document ).ready(function() {
+		$('.myStat').circliful();
+	});
+</script>
+{template 'common'}
+{template 'footer'}

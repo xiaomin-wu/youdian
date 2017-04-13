@@ -1,0 +1,107 @@
+{template 'public/header'}
+{template 'store/nav'}
+<div class="alert alert-info alert-dismissible">
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><i class="fa fa-times" style="font-size: 26px"></i></button>
+	<h3>温馨提示: 配货中心仅统计订单状态为"已确认,处理中"的订单.</h3>
+</div>
+<div class="panel panel-default">
+	<div class="panel-body">
+		<ul class="nav nav-pills">
+			<li {if $op == 'goods'}class="active"{/if}><a href="{php echo $this->createWebUrl('dispatch', array('op' => 'goods'));}">按商品统计</a></li>
+			<li {if $op == 'category'}class="active"{/if}><a href="{php echo $this->createWebUrl('dispatch', array('op' => 'category'));}">按分类统计</a></li>
+			<li><a href="javascript:;" onclick="location.reload();">刷新</a></li>
+		</ul>
+	</div>
+</div>
+<div class="clearfix">
+	{if empty($orders)}
+	<div class="panel panel-default panel-dispatch">
+		<h3 class="text-center"><i class="fa fa-info-circle"></i> 暂无要配送的商品</h3>
+	</div>
+	{else}
+	<div class="panel panel-default panel-dispatch" id="order-container" style="position: relative;">
+		<div class="panel-body">
+			{loop $categorys $category}
+			<div class="col-lg-4 water">
+				<ul class="list-group" style="margin-top:20px; margin-bottom: 0">
+				<li class="list-group-item text-success">{$category['title']}</li>
+					{if !empty($cate_stat[$category['id']])}
+						{loop $cate_stat[$category['id']] $st}
+							<li class="list-group-item">
+								<span class="badge">{$st['goods_num']}</span>
+								{$st['goods_title']}
+							</li>
+							{if !empty($goods[$st['goods_id']])}
+								<li class="list-group-item list-group-item-span">
+									{loop $goods[$st['goods_id']] $da}
+									{if $da['goods_num'] > 1}
+									<span class="label label-warning toggle-goods-status" data-id="{$da['id']}" data-status="{php echo $da['status'] == 1 ? 0 : 1}">{$da['username']}({$da['goods_num']}份)</span>
+									{else}
+									<span class="label label-success toggle-goods-status" data-id="{$da['id']}" data-status="{php echo $da['status'] == 1 ? 0 : 1}">{$da['username']}</span>
+									{/if}
+									{/loop}
+								</li>
+							{/if}
+						{/loop}
+					{else}
+					<li class="list-group-item text-center no-order">暂无订单</li>
+					{/if}
+				</ul>
+			</div>
+			{/loop}
+		</div>
+	</div>
+	{/if}
+</div>
+<script>
+require(['jquery.wookmark'], function(){
+	$('#order-container .water').wookmark({
+		align: 'center',
+		autoResize: false,
+		container: $('#order-container'),
+		autoResize :true
+	});
+
+	$('.toggle-order-goods-status').click(function(){
+		var id = $(this).data('oid');
+		if(!id) {
+			return false;
+		}
+		tiny.confirm($(this), '确定该订单的商品都配好了?', function(){
+			$.post("{php echo $this->createWebUrl('dispatch', array('op' => 'order_status'));}", {id: id}, function(data){
+				var result = $.parseJSON(data);
+				if(result.message.errno != 0) {
+					util.message(result.message.message, '', 'error');
+					return;
+				}
+				location.reload();
+			});
+		});
+	});
+
+	$('.toggle-goods-status').click(function(){
+		var id = $(this).data('id');
+		var status = $(this).data('status');
+		if(!id) {
+			return false;
+		}
+		tiny.confirm($(this), '确定商品配好了?', function(){
+			$.post("{php echo $this->createWebUrl('dispatch', array('op' => 'goods_status'));}", {id: id, status: status}, function(data){
+				var result = $.parseJSON(data);
+				if(result.message.errno != 0) {
+					util.message(result.message.message, '', 'error');
+					return;
+				}
+				location.reload();
+			});
+		});
+	});
+
+	setInterval(function(){
+		location.reload();
+		return false;
+	}, 15000);
+});
+</script>
+{template 'common'}
+{template 'public/footer'}

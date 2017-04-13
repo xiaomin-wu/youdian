@@ -1,0 +1,150 @@
+{template 'header'}
+<style>
+	.coupon-my{
+		font-size: 0.7rem;
+	}
+	.coupon-my .coupon-list .coupon-list-item{
+		background-color: #fff;
+		margin-bottom: 0.6rem;
+		over-flow: hidden;
+
+	}
+	.coupon-my .coupon-list .coupon-list-item{
+		padding: 0.8rem;
+	}
+	.coupon-my .coupon-list .coupon-list-item .coupon-info{
+		padding-bottom: 0.4rem;
+	}
+	.coupon-my .coupon-list .coupon-list-item .coupon-type{
+		margin: 0;
+	}
+	.coupon-my .coupon-list .coupon-list-item .use-condition{
+		margin: 0;
+		font-size: 0.6rem;
+	}
+	.coupon-my .coupon-list .coupon-list-item .price{
+		color: #ff2d4b;
+	}
+	.coupon-my .coupon-list .coupon-list-item .price span:last-child{
+		font-size: 1.2rem;
+	}
+	.coupon-my .coupon-list .coupon-list-item .dash-line{
+		border-top: 1px dashed #efefef;
+		position: relative;
+	}
+	.coupon-my .coupon-list .coupon-list-item .dash-line .circle{
+		display: block;
+		width: 0.8rem;
+		height: 0.8rem;
+		background :#eee;
+		position: absolute;
+		border-radius: 0.8rem;
+		top: -0.4rem;
+		z-index: 20;
+	}
+	.coupon-my .coupon-list .coupon-list-item .dash-line .circle-left{
+		left: -1.2rem;
+	}
+	.coupon-my .coupon-list .coupon-list-item .dash-line .circle-right{
+		right: -1.2rem;
+	}
+	.coupon-my .coupon-list .coupon-list-item .coupon-use-limit{
+		margin-top: 0.4rem;
+		color: #999;
+		font-size: 0.6rem;
+	}
+	.coupon-my .coupon-list .coupon-list-item .coupon-use-limit .rule{
+		text-align: right;
+	}
+	.coupon-my .coupon-list .coupon-list-item .coupon-use-limit .fa{
+		margin-left: 0.2rem;
+	}
+	.coupon-my .btn{
+		text-align: center;
+		margin: 1.5rem 1rem 1rem;
+		background-color: #fff;
+		padding: 0.5rem;
+		border-radius: 0.2rem;
+	}
+	.coupon-my .btn a{
+		color: #ff2d4b;
+	}
+	.coupon-my .explain{
+		text-align: center;
+		color: #999;
+		margin-bottom: 1rem;
+	}
+	.coupon-my .explain span{
+		margin: 0 0.2rem;
+	}
+	.coupon-my .explain a{
+		color: #666;
+	}
+</style>
+<div class="page coupon-my">
+	<header class="bar bar-nav common-bar-nav">
+		<a class="pull-left back" href="javascript:;"><i class="fa fa-arrow-left"></i></a>
+		<h1 class="title">我的代金券</h1>
+	</header>
+	{template 'nav'}
+	<div class="content infinite-scroll" data-distance="50" data-min="{$min}">
+		<div class="buttons-tab select-tab">
+			<a href="{php echo $this->createMobileUrl('coupon-my', array('status' => 1));}" class="button {if $status == 1}active{/if}">全部<span class="fa"></span></a>
+			<a href="{php echo $this->createMobileUrl('coupon-my', array('status' => 3));}" class="button {if $status == 3}active{/if}">餐饮 <span class="fa"></span></a>
+			<a href="{php echo $this->createMobileUrl('coupon-my', array('status' => 2));}" class="button {if $status == 2}active{/if}">超市购 <span class="fa"></span></a>
+			<a href="{php echo $this->createMobileUrl('coupon-my', array('status' => 2));}" class="button {if $status == 2}active{/if}">水果生鲜 <span class="fa"></span></a>
+		</div>
+		<div class="coupon-list content-padded">
+			<div class="coupon-list-item border-1px">
+				<div class="coupon-info row">
+					<div class="col-80">
+						<p class="coupon-type">新用户餐饮代金券</p>
+						<p class="use-condition">满15可用</p>
+					</div>
+					<div class="col-20 price">
+						<span>￥</span><span>10</span>
+					</div>
+				</div>
+				<div class="dash-line">
+					<span class="border-1px-r circle circle-left"></span>
+					<span class="border-1px-l circle circle-right"></span>
+				</div>
+				<div class="coupon-use-limit row">
+					<div class="col-50">有效期至2016-12-9</div>
+					<div class="col-50 rule">
+						代金券实用规则<i class="fa fa-arrow-down"></i>
+					</div>
+				</div>
+			</div>
+			<div class="coupon-list-item border-1px">
+				<div class="coupon-info row">
+					<div class="col-80">
+						<p class="coupon-type">新用户餐饮代金券</p>
+						<p class="use-condition">满15可用</p>
+					</div>
+					<div class="col-20 price">
+						<span>￥</span><span>10</span>
+					</div>
+				</div>
+				<div class="dash-line">
+					<span class="border-1px-r circle circle-left"></span>
+					<span class="border-1px-l circle circle-right"></span>
+				</div>
+				<div class="coupon-use-limit row">
+					<div class="col-50">有效期至2016-12-9</div>
+					<div class="col-50 rule">
+						代金券实用规则<i class="fa fa-arrow-down"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="btn border-1px">
+			<a href="{php echo $this->createMobileUrl('coupon');}">更多好券，去领券中心看看</a>
+		</div>
+		<div class="explain">
+			<a href="">代金券实用说明</a><span>|</span><a href="">查看过期代金券</a>
+		</div>
+	</div>
+</div>
+{template 'common'}
+{template 'footer'}

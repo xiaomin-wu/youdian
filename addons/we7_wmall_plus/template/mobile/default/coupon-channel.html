@@ -1,0 +1,134 @@
+{template 'header'}
+<link rel="stylesheet" href="../addons/we7_wmall_plus/resource/app/css	/jquery.circliful.css">
+<div class="page coupon-channel" id="page-coupon-channel">
+	<header class="bar bar-nav common-bar-nav">
+		<a class="pull-left back" href="javascript:;"><i class="fa fa-arrow-left"></i></a>
+		<h1 class="title">领券专区</h1>
+		<a class="pull-right" href="{php echo $this->createMobileUrl('coupon');}"><i class="fa fa-coupon"></i></a>
+	</header>
+	{template 'nav'}
+	<div class="content content-padded infinite-scroll" data-distance='20' data-min="{$min}">
+		<div class="coupon-list">
+			{if empty($coupons)}
+				<div class="common-no-con">
+					<img src= "{MODULE_URL}resource/app/img/coupon_no_con.png" alt="" />
+					<p>您还没有可以领取的代金券</p>
+					<div class="btn">
+						<a href="{php echo $this->createMobileUrl('index');}">去首页看看</a>
+					</div>
+				</div>
+			{else}
+				{loop $coupons $coupon}
+				<div class="row coupon-item">
+					<div class="col-20">
+						<div class="imgs">
+							<img src="{$coupon['logo']}" alt="">
+						</div>
+					</div>
+					<div class="col-50">
+						<p class="store-title">{$coupon['store_title']}</p>
+						<p class="price">
+							<span class="coupon-discount">{$coupon['discount']}元</span>
+							<span class="coupon-title">{$coupon['title']}</span>
+						</p>
+						<p class="use-condition">满{$coupon['condition']}元可用</p>
+					</div>
+					<div class="col-30 rob">
+						<div class="get {if $coupon['get_status'] == 1}hide{/if}">
+							<div class="has-get"></div>
+							<p class="receive"><a href="{php echo $this->createMobileUrl('goods', array('sid' => $coupon['sid']));}" class="button button-warning"> 去使用 </a></p>
+						</div>
+						<div class="can-receive {if $coupon['get_status'] == 0}hide{/if}">
+							<div class="myStat" data-dimension="70" data-info="{$coupon['percent']}%" data-width="5" data-border="outline" data-fontsize="14" data-type="half" data-percent="{$coupon['percent']}" data-fgcolor="#ff2d4b" data-bgcolor="#e3e3e4" data-fill="#fff"></div>
+							<p class="receive"><a href="javascript:;" class="button button-danger button-get-coupon" data-id="{$coupon['id']}" data-sid="{$coupon['sid']}">立即领取</a></p>
+						</div>
+					</div>
+				</div>
+				{/loop}
+			{/if}
+		</div>
+		<div class="infinite-scroll-preloader hide">
+			<div class="preloader"></div>
+		</div>
+	</div>
+</div>
+<script id="tpl-store-coupon" type="text/html">
+	<{# for(var i = 0, len = d.length; i < len; i++){ }>
+	<div class="row coupon-item">
+		<div class="col-20">
+			<div class="imgs">
+				<img src="<{d[i]['logo']}>" alt="">
+			</div>
+		</div>
+		<div class="col-50">
+			<p class="store-title"><{d[i]['store_title']}></p>
+			<p class="price">
+				<span class="coupon-discount"><{d[i]['discount']}>元</span>
+				<span class="coupon-title"><{d[i]['title']}></span>
+			</p>
+			<p class="use-condition">满<{d[i]['condition']}>元可用</p>
+		</div>
+		<div class="col-30 rob">
+			<div class="get <{# if (d[i]['get_status'] == 1) { }>hide<{# } }>">
+				<div class="has-get"></div>
+				<p class="receive"><a href="{php echo $this->createMobileUrl('goods');}&sid=<{d[i]['sid']}>" class="button button-warning">去使用</a></p>
+			</div>
+			<div class="can-receive <{# if (d[i]['get_status'] == 0) { }>hide<{# } }>">
+				<div class="myStat" data-dimension="70" data-type="half" data-info="<{d[i]['percent']}>%" data-percent="<{d[i]['percent']}>" data-width="5" data-fgcolor="#ff2d4b" data-bgcolor="#e3e3e4" data-fill="#fff"></div>
+				<p class="receive" ><a href="javascript:;" class="button button-danger button-get-coupon" data-id="<{d[i]['id']}>" data-sid="<{d[i]['sid']}>" >立即领取</a></p>
+			</div>
+		</div>
+	</div>
+	<{# } }>
+</script>
+<script type='text/javascript' src='../addons/we7_wmall_plus/resource/app/js/jquery.circliful.min.js' charset='utf-8'></script>
+<script>
+	$( document ).ready(function() {
+		$('.myStat').circliful();
+		$(document).on("pageInit", "#page-coupon-channel", function(e, id, page) {
+			var loading = false;
+			$(page).on('infinite', '.infinite-scroll',function() {
+				var $this = $(this);
+				var id = $this.data('min');
+				if(!id) return;
+				if (loading) return;
+				loading = true;
+				$this.find('.infinite-scroll-preloader').removeClass('hide');
+				$.post("{php echo $this->createMobileUrl('coupon-channel', array('op' => 'list'))}", {id: id}, function(data){
+					var result = $.parseJSON(data);
+					$this.attr('data-min', result.message.min);
+					if(!result.message.min) {
+						$.detachInfiniteScroll($('.infinite-scroll'));
+						$('.infinite-scroll-preloader').remove();
+						return;
+					}
+					$this.find('.infinite-scroll-preloader').removeClass('hide');
+					var gettpl = $('#tpl-store-coupon').html();
+					loading = false;
+					laytpl(gettpl).render(result.message.message, function(html){
+						$this.find(".coupon-list").append(html);
+						$('.myStat').not('.circliful').circliful();
+					});
+				});
+			});
+		});
+		$('.coupon-list').on('click', '.button-get-coupon', function(){
+			var id = $(this).data('id');
+			var sid = $(this).data('sid');
+			var $this=$(this);
+			$.post("{php echo $this->createMobileUrl('coupon-channel', array('op' => 'get'))}", {id: id, sid: sid}, function(data){
+				var result = $.parseJSON(data);
+				if(result.message.errno != 0) {
+					$.toast(result.message.message);
+				} else {
+					$.toast(result.message.message);
+					$this.parent().parent().prev().removeClass('hide');
+					$this.parent().parent().addClass('hide');
+				}
+				return false;
+			})
+		})
+	});
+</script>
+{template 'common'}
+{template 'footer'}

@@ -1,0 +1,525 @@
+{template 'header'}
+<link rel="stylesheet" href="../addons/we7_wmall/resource/app/css/jquery.range.css" />
+<script type='text/javascript' src='../addons/we7_wmall/resource/app/js/jquery.range.js' charset='utf-8'></script>
+<div class="page errander-submit">
+	<header class="bar bar-nav common-bar-nav">
+		<a class="pull-left back" href="javascript:;"><i class="fa fa-arrow-left"></i></a>
+		<h1 class="title">{$title}</h1>
+		<a class="pull-right open-popup" data-popup=".popup-errander-rule" href="javascript:;">规则</a>
+	</header>
+	<nav class="bar bar-tab footer-bar border-1px-t nav-button">
+		<div class="fee-block">
+			<div>配送费 <span class="tip hide"> + 小费</span><span class="color-danger">¥ <span id="total-fee">0</span></span></div>
+			<div class="color-gray">商品费用与骑士结算</div>
+		</div>
+		<a href="javascript:;" id="order-submit">提交订单</a>
+	</nav>
+	<div class="content">
+		<div class="list-block">
+			<ul>
+				<li class="item-content border-1px-tb">
+					<div class="item-inner">
+						<div class="item-title label">物品信息</div>
+						<div class="item-input">
+							<input type="text" name="goods_name" value="{$errander_order['goods_name']}" id="goods-title" class="text-right" disabled placeholder="请从以下分类中选择物品信息">
+						</div>
+					</div>
+				</li>
+				{if !empty($category['label'])}
+					<li class="goods-label">
+						{loop $category['label'] $label}
+						<span>{$label}</span>
+						{/loop}
+					</li>
+				{/if}
+				<li class="item-content border-1px-t">
+					<div class="item-inner">
+						<div class="item-title label">重量</div>
+						<div class="item-input">
+							<input type="text" name="goods_weight" value="{$errander_order['goods_weight']}" class="text-right" placeholder="请输入物品重量（kg）">
+						</div>
+					</div>
+				</li>
+				<li class="item-content item-link border-1px-t">
+					<div class="item-inner">
+						<div class="item-title">物品价值</div>
+						<div class="item-after">
+							{php echo tpl_select('物品价值', 'goods_price', $errander_order['goods_price'], $price_select);}
+						</div>
+					</div>
+				</li>
+				<li class="item-tips border-1px-b">
+					贵重物品请您慎重，请将物品打包至可配送状态
+				</li>
+			</ul>
+		</div>
+		<div class="list-block">
+			<ul>
+				<li class="item-content item-link border-1px-t">
+					<div class="item-media"><i class="fa fa-qu"></i></div>
+					<div class="item-inner open-popup" data-popup=".popup-select-start-address" id="start-address">
+						{if !empty($start_address)}
+							<div class="item-title">
+								<div>{$start_address['address']}</div>
+								<div class="fontsm"><span>{$start_address['realname']}</span> {$start_address['sex']} <span>{$start_address['mobile']}</span></div>
+							</div>
+						{else}
+							<div class="item-title color-gray">请输入取件地址(必填)</div>
+						{/if}
+					</div>
+				</li>
+				<li class="item-content item-link border-1px-tb">
+					<div class="item-media"><i class="fa fa-shou"></i></div>
+					<div class="item-inner open-popup" data-popup=".popup-select-end-address" id="end-address">
+						{if !empty($end_address)}
+							<div class="item-title">
+								<div>{$end_address['address']}</div>
+								<div class="fontsm"><span>{$end_address['realname']}</span> {$end_address['sex']} <span>{$end_address['mobile']}</span></div>
+							</div>
+						{else}
+							<div class="item-title color-gray">请输入收货地址(必填)</div>
+						{/if}
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="content-block-title">选择支付方式</div>
+		<div class="list-block media-list pay-method">
+			<ul>
+				{loop $payment $key $row}
+					{php $i++}
+					{if $row == 1}
+						<li>
+							<label class="label-checkbox item-content {if $i == 1}border-1px-tb{else}border-1px-b{/if}">
+								<div class="item-inner">
+									<div class="item-title">{$pay_types[$key]['text']}</div>
+								</div>
+								<input type="radio" name="pay_type" class="pay_type" value="{$key}" {if $key == 'wechat'}checked{/if}>
+								<div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+							</label>
+						</li>
+					{/if}
+				{/loop}
+			</ul>
+		</div>
+		<div class="list-block">
+			<ul>
+				<li class="item-content border-1px-tb">
+					<div class="item-inner">
+						<div class="item-title">取件时间</div>
+						<div class="item-after">立即配送</div>
+					</div>
+				</li>
+				<li class="item-content border-1px-b">
+					<div class="item-inner">
+						<div class="item-title label">备注</div>
+						<div class="item-input">
+							<input type="text" name="note" value="{$errander_order['note']}" class="text-right" placeholder="可输入特殊要求">
+						</div>
+					</div>
+				</li>
+				<li class="item-content no-bottom">
+					<div class="item-inner">
+						<div class="item-title delivery-fee-modal">配送费 <i class="fa fa-question-circle"></i></div>
+						<div class="item-after"><span id="delivery-fee">0</span>元</div>
+					</div>
+				</li>
+				<li class="distance border-1px-b">
+					<div class="text-right gray hide">购买距离<span id="distance">0</span>千米</div>
+				</li>
+				<li class="item-content no-bottom">
+					<div class="item-inner">
+						<div class="item-title">小费 <small class=" color-danger"> &nbsp;&nbsp;加小费抢单更快哦</small></div>
+						<div class="item-after"><span id="tip">{if !empty($errander_order['delivery_tips'])}{$errander_order['delivery_tips']}{else}{$category['tip_min']}{/if}</span> 元</div>
+					</div>
+				</li>
+				<li class="tip-range border-1px-b">
+					<input type="hidden" class="single-slider" id="tip_fee" value="{if !empty($errander_order['delivery_tips'])}{$errander_order['delivery_tips']}{else}{$category['tip_min']}{/if}" />
+				</li>
+				<li class="item-content anonymous border-1px-b">
+					<div class="item-inner">
+						<div class="item-title">匿名购买</div>
+						<div class="item-after">
+							<label class="label-switch invoice-status">
+								<input type="checkbox" name="is_anonymous" value="1" {if $errander_order['is_anonymous'] == 1}checked{/if}>
+								<div class="checkbox"></div>
+							</label>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="agreement">
+			<label class="label-checkbox item-content">
+				<input type="checkbox" name="agree-rule" checked="checked">
+				<div class="item-media"><i class="icon icon-form-checkbox"></i> 同意并接受<a href="javascript:;" class="open-popup" data-popup=".popup-errander-agreement">《随意够用户协议》</a></div>
+			</label>
+		</div>
+	</div>
+</div>
+
+<div class="modal modal-no-buttons modal-notice modal-delivery-fee">
+	<div class="modal-inner">
+		<div class="modal-title">
+			<div>计价细则</div>
+		</div>
+		<div class="modal-text">
+			<div class="notice">
+				{$category['start_km']}千米内，收取{$category['start_fee']}元配送费 <br>
+				{$category['start_km']}以上，每增加1千米，多收取{$category['pre_km_fee']}元
+			</div>
+			<a href="javascript:;" onclick="$.icloseModal('.modal-notice', true);" class="button button-big button-fill button-danger close-modal">我知道了</a>
+		</div>
+	</div>
+</div>
+
+<div class="popup popup-select-start-address">
+	<div class="page select-address">
+		<header class="bar bar-nav common-bar-nav">
+			<a class="pull-left close-popup" href="javascript:;"><i class="fa fa-arrow-left"></i></a>
+			<h1 class="title">选择取货地址</h1>
+			<a class="pull-right edit-address" data-input="start_address_id" data-id="0" href="javascript:;">新增</a>
+		</header>
+		<div class="content">
+			{if !empty($addresses['available'])}
+			<div class="content-block-title">可选取件地址</div>
+			<div class="list-block media-list">
+				<ul>
+					{loop $addresses['available'] $address}
+					<li>
+						<div class="item-inner available-address-item" data-id="{$address['id']}" data-address="{$address['address']}" data-name="{$address['name']}" data-realname="{$address['realname']}" data-sex="{$address['sex']}" data-mobile="{$address['mobile']}" data-number="{$address['number']}" data-location_x="{$address['location_x']}" data-location_y="{$address['location_y']}">
+							<div class="item-title-row">
+								<div class="item-title">
+									{$address['realname']} {$address['sex']}  ~ {$address['mobile']}
+								</div>
+								<div class="item-after"><a href="javascript:;" class="edit-address" data-input="start_address_id" data-id="{$address['id']}"><i class="fa fa-edit"></i></a></div>
+							</div>
+							<div class="item-text">{$address['address']} ~ {$address['number']}</div>
+						</div>
+					</li>
+					{/loop}
+				</ul>
+			</div>
+			{/if}
+			{if !empty($addresses['dis_available'])}
+			<div class="content-block-title">不在服务范围内</div>
+			<div class="list-block media-list">
+				<ul>
+					{loop $addresses['dis_available'] $address}
+					<li>
+						<div class="item-inner" onclick="alert('该地址不在跑腿服务范围内'); return false;">
+							<div class="item-title-row">
+								<div class="item-title">
+									{$address['realname']} {$address['sex']}  ~ {$address['mobile']}
+								</div>
+								<div class="item-after"><a href="javascript:;" class="edit-address" data-input="start_address_id" data-id="{$address['id']}"><i class="fa fa-edit"></i></a></div>
+							</div>
+							<div class="item-text">{$address['address']} ~ {$address['number']}</div>
+						</div>
+					</li>
+					{/loop}
+				</ul>
+			</div>
+			{/if}
+		</div>
+	</div>
+</div>
+
+<div class="popup popup-select-end-address">
+	<div class="page select-address">
+		<header class="bar bar-nav common-bar-nav">
+			<a class="pull-left close-popup" href="javascript:;"><i class="fa fa-arrow-left"></i></a>
+			<h1 class="title">选择收货地址</h1>
+			<a class="pull-right edit-address" data-input="end_address_id" data-id="0" href="javascript:;">新增</a>
+		</header>
+		<div class="content">
+			{if !empty($addresses['available'])}
+			<div class="content-block-title">可选收货地址</div>
+			<div class="list-block media-list">
+				<ul>
+					{loop $addresses['available'] $address}
+					<li>
+						<div class="item-inner available-address-item" data-id="{$address['id']}" data-address="{$address['address']}" data-name="{$address['name']}" data-realname="{$address['realname']}" data-sex="{$address['sex']}" data-mobile="{$address['mobile']}" data-number="{$address['number']}" data-location_x="{$address['location_x']}" data-location_y="{$address['location_y']}">
+							<div class="item-title-row">
+								<div class="item-title">
+									{$address['realname']} {$address['sex']}  ~ {$address['mobile']}
+								</div>
+								<div class="item-after"><a href="javascript:;" class="edit-address" data-input="end_address_id" data-id="{$address['id']}"><i class="fa fa-edit"></i></a></div>
+							</div>
+							<div class="item-text">{$address['address']} ~ {$address['number']}</div>
+						</div>
+					</li>
+					{/loop}
+				</ul>
+			</div>
+			{/if}
+			{if !empty($addresses['dis_available'])}
+			<div class="content-block-title">不在服务范围内</div>
+			<div class="list-block media-list">
+				<ul>
+					{loop $addresses['dis_available'] $address}
+					<li>
+						<div class="item-inner" onclick="alert('该地址不在跑腿服务范围内'); return false;">
+							<div class="item-title-row">
+								<div class="item-title">
+									{$address['realname']} {$address['sex']}  ~ {$address['mobile']}
+								</div>
+								<div class="item-after"><a href="javascript:;" class="edit-address" data-input="end_address_id" data-id="{$address['id']}"><i class="fa fa-edit"></i></a></div>
+							</div>
+							<div class="item-text">{$address['address']} ~ {$address['number']}</div>
+						</div>
+					</li>
+					{/loop}
+				</ul>
+			</div>
+			{/if}
+		</div>
+	</div>
+</div>
+
+<div class="popup popup-errander-rule">
+	<div class="page errander-rule">
+		<header class="bar bar-nav common-bar-nav">
+			<a class="pull-left close-popup" href="javascript:;"><i class="fa fa-arrow-left"></i></a>
+			<h1 class="title">{$title}规则</h1>
+		</header>
+		<div class="content" style="background: #FFF">
+			<div class="content-padded">
+				{$category['rule']}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="popup popup-errander-agreement">
+	<div class="page errander-agreement">
+		<header class="bar bar-nav common-bar-nav">
+			<a class="pull-left close-popup" href="javascript:;"><i class="fa fa-arrow-left"></i></a>
+			<h1 class="title">跑腿服务用户协议</h1>
+		</header>
+		<div class="content" style="background: #FFF">
+			<div class="content-padded">
+				{$config['agreement']}
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=550a3bf0cb6d96c3b43d330fb7d86950"></script>
+<script>
+$(function(){
+	var rule = {php echo json_encode($rule);};
+	var order = {
+		start_address: {},
+		end_address: {},
+		delivery_fee: 0
+	};
+
+	$('.single-slider').jRange({
+		theme: 'jrange-theme-custom theme-green',
+		from: {$category['tip_min']}, //滑动范围的最小值，数字，如0
+		to: {$category['tip_max']}, //滑动范围的最大值，数字，如100
+		step: 1,//步长值，每次滑动大小,
+		width: 300, //滑动条宽度
+		showLabels: false,// 是否显示滑动条下方的尺寸标签
+		showScale: false, //是否显示滑块上方的数值标签
+		onstatechange: function(value){
+			$('#tip').html(value);
+			var tip_fee = parseFloat(value);
+			if(value > 0) {
+				$('.tip').removeClass('hide');
+			} else {
+				$('.tip').addClass('hide');
+			}
+			$('#total-fee').html((order.delivery_fee + tip_fee).toFixed(2));
+		}
+	});
+
+	$(document).on('click', '.goods-label span', function(){
+		var title = $('#goods-title').val();
+		var $this = $(this);
+		$this.addClass('active');
+		$('#goods-title').val(title + ' ' + $this.html());
+		setTimeout(function(){
+			$this.removeClass('active');
+		}, 250);
+	});
+
+	var lng = parseFloat("{$config['map']['location_y']}");
+	var lat = parseFloat("{$config['map']['location_x']}");
+	var serve_radius = "{$config['serve_radius']}";
+	var lnglat = new AMap.LngLat(lng, lat);
+
+	var address = {};
+	{if !empty($end_address)}
+		order.end_address = {php echo json_encode($end_address)};
+		countOrder();
+	{/if}
+
+	{if !empty($start_address)}
+		order.start_address = {php echo json_encode($start_address)};
+		countOrder();
+	{/if}
+	$(document).on('click', '.popup-select-start-address .available-address-item', function(){
+		var $this = $(this);
+		var start_address_id = $this.data('id');
+		if(!start_address_id) {
+			alert('取货地址有误');
+			return false;
+		}
+		var html = 	'<div>'+$this.data('address')+'</div>'+
+				'	<div class="fontsm"><span>'+$this.data('realname')+'</span>'+$this.data('sex')+' <span>'+$this.data('mobile')+'</span></div>';
+		$('#start-address .item-title').removeClass('color-gray').html(html);
+		order.start_address = {
+			id: $this.data('id'),
+			name: $this.data('name'),
+			address: $this.data('address'),
+			location_x: $this.data('location_x'),
+			location_y: $this.data('location_y'),
+			number: $this.data('number')
+		};
+		countOrder();
+		$.icloseModal('.popup-select-start-address');
+	});
+
+	$(document).on('click', '.popup-select-end-address .available-address-item', function(){
+		var $this = $(this);
+		var end_address_id = $this.data('id');
+		if(!end_address_id) {
+			alert('收货地址有误');
+			return false;
+		}
+		var html = 	'<div>'+$this.data('address')+'</div>'+
+				'	<div class="fontsm"><span>'+$this.data('realname')+'</span>'+$this.data('sex')+' <span>'+$this.data('mobile')+'</span></div>';
+		$('#end-address .item-title').removeClass('color-gray').html(html);
+		order.end_address = {
+			id: $this.data('id'),
+			name: $this.data('name'),
+			address: $this.data('address'),
+			location_x: $this.data('location_x'),
+			location_y: $this.data('location_y'),
+			number: $this.data('number')
+		};
+		countOrder();
+		$.icloseModal('.popup-select-end-address');
+	});
+
+	function countOrder() {
+		if(order.end_address.id && order.end_address.location_x) {
+			var fee = rule.start_fee;
+			if(order.start_address.id && order.start_address.location_x) {
+				var lnglat = new AMap.LngLat(order.end_address.location_y, order.end_address.location_x);
+				var distance = lnglat.distance([order.start_address.location_y, order.start_address.location_x]);
+				distance = (distance / 1000).toFixed(2);
+				if(distance <= rule.start_km) {
+					fee = rule.start_fee;
+				} else {
+					distance_temp = distance - rule.start_km;
+					fee = parseFloat(rule.start_fee) + parseFloat((distance_temp * rule.pre_km_fee - 0).toFixed(2));
+				}
+			}
+			order.distance = distance;
+			fee = parseFloat(fee).toFixed(2);
+			order.delivery_fee = parseFloat(fee);
+			$('#delivery-fee').html(order.delivery_fee);
+			$('#distance').html(order.distance);
+			if(order.distance > 0) {
+				$('#distance').parent().removeClass('hide');
+			}
+			var tip = parseFloat($('#tip_fee').val());
+			$('#total-fee').html((order.delivery_fee + tip).toFixed(2));
+		}
+	}
+
+	function orderData() {
+		var data = {
+			id: "{$id}",
+			goods_name: $.trim($(':text[name="goods_name"]').val()),
+			goods_weight: $.trim($(':text[name="goods_weight"]').val()),
+			goods_price: $.trim($(':hidden[name="goods_price"]').val()),
+			note: $.trim($(':text[name="note"]').val()),
+			delivery_tips: $.trim($('#tip_fee').val()),
+			is_anonymous: $(':checkbox[name="is_anonymous"]').prop('checked') ? 1 : 0,
+			end_address_id: order.end_address.id,
+			start_address_id: order.start_address.id,
+			pay_type: $(':radio[name="pay_type"]:checked').val(),
+		};
+		return data;
+	}
+
+	$(document).on('click', '.edit-address', function(){
+		var data = orderData();
+		var input = $(this).data('input');
+		var id = $(this).data('id');
+		$.post("{php echo $this->createMobileUrl('errander-index', array('op' => 'cart'))}", data, function(){
+			location.href = "{php echo $this->createMobileUrl('address', array('op' => 'post', 'errander_id' => $id, 'redirect_type' => 'errander'));}&id=" + id + "&redirect_input=" + input;
+		});
+	});
+
+	$(document).on('click', '#order-submit', function(){
+		var $this = $(this);
+		if($this.hasClass('disabled')) {
+			return false;
+		}
+		var data = orderData();
+		if(!data.goods_name) {
+			$.toast('物品信息不能为空');
+			return false;
+		}
+		if(!data.goods_weight) {
+			$.toast('物品重量不能为空');
+			return false;
+		}
+		if(!data.start_address_id) {
+			$.toast('请选择取货地址');
+			return false;
+		}
+		if(!data.end_address_id) {
+			$.toast('请选择收货地址');
+			return false;
+		}
+		if(!data.pay_type) {
+			$.toast('请选择支付方式');
+			return false;
+		}
+		if(!$(':checkbox[name="agree-rule"]').prop('checked')) {
+			$.toast('请先同意并接受随意够用户协议');
+			return false;
+		}
+		$this.addClass('disabled');
+		$.post("{php echo $this->createMobileUrl('errander-index', array('op' => 'post'))}", data, function(data){
+			var result = $.parseJSON(data);
+			if(result.message.errno == -1) {
+				$this.removeClass('disabled');
+				$.toast(result.message.message);
+				return false;
+			} else {
+				$.toast('下单成功');
+				location.href = "{php echo $this->createMobileUrl('pay', array('order_type' => 'errander'));}&id=" + result.message.message;
+			}
+		});
+	});
+
+	$(document).on('click', '.delivery-fee-modal', function(){
+		$.iopenModal('.modal-delivery-fee', function(){});
+	});
+});
+</script>
+<script id="tpl-address" type="text/html">
+	<{# for(var i = 0, len = d.length; i < len; i++){ }>
+		<li>
+			<div class="item-inner address-item <{# if(d[i].address_available != 1) { }>not-available<{# } }>" data-lng="<{d[i].lng}>" data-lat="<{d[i].lat}>" data-name="<{d[i].name}>" data-address="<{d[i].address}>" data-distance="<{d[i].distance}>" data-available="<{d[i].address_available}>">
+				<div class="item-title-row">
+					<div class="item-title">
+						<i class="fa fa-lbs"></i>
+						<{d[i].name}>
+					</div>
+					<div class="item-after distance hide"><{# if(d[i].distance_available == 1) { }><{d[i].distance}>km<{# } }></div>
+				</div>
+				<div class="item-text"><{d[i].address}></div>
+			</div>
+		</li>
+	<{# } }>
+</script>
+{template 'common'}
+{template 'footer'}

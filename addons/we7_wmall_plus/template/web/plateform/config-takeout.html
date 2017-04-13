@@ -1,0 +1,519 @@
+{template 'public/header'}
+{template 'plateform/config-nav'}
+{if $op == 'set'}
+<form class="form-horizontal form panel-config-takeout" id="form1" action="" method="post" enctype="multipart/form-data">
+	<div class="main">
+		<div class="panel panel-default">
+			<div class="panel-heading">外卖服务范围设置</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">* </span>外卖服务中心点</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_tiny_coordinate('map', $config_takeout['map']);}
+						<div class="help-block">设置外卖服务中心点</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">* </span>外卖服务半径</label>
+					<div class="col-sm-9 col-xs-12">
+						<div class="input-group">
+							<input type="text" class="form-control" name="serve_radius" value="{$config_takeout['serve_radius']}">
+							<span class="input-group-addon">KM</span>
+						</div>
+						<div class="help-block">设置服务半径</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">* </span>外卖服务城市(省/市)</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" class="form-control" name="city" value="{$config_takeout['city']}">
+						<div class="help-block">填写外卖服务所属的"市"或"省". 比如:你在县城里做外卖, 需要填写该县城所属的"市"或"省".</div>
+						<div class="help-block">该项的作用是:用户在搜索地址的时候, 只返回该"省"或"市"内的相关地址</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">订单相关设置</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require"> </span>支付时间限制</label>
+					<div class="col-sm-9 col-xs-9 col-md-9">
+						<div class="input-group">
+							<span class="input-group-addon">超过</span>
+							<input type="text" class="form-control" name="pay_time_limit" value="{$config_takeout['pay_time_limit']}">
+							<span class="input-group-addon">分钟未支付自动取消</span>
+						</div>
+						<span class="help-block">例如:设置为15分钟,那么用户在提交订单后15分钟内未支付,系统会自动取消该订单.如果没有支付时间限制,请设置为0</span>
+						<span class="help-block">该设置仅对"外卖订单"有效.店内订单不受此设置影响</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require"> </span>商家接单时间限制</label>
+					<div class="col-sm-9 col-xs-9 col-md-9">
+						<div class="input-group">
+							<span class="input-group-addon">已支付的订单,商家超过</span>
+							<input type="text" class="form-control" name="handle_time_limit" value="{$config_takeout['handle_time_limit']}">
+							<span class="input-group-addon">分钟未接单自动取消</span>
+						</div>
+						<span class="help-block">例如:设置为15分钟,那么用户支付后,商家在15分钟内未接单,系统会自动取消该订单.如果没有接单时间限制,请设置为0</span>
+						<span class="help-block">该设置仅对"外卖订单"有效.店内订单不受此设置影响</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">* </span>订单自动完成（仅限商家已接单的订单）</label>
+					<div class="col-sm-9 col-xs-9 col-md-9">
+						<div class="input-group">
+							<span class="input-group-addon">配送中的订单在</span>
+							<input type="text" class="form-control" name="auto_success_hours" value="{$config_takeout['auto_success_hours']}">
+							<span class="input-group-addon">小时后, 自动设置为完成</span>
+						</div>
+						<span class="help-block">只有被商家接单后的订单在超过设置的时间才会被自动设置为完成. </span>
+						<span class="help-block">自动完成时间只能是整数, 如果你不需要自动完成, 可以设置为0. </span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">* </span>外卖单派单模式</label>
+					<div class="col-sm-9 col-xs-12">
+						<label class="radio-inline">
+							<input type="radio" value="1" name="dispatch_mode" {if $config_takeout['dispatch_mode'] == '1'}checked{/if}> 抢单模式
+						</label>
+						<label class="radio-inline">
+							<input type="radio" value="2" name="dispatch_mode" {if $config_takeout['dispatch_mode'] == '2'}checked{/if}> 管理员派单
+						</label>
+						<label class="radio-inline">
+							<input type="radio" value="3" name="dispatch_mode" {if $config_takeout['dispatch_mode'] == '3'}checked{/if}> 系统分配
+						</label>
+						<div class="help-block">
+							<strong class="text-danger">
+								系统分配算法需要配送员使用app接单,如果你没有授权配送员app,请不要选择该模式。<br>
+								系统分配算法：系统把订单分配给距离下单门店最近的配送员
+							</strong>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">* </span>配送员同时最多可抢</label>
+					<div class="col-sm-9 col-xs-12">
+						<div class="input-group">
+							<input type="text" class="form-control" name="deliveryer_collect_max" value="{$config_takeout['deliveryer_collect_max']}">
+							<span class="input-group-addon">单</span>
+						</div>
+						<div class="help-block">
+							设置配送员同一时间最多可抢几单,超出后将不能在抢。0为不限制
+							<br>
+							<strong class="text-danger">注意：此设置仅对配送员主动抢单有效。平台配送员分配订单和自动分配不受此设置限制</strong>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">* </span>超出最多可抢单后,是否还通知配送员</label>
+					<div class="col-sm-9 col-xs-12">
+						<label class="radio-inline">
+							<input type="radio" value="1" name="over_collect_max_notify" {if $config_takeout['over_collect_max_notify'] == 1}checked{/if}> 通知
+						</label>
+						<label class="radio-inline">
+							<input type="radio" value="0" name="over_collect_max_notify" {if !$config_takeout['over_collect_max_notify']}checked{/if}> 不通知
+						</label>
+						<span class="help-block">设置当配送员已抢单数超过最多可抢单数后,是否继续通知配送员有新的待配送订单</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">* </span>积分赠送状态</label>
+					<div class="col-sm-9 col-xs-12">
+						<label class="radio-inline">
+							<input type="radio" value="1" name="credit1[status]" {if $config_takeout['grant_credit']['credit1']['status'] == 1}checked{/if}> 开启
+						</label>
+						<label class="radio-inline">
+							<input type="radio" value="0" name="credit1[status]" {if $config_takeout['grant_credit']['credit1']['status'] == 0}checked{/if}> 关闭
+						</label>
+						<div class="help-block text-danger">开启后,平台会在"订单完成后"给下单人赠送积分</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">* </span>积分赠送模式</label>
+					<div class="col-sm-9 col-xs-12">
+						<div class="input-group">
+							<label class="input-group-addon">
+								<input type="radio" name="credit1[grant_type]" value="1" {if $config_takeout['grant_credit']['credit1']['grant_type'] == 1 || !$config['credit']['credit1']['grant_type']}checked{/if}>
+							</label>
+							<span class="input-group-addon">每单固定</span>
+							<input type="text" class="form-control" name="credit1[grant_num_1]" {if $config_takeout['grant_credit']['credit1']['grant_type'] == 1}value="{$config_takeout['grant_credit']['credit1']['grant_num']}"{/if}>
+							<span class="input-group-addon">积分</span>
+						</div>
+						<br>
+						<div class="input-group">
+							<label class="input-group-addon">
+								<input type="radio" name="credit1[grant_type]" value="2" {if $config_takeout['grant_credit']['credit1']['grant_type'] == 2}checked{/if}>
+							</label>
+							<span class="input-group-addon">按1元赠送</span>
+							<input type="text" class="form-control" name="credit1[grant_num_2]" {if $config_takeout['grant_credit']['credit1']['grant_type'] == 2}value="{$config_takeout['grant_credit']['credit1']['grant_num']}"{/if}>
+							<span class="input-group-addon">积分的比例赠送</span>
+						</div>
+						<div class="help-block">例如:设置赠送比例为1元赠送10积分.订单总额为:20元, 那本订单工赠送:20*10=200积分</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">商家基本设置</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">* </span>是否允许商家自己设置商品已售份数</label>
+					<div class="col-sm-9 col-xs-12">
+						<label class="radio-inline">
+							<input type="radio" value="1" name="custom_goods_sailed_status" {if $config_takeout['custom_goods_sailed_status'] == 1}checked{/if}> 允许
+						</label>
+						<label class="radio-inline">
+							<input type="radio" value="0" name="custom_goods_sailed_status" {if !$config_takeout['custom_goods_sailed_status']}checked{/if}> 不允许
+						</label>
+						<div class="help-block text-danger">当设置为不允许时, 商品的销量会按照销量就行递增</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">商家配送模式设置</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">* </span>配送模式</label>
+					<div class="col-sm-9 col-xs-12">
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-default {if $config_takeout['delivery_mode'] == 1 || !$config_takeout['delivery_mode']}active{/if}">
+								<input type="radio" name="delivery_mode" value="1" {if $config_takeout['delivery_mode'] == 1}checked{/if}> 店内配送员
+							</label>
+							<label class="btn btn-default {if $config_takeout['delivery_mode'] == 2}active{/if}">
+								<input type="radio" name="delivery_mode" value="2" {if $config_takeout['delivery_mode'] == 2}checked{/if}> 平台配送员
+							</label>
+						</div>
+						<div class="help-block">
+							<strong class="text-danger">门店只能选择一个配送方式, 不能同时使用"平台配送员"和"店内配送员".</strong>
+							<br>
+							<strong class="text-success">
+								如需单独设置某个门店的配送模式,配送费,配送时间段等信息, 请到"<a href="{php echo $this->createWebUrl('ptftrade', array('op' => 'account'));}" target="_blank">财务中心-门店账户</a>"进行设置.
+							</strong>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">*</span>平台配送费模式</label>
+					<div class="col-sm-9 col-xs-12">
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-default {if $config_takeout['delivery_fee_mode'] == 1 || !$config_takeout['delivery_fee_mode']}active{/if}" onclick="$('.delivery-fee-mode').hide();$('.delivery-fee-mode-1').show();">
+								<input type="radio" name="delivery_fee_mode" value="1" {if $config_takeout['delivery_fee_mode'] == 1 || !$config_takeout['delivery_fee_mode']}checked{/if}> 固定金额
+							</label>
+							<label class="btn btn-default {if $config_takeout['delivery_fee_mode'] == 2}active{/if}" onclick="$('.delivery-fee-mode').hide();$('.delivery-fee-mode-2').show();">
+								<input type="radio" name="delivery_fee_mode" value="2" {if $config_takeout['delivery_fee_mode'] == 2}checked{/if}> 按距离收取
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group delivery-fee-mode delivery-fee-mode-1" {if $config_takeout['delivery_fee_mode'] == 1 || !$config_takeout['delivery_fee_mode']}style="display: block"{/if}>
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+					<div class="col-sm-9 col-xs-12">
+						<div class="input-group">
+							<div class="input-group-addon">每单</div>
+							<input type="text" name="delivery_fee" value="{$config_takeout['delivery_fee']}" class="form-control"/>
+							<div class="input-group-addon">元</div>
+						</div>
+						<div class="help-block">
+							<strong class="text-success">
+								如需单独设置某个门店的配送模式,配送费,配送时间段等信息, 请到"<a href="{php echo $this->createWebUrl('ptftrade', array('op' => 'account'));}" target="_blank">财务中心-门店账户</a>"进行设置.
+							</strong>
+							<br/>
+							<strong class="text-danger">
+								此项设置: 商家使用平台配送模式后, 下单人需要支付的配送费.使用平台配送模式后, 商家将不能自己变更配送费, 只能由平台管理员设置配送费.
+							</strong>
+						</div>
+					</div>
+				</div>
+				<div class="form-group delivery-fee-mode delivery-fee-mode-2" {if $config_takeout['delivery_fee_mode'] == 2}style="display: block"{/if}>
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+					<div class="col-sm-9 col-xs-12">
+						<div class="input-group">
+							<span class="input-group-addon">起步价</span>
+							<input type="text" class="form-control" name="start_fee" value="{$config_takeout['delivery_fee']['start_fee']}">
+							<span class="input-group-addon">元包含</span>
+							<input type="text" class="form-control" name="start_km" value="{$config_takeout['delivery_fee']['start_km']}">
+							<span class="input-group-addon">公里</span>
+						</div>
+						<br>
+						<div class="input-group">
+							<span class="input-group-addon">每增加1公里加</span>
+							<input type="text" class="form-control" name="pre_km_fee" value="{$config_takeout['delivery_fee']['pre_km_fee']}">
+							<span class="input-group-addon">元</span>
+						</div>
+						<div class="help-block">
+							<strong class="text-success">
+								如需单独设置某个门店的配送模式,配送费,配送时间段等信息, 请到"<a href="{php echo $this->createWebUrl('ptftrade', array('op' => 'account'));}" target="_blank">财务中心-门店账户</a>"进行设置.
+							</strong>
+							<br/>
+							<strong class="text-danger">
+								特别注意: 设置按照"按距离收取"配送费后,系统会自动变更使用"平台配送"模式商家的某些配置。包括:收货地址被设置为自动获取, 超过配送范围是仍可下单
+							</strong>
+							<br/>
+							<strong class="text-danger">
+								此项设置: 商家使用平台配送模式后, 下单人需要支付的配送费.使用平台配送模式后, 商家将不能自己变更配送费, 只能由平台管理员设置配送费.
+							</strong>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">*</span>配送时间段</label>
+					<div class="col-sm-9 col-xs-12">
+						<div class="input-group">
+							<span class="input-group-addon">间隔</span>
+							<input type="text" class="form-control" name="pre_delivery_time_minute" value="{$config_takeout['pre_delivery_time_minute']}">
+							<span class="input-group-addon">分钟</span>
+							<div class="input-group-btn btn-build-delivery-time">
+								<a href="javascript:;" class="btn btn-primary" >生成配送时间段</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="delivery-times" class="delivery-times">
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+						<div class="col-sm-9 col-xs-12 containter">
+							{loop $delivery_times $time}
+								<div class="col-sm-6">
+									<div class="input-group">
+										<span class="input-group-addon">{$time['start']} ~ {$time['end']}</span>
+										<span class="input-group-addon">增加附加费</span>
+										<input type="text" class="form-control" name="times[fee][]" value="{$time['fee']}" placeholder="增加附加费">
+										<input type="hidden" name="times[start][]" value="{$time['start']}"/>
+										<input type="hidden" name="times[end][]" value="{$time['end']}"/>
+										<input type="hidden" name="times[status][]" value="{$time['status']}">
+										<span class="input-group-addon">元</span>
+										<div class="input-group-btn">
+											<a href="javascript:;" class="btn btn-delivery-time-item {if $time['status'] == 1}btn-success{else}btn-default{/if}">{if $time['status'] == 1}使用中{else}已弃用{/if}</a>
+										</div>
+									</div>
+								</div>
+							{/loop}
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">*</span>将配送模式和配送费同步到所有门店</label>
+					<div class="col-sm-9 col-xs-12">
+						<div class="input-group">
+							<label class="checkbox-inline">
+								<input type="checkbox" name="delivery_sync" value="1"/> 将配送模式和配送费,配送时间段同步到所有门店
+							</label>
+						</div>
+						<div class="help-block">同步后,所有门店的配送员模式都会被设置为这个规则</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">外卖单配送员提成设置</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">* </span>平台给配送员每单支付金额(外卖单)</label>
+					<div class="col-sm-9 col-xs-12">
+						<div class="input-group">
+							<label class="input-group-addon">
+								<input type="radio" name="deliveryer_fee_type" value="1" {if $config_takeout['deliveryer_fee_type'] == 1 || !$config_takeout['deliveryer_fee_type']}checked{/if}>
+							</label>
+							<span class="input-group-addon">每单固定</span>
+							<input type="text" class="form-control" name="deliveryer_fee_1" {if $config_takeout['deliveryer_fee_type'] == 1}value="{$config_takeout['deliveryer_fee']}"{/if}>
+							<span class="input-group-addon">元</span>
+						</div>
+						<br>
+						<div class="input-group">
+							<label class="input-group-addon">
+								<input type="radio" name="deliveryer_fee_type" value="2" {if $config_takeout['deliveryer_fee_type'] == 2}checked{/if}>
+							</label>
+							<span class="input-group-addon">每单按照订单配送费提成</span>
+							<input type="text" class="form-control" name="deliveryer_fee_2" {if $config_takeout['deliveryer_fee_type'] == 2}value="{$config_takeout['deliveryer_fee']}"{/if}>
+							<span class="input-group-addon">%</span>
+						</div>
+						<div class="help-block text-danger"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-9 col-xs-9 col-md-9">
+				<input type="hidden" name="token" value="{$_W['token']}">
+				<input name="submit" id="submit" type="submit" value="提交" class="btn btn-primary col-lg-1">
+			</div>
+		</div>
+	</div>
+</form>
+<script id="tpl-delivery-time" type="text/html">
+	<{# for(var i = 0, len = d.length; i < len; i++){ }>
+		<div class="col-sm-6">
+			<div class="input-group">
+				<span class="input-group-addon"><{d[i].start}> ~ <{d[i].end}></span>
+				<span class="input-group-addon">增加附加费</span>
+				<input type="text" class="form-control" name="times[fee][]" value="<{d[i].fee}>" placeholder="增加附加费">
+				<input type="hidden" name="times[start][]" value="<{d[i].start}>"/>
+				<input type="hidden" name="times[end][]" value="<{d[i].end}>"/>
+				<input type="hidden" name="times[status][]" value="1">
+				<span class="input-group-addon">元</span>
+				<div class="input-group-btn">
+					<a href="javascript:;" class="btn btn-success btn-delivery-time-item">使用中</a>
+				</div>
+			</div>
+		</div>
+	<{# } }>
+</script>
+<script>
+$(function(){
+	$('#form1').submit(function(){
+		var delivery_times_length = $('#delivery-times .containter .input-group').size();
+		if(!delivery_times_length) {
+			util.message('请先生成配送时间段');
+			return false;
+		}
+	});
+
+	$(document).on('click', '.btn-build-delivery-time', function(){
+		tiny.confirm($(this), '确定重新生成配送时间段吗?', function(){
+			var pre_minute = parseInt($.trim($(':text[name="pre_delivery_time_minute"]').val()));
+			if(isNaN(pre_minute)) {
+				util.message('时间间隔只能是整数');
+				return false;
+			}
+			if(!pre_minute) {
+				util.message('时间间隔必须大于0');
+				return false;
+			}
+			$.post("{php echo $this->createWebUrl('cmnutility', array('op' => 'build_time'));}", {pre_minute: pre_minute}, function(data) {
+				var result = $.parseJSON(data);
+				if(result.message.errno == -1) {
+					util.message(result.message.message);
+					return false;
+				}
+				var gettpl = $('#tpl-delivery-time').html();
+				laytpl(gettpl).render(result.message.message, function(html){
+					$('#delivery-times .containter').html(html);
+				});
+			});
+		});
+	});
+
+	$(document).on('click', '.btn-delivery-time-item', function(){
+		if($(this).hasClass('btn-success')) {
+			$(this).parent().prev().prev().val(0);
+			$(this).removeClass('btn-success').addClass('btn-default');
+			$(this).html('已弃用');
+		} else {
+			$(this).parent().prev().prev().val(1);
+			$(this).removeClass('btn-default').addClass('btn-success');
+			$(this).html('使用中');
+		}
+	});
+});
+</script>
+{/if}
+
+{if $op == 'settle'}
+<form class="form-horizontal form" id="form1" action="" method="post" enctype="multipart/form-data">
+	<div class="panel panel-default">
+		<div class="panel-heading">商家入驻参数设置</div>
+		<div class="panel-body">
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">*</span>商户入驻</label>
+				<div class="col-sm-9 col-xs-12">
+					<label class="radio-inline"><input type="radio" name="status" value="1" {if $settle['status'] == 1 || !$settle['status']}checked{/if}> 开启</label>
+					<label class="radio-inline"><input type="radio" name="status" value="2" {if $settle['status'] == 2}checked{/if}> 关闭</label>
+					<div class="help-block">开启商户入驻后，手机端个人中心页面将开启入口，否则不显示</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">*</span>提交入驻申请后审核状态</label>
+				<div class="col-sm-9 col-xs-12">
+					<label class="radio-inline"><input type="radio" name="audit_status" value="1" {if $settle['audit_status'] == 1}checked{/if}> 直接审核通过</label>
+					<label class="radio-inline"><input type="radio" name="audit_status" value="2" {if $settle['audit_status'] == 2 || !$settle['audit_status']}checked{/if}> 审核中</label>
+					<div class="help-block">商家提交入驻申请后,设置是否直接审核通过.</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">*</span>是否短信验证手机号</label>
+				<div class="col-sm-9 col-xs-12">
+					<label class="radio-inline"><input type="radio" name="mobile_verify_status" value="1" {if $settle['mobile_verify_status'] == 1}checked{/if}> 验证手机号</label>
+					<label class="radio-inline"><input type="radio" name="mobile_verify_status" value="2" {if $settle['mobile_verify_status'] == 2 || !$settle['mobile_verify_status']}checked{/if}> 不验证</label>
+					<div class="help-block">开启验证手机号,需要配置短信参数.<a href="{php echo $this->createWebUrl('ptfsms', array('op' => 'set'));}" target="_blank">现在去配置</a></div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">*</span>入驻协议</label>
+				<div class="col-sm-9 col-xs-12">
+					{php echo tpl_ueditor('agreement', $settle['agreement']);}
+					<div class="help-block">不填写时，商户入驻申请页面将不显示：我已阅读并同意 《商户入驻协议》</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">*</span>最低提现金额</label>
+				<div class="col-sm-9 col-xs-12">
+					<div class="input-group">
+						<input type="text" name="get_cash_fee_limit" value="{$settle['get_cash_fee_limit']}" class="form-control"/>
+						<span class="input-group-addon">元</span>
+					</div>
+					<div class="help-block">只能填写整数，不填写为不限制</div>
+					<div class="help-block">
+						<span class="text-danger">如需要给不同的门店设置不同的提现费率, 请到<a href="{php echo $this->createWebUrl('ptftrade', array('op' => 'account'));}" target="_blank">"财务中心-门店账户-账户设置"</a>里进行设置</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">*</span>提现费率</label>
+				<div class="col-sm-9 col-xs-12">
+					<div class="input-group">
+						<input type="text" name="get_cash_fee_rate" value="{$settle['get_cash_fee_rate']}" class="form-control"/>
+						<span class="input-group-addon">%</span>
+					</div>
+					<div class="help-block">
+						商户申请提现时，每笔申请提现扣除的费用，默认为空，即提现不扣费，支持填写小数
+						<br>
+						<strong clas="text-danger">商户入驻时的默认提现费率</strong>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">*</span>提现费用</label>
+				<div class="col-sm-9 col-xs-12">
+					<div class="input-group">
+						<span class="input-group-addon">最低</span>
+						<input type="text" name="get_cash_fee_min" value="{$settle['get_cash_fee_min']}" class="form-control"/>
+						<span class="input-group-addon">元</span>
+					</div>
+					<br>
+					<div class="input-group">
+						<span class="input-group-addon">最高</span>
+						<input type="text" name="get_cash_fee_max" value="{$settle['get_cash_fee_max']}" class="form-control"/>
+						<span class="input-group-addon">元</span>
+					</div>
+					<div class="help-block">
+						商户提现时，提现费用的上下限，最高为空时，表示不限制扣除的提现费用
+						<br>
+						例如：提现100元，费率5%，最低1元，最高2元，商户最终提现金额=100-2=98
+						<br>
+						例如：提现100元，费率5%，最低1元，最高10元，商户最终提现金额=100-100*5%=95
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">*</span>将提现设置同步到所有门店</label>
+				<div class="col-sm-9 col-xs-12">
+					<div class="input-group">
+						<label class="checkbox-inline">
+							<input type="checkbox" name="sync" value="1"/> 将提现设置同步到所有门店
+						</label>
+					</div>
+					<div class="help-block">同步后,所有门店的提现规则都会被设置为这个提现规则</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="form-group col-sm-12">
+		<input name="submit" id="submit" type="submit" value="提交" class="btn btn-primary col-lg-1">
+		<input type="hidden" name="token" value="{$_W['token']}" />
+	</div>
+</form>
+{/if}
+{template 'public/footer'}

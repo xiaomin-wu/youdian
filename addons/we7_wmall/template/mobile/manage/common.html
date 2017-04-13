@@ -1,0 +1,187 @@
+{template 'manage/template'}
+<script>
+$(function(){
+	function order_print(id){
+		if(!id) {
+			return false;
+		}
+		$.showPreloader('系统处理中。。。');
+		$.post("{php echo $this->createMobileUrl('mgorder', array('op' => 'print'))}", {id: id}, function(data){
+			var result = $.parseJSON(data);
+			if(result.message.errno != 0) {
+				$.toast(result.message.message);
+			} else {
+				$.toast('打印成功');
+			}
+		});
+	}
+
+	function order_cancel(id, is_pay, pay_type){
+		if(!id) {
+			return false;
+		}
+		var tips = '确定取消该订单吗';
+		if(is_pay == 1 && pay_type != 'deliveryer' && pay_type != 'cash') {
+			var tips = '该订单已支付, 取消订单将发起退款流程, 确定取消订单吗';
+		}
+		$.confirm(tips, function(){
+			$.showPreloader('系统处理中。。。');
+			$.post("{php echo $this->createMobileUrl('mgorder', array('op' => 'cancel'))}", {id: id}, function(data){
+				var result = $.parseJSON(data);
+				if(result.message.errno != 0) {
+					$.toast(result.message.message);
+				} else {
+					alert(location.href)
+					$.toast('取消订单成功', location.href);
+				}
+			});
+			return;
+		});
+	}
+
+	$(document).on("click", ".order-other", function() {
+		var id = $(this).data('id');
+		if(!id) {
+			return false;
+		}
+		var is_pay = $(this).data('pay');
+		var pay_type = $(this).data('pay-type');
+		var buttons1 = [
+				{text: '请选择', label: true},
+				{text: '打印订单', bold: true, onClick: function(){order_print(id)}},
+				{text: '取消订单', bold: true, onClick: function(){order_cancel(id, is_pay, pay_type)}}
+			];
+		var buttons2 = [
+				{text: '取消', bg: 'danger'}
+			];
+		var groups = [buttons1, buttons2];
+		$.actions(groups);
+		return false;
+	});
+
+	$(document).on("click", ".order-cancel", function() {
+		var id = $(this).data('id');
+		var is_pay = $(this).data('pay');
+		var pay_type = $(this).data('pay-type');
+		order_cancel(id, is_pay, pay_type);
+		return false;
+	});
+
+	$(document).on("click", ".order-status", function() {
+		var id = $(this).data('id');
+		if(!id) {
+			return false;
+		}
+		var status = $(this).data('status');
+		var type = $(this).data('type');
+		$.confirm('确定变更订单状态吗', function(){
+			$.showPreloader('系统处理中。。。');
+			$.post("{php echo $this->createMobileUrl('mgorder', array('op' => 'status'))}", {id: id, status: status, type: type}, function(data){
+				var result = $.parseJSON(data);
+				if(result.message.errno != 0) {
+					$.toast(result.message.message);
+				} else {
+					$.toast('设置订单状态成功', location.href);
+				}
+			});
+			return;
+		});
+	});
+
+	$(document).on("click", ".order-delivery", function() {
+		var id = $(this).data('id');
+		if(!id) {
+			return false;
+		}
+		$.popup('.popup-delivery');
+		$('#popup-delivery .button-danger').unbind().click(function(){
+			var $this = $(this);
+			if($this.hasClass('disabled')) {
+				return false;
+			}
+			var deliveryer_id = $('#popup-delivery :radio[name="deliveryer_id"]:checked').val();
+			$this.html('处理中...');
+			$this.addClass('disabled');
+			$.post("{php echo $this->createMobileUrl('mgorder', array('op' => 'deliveryer'))}", {id: id, deliveryer_id: deliveryer_id}, function(data){
+				var result = $.parseJSON(data);
+				if(result.message.errno != 0) {
+					$.toast(result.message.message);
+				} else {
+					$.toast('分配配送员成功');
+				}
+				$this.html('确定');
+				$this.removeClass('disabled');
+			});
+		});
+	});
+
+	$(document).on("click", ".order-remind", function() {
+		var id = $(this).data('id');
+		if(!id) {
+			return false;
+		}
+		$('#popup-order-remind .label-checkbox').unbind().click(function(){
+			var reply = $(this).find('.item-text').html();
+			$('#popup-order-remind :radio').prop('checked', false);
+			$(this).find(':radio').prop('checked', true);
+			$('#reply').val(reply);
+		});
+		$.popup('.popup-order-remind');
+
+		$('#popup-order-remind .button-danger').unbind().click(function(){
+			var $this = $(this);
+			if($this.hasClass('disabled')) {
+				return false;
+			}
+			var reply = $('#reply').val();
+			if(!reply) {
+				$.toast('没有设置回复内容');
+				return false;
+			}
+			$this.addClass('disabled');
+			$.post("{php echo $this->createMobileUrl('mgorder', array('op' => 'reply'))}", {id: id, reply: reply}, function(data){
+				var result = $.parseJSON(data);
+				if(result.message.errno != 0) {
+					$this.removeClass('disabled');
+					$.toast(result.message.message);
+					return false;
+				}
+				$.toast('回复催单成功', location.href, 1500);
+			});
+		});
+	});
+
+	$(document).off('click', '.comment-images-item');
+	$(document).on('click', '.comment-images-item', function(){
+		var $parents = $(this).parent();
+		var thumbs = [];
+		$($parents).find('img').each(function(){
+			var thumb = $(this).attr('src');
+			if(thumb) {
+				thumbs.push(thumb);
+			}
+		});
+		var myPhotoBrowserPopup = $.photoBrowser({
+			photos: thumbs
+		});
+		myPhotoBrowserPopup.open();
+	});
+
+	$(document).on("click", "#scanqrcode", function() {
+		wx.ready(function(){
+			wx.scanQRCode({
+				needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+				scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+				success: function (res) {
+					var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+				}
+			});
+		});
+	});
+
+	$(document).on("click", ".popover li a", function() {
+		$.closeModal('.popover-manage');
+	});
+	$.init();
+});
+</script>

@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://www.010xr.com" versionCode="0.6,0.7,0.8">
+	<application setting="false">
+		<name><![CDATA[微外卖|扫码点餐|微餐饮|微点餐|微外送|生鲜|便利店|超市系统]]></name>
+		<identifie><![CDATA[we7_wmall]]></identifie>
+		<version><![CDATA[2.2.4]]></version>
+		<type><![CDATA[business]]></type>
+		<ability><![CDATA[微外卖|扫码点餐|微餐饮|微点餐|微外送|生鲜|便利店|超市系统]]></ability>
+		<description><![CDATA[微外卖|扫码点餐|微餐饮|微点餐|微外送|生鲜|便利店|超市系统]]></description>
+		<author><![CDATA[新睿社区]]></author>
+		<url><![CDATA[http://www.010xr.com/]]></url>
+	</application>
+	<platform>
+		<subscribes>
+		</subscribes>
+		<handles>
+			<message type="text" />
+		</handles>
+		<rule embed="false" />
+		<card embed="false" />
+	</platform>
+	<bindings>
+		<cover>
+		    <entry title="外卖入口" do="guide" />
+			<entry title="门店管理入口" do="mgindex" />
+			<entry title="配送员管理入口" do="dyindex" />
+			<entry title="商户入驻" do="settle" />
+			<entry title="我的订单" do="order" />
+			<entry title="会员中心" do="mine" />
+		</cover>
+		<menu>
+			<entry title="门店管理" do="store" />
+			<entry title="全屏引导页" do="ptfad" />
+		    <entry title="首页幻灯片" do="ptfslide" />
+		    <entry title="门店分类" do="ptfcategory" />	
+	        <entry title="首页图片导航设置" do="ptfnav" />			
+			<entry title="会员管理" do="ptfmember" />
+			<entry title="财务统计" do="ptffinance" />
+			<entry title="短信平台" do="ptfsms" />
+		    <entry title="参数设置" do="ptfconfig" />
+			<entry title="商户入驻" do="ptfsettle" />
+			<entry title="配送员" do="ptfdeliveryer" />
+			<entry title="财务中心" do="ptftrade" />
+			<entry title="商户投诉" do="ptfreport" />
+			<entry title="订单处理中心" do="ptforder-stat" />
+		
+		</menu>	
+	    <home>
+		    <entry title="点外卖" do="index" />
+		</home>	
+		<profile>
+            <entry title="点外卖" do="index" />		
+		</profile>	
+	</bindings>
+	<install><![CDATA[install.php]]></install>
+	<uninstall><![CDATA[uninstall.php]]></uninstall>
+	<upgrade><![CDATA[update.php]]></upgrade>
+</manifest>

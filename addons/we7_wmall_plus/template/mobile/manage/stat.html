@@ -1,0 +1,62 @@
+{template 'manage/header'}
+<div class="page" id="page-manage-stat">
+	<header class="bar bar-nav common-bar-nav">
+		<a class="icon pull-left fa fa-arrow-left back hide"></a>
+		<h1 class="title">数据统计</h1>
+	</header>
+	{template 'manage/nav'}
+	<div class="content">
+		<ul class="store-stat">
+			<li>
+				<a href="javascript:;">
+					<div class="store-stat-con">
+						<p class="store-stat-tl">今日总收入（元）</p>
+						<div class="store-stat-sum">{$stat['today_price']}</div>
+					</div>
+				</a>
+			</li>
+			<li>
+				<a href="javascript:;">
+					<div class="store-stat-con">
+						<p class="store-stat-tl">今日总订单（单）</p>
+						<div class="store-stat-sum">{$stat['today_total']}</div>
+					</div>
+				</a>
+			</li>
+			<li>
+				<a href="javascript:;">
+					<div class="store-stat-con">
+						<p class="store-stat-tl">昨日总收入（元）</p>
+						<div class="store-stat-sum">{$stat['yesterday_price']}</div>
+					</div>
+				</a>
+			</li>
+			<li>
+				<a href="javascript:;">
+					<div class="store-stat-con">
+						<p class="store-stat-tl">昨日总订单（单）</p>
+						<div class="store-stat-sum">{$stat['yesterday_total']}</div>
+					</div>
+				</a>
+			</li>
+			<li>
+				<a href="javascript:;">
+					<div class="store-stat-con">
+						<p class="store-stat-tl">本月总收入（元）</p>
+						<div class="store-stat-sum">{$stat['month_price']}</div>
+					</div>
+				</a>
+			</li>
+			<li>
+				<a href="javascript:;">
+					<div class="store-stat-con">
+						<p class="store-stat-tl">本月总订单（单）</p>
+						<div class="store-stat-sum">{$stat['month_total']}</div>
+					</div>
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>
+{template 'manage/common'}
+{template 'manage/footer'}

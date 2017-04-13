@@ -1,0 +1,10 @@
+<div class="panel panel-default">
+	<div class="panel-body">
+		<ul class="nav nav-pills">
+			<li {if $do == 'order-takeout'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptforder-takeout');}"> 外卖订单</a></li>
+<!--
+			<li {if $do == 'order-errander'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptforder-errander');}"> 跑腿订单</a></li>
+-->
+		</ul>
+	</div>
+</div>

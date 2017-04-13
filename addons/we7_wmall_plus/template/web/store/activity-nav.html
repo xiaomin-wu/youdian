@@ -1,0 +1,11 @@
+<div class="panel panel-default">
+	<div class="panel-body">
+		<ul class="nav nav-pills">
+			<li {if $op == 'first_order'}class="active"{/if}><a href="{php echo $this->createWebUrl('activity', array('op' => 'first_order'));}">首次下单</a></li>
+			<li {if $op == 'discount'}class="active"{/if}><a href="{php echo $this->createWebUrl('activity', array('op' => 'discount'));}">满减优惠</a></li>
+			<li {if $op == 'grant'}class="active"{/if}><a href="{php echo $this->createWebUrl('activity', array('op' => 'grant'));}">满赠优惠</a></li>
+			<li {if $do == 'token'}class="active"{/if}><a href="{php echo $this->createWebUrl('token', array('op' => 'set'));}">进店领券</a></li>
+			<li {if $do == 'bargain'}class="active"{/if}><a href="{php echo $this->createWebUrl('bargain');}">天天特价</a></li>
+		</ul>
+	</div>
+</div>

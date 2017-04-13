@@ -1,0 +1,7 @@
+<ul class="nav nav-tabs">
+	<li {if $do == 'trade' && ($op == 'account' || $op == 'set')}class="active"{/if}><a href="{php echo $this->createWebUrl('ptftrade', array('op' => 'account'));}">门店账户</a></li>
+	<li {if $do == 'order'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptforder-takeout');}">订单列表</a></li>
+	<li {if $do == 'trade' && $op == 'currentlog'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptftrade', array('op' => 'currentlog'));}">交易记录</a></li>
+	<li {if $do == 'trade' && $op == 'getcashlog'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptftrade', array('op' => 'getcashlog'));}">商户提现</a></li>
+	<li {if $do == 'finance' && $op == 'list'}class="active"{/if}><a href="{php echo $this->createWebUrl('ptffinance', array('op' => 'list'));}">订单统计</a></li>
+</ul>

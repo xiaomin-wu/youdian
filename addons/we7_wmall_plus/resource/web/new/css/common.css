@@ -1,0 +1,54 @@
+body{font-family: Helvetica,STHeiti,"Microsoft YaHei",Verdana,Arial,Tahoma,sans-serif; background: #f2f2f2}
+ul{list-style: none; padding: 0}
+.panel-default{border-color: #eee;border-radius: 0}
+.panel-default>.panel-heading{border-color: #eee; background: #fafafa; border-radius: 0}
+a:hover,a:focus{cursor: pointer; text-decoration: none}
+#app-sidebar{position: fixed; top: 0px; left: 0; bottom: 0; width: 200px; -webkit-box-shadow: 0 0 1px 0 rgba(0,0,0,0.2); box-shadow: 0 0 1px 0 rgba(0,0,0,0.2); z-index: 99;}
+/*一级分类*/
+#app-first-sidebar{ position: fixed; top: 0px; bottom: 0; left: 0; width: 90px; background: #203544;}
+#app-first-sidebar .team-logo-wrap{display: block; width: 90px; height: 63px; overflow: hidden;}
+#app-first-sidebar .team-logo{margin: 15px auto 0; width: 32px; height: 32px; border-radius: 16px;background-image: url(https://img.yzcdn.cn/upload_files/shop2.png?imageView2/2/w/60/h/60/q/75/format/webp); background-size: cover; background-position: 50% 50%; background-color: #fff;}
+#app-first-sidebar .nav{padding: 0 0 60px 0; width: 90px;}
+#app-first-sidebar .nav ul li{font-size: 14px; height: 36px; line-height: 36px; margin-bottom: 14px; cursor: pointer;}
+#app-first-sidebar .nav ul li.active{background: #F8F8F8;}
+#app-first-sidebar .nav ul li.active a{color: #333;}
+#app-first-sidebar .nav ul li a{color: #CACACA; display: block; padding-left: 18px;}
+#app-user-info{width: 90px; position: fixed; bottom: 0px; color: #e5e5e5;height: 50px; padding: 10px 0; word-break: break-word; background: #162530; z-index: 100;}
+#app-user-info .user-name{margin: 0 auto; width: 66px; display: block; line-height: 30px; padding: 0 12px; text-align: center; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;}
+#app-user-info .user-dropdown{display: none; background: #fff; position: absolute; bottom: 45px; left: 10px; color: #333; width: 145px; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; border-radius: 2px; -webkit-box-shadow: 0 1px 4px 0 rgba(0,0,0,0.4); box-shadow: 0 1px 4px 0 rgba(0,0,0,0.4);}
+#app-user-info .user-dropdown-meta{padding: 10px 20px; line-height: 24px; background: #f8f8f8; border-radius: 2px 0 0 2px;}
+#app-user-info .user-dropdown-select{padding: 10px 0; line-height: 30px;}
+#app-user-info .user-dropdown-select a{display: block; color: #666; padding: 0 20px; line-height: 30px;}
+#app-user-info .user-dropdown::after {content: ' '; width: 0; height: 0; position: absolute; left: 28px; border: 6px solid #fff; border-color: #fff transparent transparent transparent;}
+/*二级分类*/
+#app-second-sidebar{position: fixed;top: 0px; bottom: 0; left: 90px; width: 110px; background: #fff;}
+#app-second-sidebar .second-sidebar-title{padding-left: 20px; font-size: 14px; height: 50px; line-height: 50px; border-bottom: 1px solid #f2f2f2;}
+#app-second-sidebar .nav{ width: 110px; padding: 13px 10px;}
+#app-second-sidebar .nav ul li{font-size: 14px; height: 36px; line-height: 36px; margin-bottom: 14px; overflow: hidden; cursor: pointer; border-radius: 2px;}
+#app-second-sidebar .nav ul li.active{background: #f8f8f8;}
+#app-second-sidebar .nav ul li.active a{color: #333;}
+#app-second-sidebar .nav ul li a{color: #666; display: block; padding: 0 10px;}
+/*三级分类*/
+#app-container{margin-left: 200px; background: #f2f2f2;}
+#app-third-sidebar{padding: 0 5px; color: #333; background: #fff; border-bottom: 1px solid #e5e5e5;}
+#app-third-sidebar .nav-list ul{margin-bottom: 0}
+#app-third-sidebar .nav-list ul li{ padding: 0 20px;}
+#app-third-sidebar .nav-list ul li a{display: block; height: 49px; min-width: 0; border: none; background: transparent; font-size: 14px; color: #666666; line-height: 48px}
+#app-third-sidebar .nav-list ul li.active a{color: #333; border-bottom: 2px solid #06c1ae;}
+/*主内容区*/
+.app-inner{background: #fff; margin: 10px 10px 0 10px; padding: 15px; min-width: 750px; min-height: 500px; box-shadow: 0 0 1px 0 rgba(0,0,0,0.2);}
+
+/*表格*/
+.display-list .filter-region{margin-bottom: 15px;}
+.display-list .table{border-bottom: 2px solid #ddd}
+.display-list .table tr:first-child{background: #fafafa;}
+.display-list .widget-footer .btn{margin-right: 10px}
+.bottom-bar{position: fixed; z-index: 48; width: 100%; bottom: 0; left: 0; padding: 15px 0 15px 200px; background: #fafafa; box-shadow: 0 -1px 3px rgba(0,0,0,.15);}
+.bottom-bar .btn,.bottom-bar .btn:focus{outline: 0}
+.bottom-bar .bottom-bar-right{text-align: right}
+.no-info{background: #f2f2f2; width: 100%; height: 300px; padding-top: 110px}
+.no-info .empty{margin: 0 auto; display: block; width: 50px; height: 50px; background: #ccc; border-radius: 100%; text-align: center; line-height: 50px; color: #fff; font-size: 18px; font-weight: bold}
+.no-info .prompt-info{display: block; margin-top: 10px; color: #666; text-align: center}
+.panel-table{margin-bottom: 0}
+.panel-table .panel-heading{background: #fafafa;}
+

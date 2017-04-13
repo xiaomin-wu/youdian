@@ -1,0 +1,205 @@
+{template 'public/header'}
+{template 'store/nav'}
+<div class="alert alert-info">
+	<h4>说明: 每个门店只能设置一个管理员,管理员可从后台登陆系统并拥有门店的所有权限. 可添加多个店员, 店员可在手机端管理门店</h4>
+</div>
+{if $op == 'post'}
+<div class="clearfix">
+	<form class="form-horizontal form" id="form1" action="" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="openid" value="" id="openid">
+		<div class="panel panel-default">
+			<div class="panel-heading">添加店员</div>
+			<div class="panel-body">
+				<div class="form-group" id="username">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">*</span>登录账号/店员姓名</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="title" value="{$clerk['title']}" class="form-control">
+						<div class="help-block">请输入登陆账号，登陆账号为 3 到 15 个字符组成，包括汉字，大小写字母（不区分大小写）</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">*</span>密码</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="password" name="password" value="" class="form-control">
+						<div class="help-block">请填写密码，最小长度为 6 个字符.{if $id > 0}如果不更改密码此处请留空{/if}</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require">*</span>确认密码</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="password" name="repassword" value="" class="form-control">
+						<div class="help-block">重复输入密码，确认正确输入.{if $id > 0}如果不更改密码此处请留空{/if}</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require"> </span>店员手机号</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="mobile" value="{$clerk['mobile']}" class="form-control">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require"> </span>店员微信昵称</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="nickname" value="{$clerk['nickname']}" class="form-control">
+						<div class="help-block">请填写微信昵称。系统根据微信昵称获取该商家对应公众号的openid</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="require"> </span> 或 店员粉丝编号</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="openid" value="{$clerk['openid']}" class="form-control">
+						<div class="help-block">请填写微信编号。系统根据微信编号获取该商家对应公众号的openid</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group col-sm-12">
+			<input name="submit" id="submit" type="submit" value="提交" class="btn btn-primary col-lg-1">
+			<input type="hidden" name="token" value="{$_W['token']}" />
+		</div>
+	</form>
+</div>
+<script>
+	require(['util'], function(u){
+		var id = '{$id}';
+		id = parseInt(id);
+		$('#form1').submit(function(){
+			var title = $.trim($(':text[name="title"]').val());
+			if(!title) {
+				u.message('请填写店员登陆账号或姓名');
+				return false;
+			}
+			if(!id) {
+				var password = $.trim($(':password[name="password"]').val());
+				if(!password) {
+					u.message('登陆密码不能为空');
+					return false;
+				}
+				var repassword = $.trim($(':password[name="repassword"]').val());
+				if(repassword != password) {
+					u.message('两次密码输入不一致');
+					return false;
+				}
+			} else {
+				var password = $.trim($(':password[name="password"]').val());
+				if(password) {
+					var repassword = $.trim($(':password[name="repassword"]').val());
+					if(repassword != password) {
+						u.message('两次密码输入不一致');
+						return false;
+					}
+				}
+			}
+			var mobile = $.trim($(':text[name="mobile"]').val());
+			var nickname = $.trim($(':text[name="nickname"]').val());
+			var openid = $.trim($(':text[name="openid"]').val());
+			if(!nickname && !openid) {
+				u.message('请填写管理员微信昵称或粉丝编号');
+				return false;
+			}
+			if(openid || nickname) {
+				$.post('{php echo $this->createWebUrl("clerk", array("op" => "fetch_openid"))}', {'nickname' : nickname, 'openid' : openid}, function(data){
+					if(data == 'error') {
+						u.message('请检查管理员微信昵称或粉丝编号是否有效。系统找不到对应的粉丝昵称或粉丝编号<br>你可以尝试下载粉丝和更新粉丝信息');
+						return false;
+					} else {
+						var data = $.parseJSON(data);
+						var param = {
+							'id' : id,
+							'nickname' : data.nickname,
+							'title' : title,
+							'password': password,
+							'mobile': mobile,
+							'openid' : data.openid
+						}
+						$.post('{php echo $this->createWebUrl("clerk", array("op" => "post", "role" => $_GPC["role"]))}', param, function(dat) {
+							if(dat == 'success') {
+								u.message('添加店员成功', "{php echo $this->createWebUrl('clerk', array('op' => 'list'));}" , 'success');
+							} else {
+								u.message(dat, '', 'error');
+							}
+						});
+						return false;
+					}
+				});
+			}
+			return false;
+		});
+	});
+</script>
+{else}
+<div class="mian">
+	<form class="form-horizontal" action="" method="post">
+		<div class="form-group" style="margin-bottom:10px;margin-left:-35px">
+			<div class="col-sm-12">
+				<a href="{php echo $this->createWebUrl('clerk', array('op' => 'post'))}" class="btn btn-success" style="margin-left:20px">添加店员</a>
+				<a href="javascript:;" class="btn btn-primary" id="show-login-modal">手机登录</a>
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-body table-responsive">
+				<table class="table table-hover">
+					<thead class="navbar-inner">
+						<tr>
+							<th>管理员名称</th>
+							<th>微信昵称</th>
+							<th>手机号</th>
+							<th>身份</th>
+							<th>添加时间</th>
+							<th style="width:150px; text-align:right;">操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						{loop $data $item}
+						<tr>
+							<td>{$item['title']}</td>
+							<td>{$item['nickname']}</td>
+							<td>{$item['mobile']}</td>
+							<td>
+								{if $item['role'] == 'manager'}
+								<span class="label label-danger">管理员</span>
+								{else}
+								<span class="label label-success">店员</span>
+								{/if}
+							</td>
+							<td>{php echo date('Y-m-d H:i');}</td>
+							<td style="text-align:right;">
+								<a href="{php echo $this->createWebUrl('clerk', array('op' => 'post', 'id' => $item['id']))}" class="btn btn-default btn-sm" title="编辑" data-toggle="tooltip" data-placement="top"><i class="fa fa-edit"> </i></a>
+								{if $item['role'] != 'manager'}
+									<a href="{php echo $this->createWebUrl('clerk', array('op' => 'del', 'id' => $item['id']))}" class="btn btn-default btn-sm" title="删除" data-toggle="tooltip" data-placement="top" onclick="if(!confirm('删除后将不可恢复，确定删除吗?')) return false;"><i class="fa fa-times"> </i></a>
+								{/if}
+							</td>
+						</tr>
+						{/loop}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</form>
+</div>
+{/if}
+<div class="modal fade" id="clerk-modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h3 class="modal-title">微信扫描登陆二维码</h3>
+			</div>
+			<div class="modal-body" style="text-align: center">
+				<img style="-webkit-user-select: none" src="{php echo $_W['siteroot'] . 'web/' . url('utility/wxcode/qrcode', array('text' => murl('entry', array('m' => 'we7_wmall', 'do' => 'mgindex'), true, true)));}">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+$(function(){
+	$('#show-login-modal').click(function(){
+		$('#clerk-modal').modal('show');
+	});
+});
+</script>
+{template 'common'}
+{template 'public/footer'}

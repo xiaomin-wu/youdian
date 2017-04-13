@@ -1,0 +1,418 @@
+{template 'header'}
+<style>
+	.discount{
+		background-color: #ff6d00;
+	}
+	.discount .discount-list{
+		margin-top: 0.8rem;
+		padding:0 .6rem;
+	}
+	.discount .discount-list .discount-item{
+		padding: 0.6rem 0.6rem 0 0.6rem;
+		background: #fff;
+		margin-top: 0.6rem;
+		border-radius: 0.1rem;
+	}
+	.discount .discount-list .discount-item:nth-child(2){
+		margin-top: 0;
+	}
+	.discount .discount-list .discount-item .discount-store{
+		margin-bottom: 0.6rem;
+	}
+	.discount .discount-list .discount-item .discount-store .store-logo{
+		width: 30%;
+		float: left;
+	}
+	.discount .discount-list .discount-item .discount-store .store-info{
+		width: 70%;
+		padding-left:0.5rem;
+		float: left;
+	}
+	.discount .discount-list .discount-item .discount-store .store-info .store-title{
+		color: #333;
+		font-size: 1rem;
+		line-height: 1rem;
+	}
+	.discount .discount-list .discount-item .discount-store .store-info .store-sale{
+		font-size: 0.7rem;
+		line-height: 0.7rem;
+		color: #999;
+		font-weight: 100;
+		margin-top: .5rem;
+		margin-bottom: .5rem;
+		overflow: hidden;
+	}
+	.discount .discount-list .discount-item .discount-store .store-info .store-sale .store-stars{
+		margin-right: 0.5rem;
+	}
+	.discount .discount-list .discount-item .discount-store .store-info .store-sale .month-sale{
+		vertical-align: middle;
+	}
+	.discount .discount-list .discount-item .discount-store .store-info .delivery{
+		height: 0.7rem;
+		color: #999;
+		font-size: 0.7rem;
+		line-height: 0.7rem;
+		overflow: hidden;
+	}
+	.discount .discount-list .discount-item .discount-box{
+		border-top: 1px solid #efefef;
+		padding: 0.2rem 0;
+	}
+	.discount .discount-list .discount-item .discount-box img{
+		vertical-align: middle;
+		width:1rem
+	}
+	.discount .discount-list .discount-item .discount-box span{
+		vertical-align: middle;
+	}
+	.discount .discount-list .load-more{
+		border: 1px solid #efefef;
+		background: #fff;
+		padding: 0.3rem 0;
+		text-align:center;
+		color: #333;
+		border-radius: 0.1rem;
+	}
+	.discount .activity-rule{
+		margin:1.4rem;
+		margin-bottom: 2.5rem;
+		background-color: #fff;
+		border-radius: 0.3rem;
+	}
+	.discount .activity-rule .activity-rule-title{
+		text-align: center;
+		color: #333;
+		font-weight: bold;
+		padding: 0.6rem 0;
+	}
+	.discount .activity-rule .activity-rule-content{
+		padding: 0.8rem;
+		font-size: 0.7rem;
+	}
+</style>
+<div class="page discount">
+	<header class="bar bar-nav common-bar-nav">
+		<a class="pull-left back" href="javascript:;"><i class="fa fa-arrow-left"></i></a>
+		<h1 class="title">天天满减</h1>
+		<a class="pull-right" href="{php echo $this->createMobileUrl('dicount');}"><i class="fa fa-coupon"></i></a>
+	</header>
+	{template 'nav'}
+	<div class="content">
+		<div class="activity">
+			<img src="http://p0.meituan.net/codeman/9cbf30c89f5cab4750843e23a783f012247497.png" alt="">
+		</div>
+		<div class="discount-list">
+			<img src="http://p1.meituan.net/codeman/bbbb5d6f964417bf04336435db2670954871.png" alt="">
+			<div class="discount-item">
+				<div class="discount-store">
+					<div class="store-logo">
+						<img src="http://p1.meituan.net/150.120.90/xianfu/54cda72754a18037e082a5eb3aa79296357875.jpg" alt="">
+					</div>
+					<div class="store-info">
+						<div class="store-title">玛莎拉蒂</div>
+						<div class="store-sale">
+							<div class="store-stars pull-left">
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+							</div>
+							<div class="month-sale pull-left"><span>月售196单</span></div>
+						</div>
+						<div class="delivery">
+							<span>起送价￥20</span>
+							<span class="devide-span">|</span>
+							<span>配送费￥6</span>
+							<span class="devide-span">|</span>
+							<span class="avg_delivery_time">31分钟送达</span>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="discount-box">
+					<img class="discount-icon" src="http://p0.meituan.net/xianfu/489603b79cd3a1ada6288c2a7c7badb42048.png">
+					<span>满24减12;满60减20（在线支付专享）</span>
+				</div>
+			</div>
+			<div class="discount-item">
+				<div class="discount-store">
+					<div class="store-logo">
+						<img src="http://p1.meituan.net/150.120.90/xianfu/54cda72754a18037e082a5eb3aa79296357875.jpg" alt="">
+					</div>
+					<div class="store-info">
+						<div class="store-title">玛莎拉蒂</div>
+						<div class="store-sale">
+							<div class="store-stars pull-left">
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+							</div>
+							<div class="month-sale pull-left"><span>月售196单</span></div>
+						</div>
+						<div class="delivery">
+							<span>起送价￥20</span>
+							<span class="devide-span">|</span>
+							<span>配送费￥6</span>
+							<span class="devide-span">|</span>
+							<span class="avg_delivery_time">31分钟送达</span>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="discount-box">
+					<img class="discount-icon" src="http://p0.meituan.net/xianfu/489603b79cd3a1ada6288c2a7c7badb42048.png">
+					<span>满24减12;满60减20（在线支付专享）</span>
+				</div>
+			</div>
+			<div class="discount-item">
+				<div class="discount-store">
+					<div class="store-logo">
+						<img src="http://p1.meituan.net/150.120.90/xianfu/54cda72754a18037e082a5eb3aa79296357875.jpg" alt="">
+					</div>
+					<div class="store-info">
+						<div class="store-title">玛莎拉蒂</div>
+						<div class="store-sale">
+							<div class="store-stars pull-left">
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+							</div>
+							<div class="month-sale pull-left"><span>月售196单</span></div>
+						</div>
+						<div class="delivery">
+							<span>起送价￥20</span>
+							<span class="devide-span">|</span>
+							<span>配送费￥6</span>
+							<span class="devide-span">|</span>
+							<span class="avg_delivery_time">31分钟送达</span>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="discount-box">
+					<img class="discount-icon" src="http://p0.meituan.net/xianfu/489603b79cd3a1ada6288c2a7c7badb42048.png">
+					<span>满24减12;满60减20（在线支付专享）</span>
+				</div>
+			</div>
+			<div class="load-more">
+				点击查看更多
+			</div>
+		</div>
+		<div class="discount-list">
+			<img src="http://p1.meituan.net/codeman/bbbb5d6f964417bf04336435db2670954871.png" alt="">
+			<div class="discount-item">
+				<div class="discount-store">
+					<div class="store-logo">
+						<img src="http://p1.meituan.net/150.120.90/xianfu/54cda72754a18037e082a5eb3aa79296357875.jpg" alt="">
+					</div>
+					<div class="store-info">
+						<div class="store-title">玛莎拉蒂</div>
+						<div class="store-sale">
+							<div class="store-stars pull-left">
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+							</div>
+							<div class="month-sale pull-left"><span>月售196单</span></div>
+						</div>
+						<div class="delivery">
+							<span>起送价￥20</span>
+							<span class="devide-span">|</span>
+							<span>配送费￥6</span>
+							<span class="devide-span">|</span>
+							<span class="avg_delivery_time">31分钟送达</span>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="discount-box">
+					<img class="discount-icon" src="http://p0.meituan.net/xianfu/489603b79cd3a1ada6288c2a7c7badb42048.png">
+					<span>满24减12;满60减20（在线支付专享）</span>
+				</div>
+			</div>
+			<div class="discount-item">
+				<div class="discount-store">
+					<div class="store-logo">
+						<img src="http://p1.meituan.net/150.120.90/xianfu/54cda72754a18037e082a5eb3aa79296357875.jpg" alt="">
+					</div>
+					<div class="store-info">
+						<div class="store-title">玛莎拉蒂</div>
+						<div class="store-sale">
+							<div class="store-stars pull-left">
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+							</div>
+							<div class="month-sale pull-left"><span>月售196单</span></div>
+						</div>
+						<div class="delivery">
+							<span>起送价￥20</span>
+							<span class="devide-span">|</span>
+							<span>配送费￥6</span>
+							<span class="devide-span">|</span>
+							<span class="avg_delivery_time">31分钟送达</span>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="discount-box">
+					<img class="discount-icon" src="http://p0.meituan.net/xianfu/489603b79cd3a1ada6288c2a7c7badb42048.png">
+					<span>满24减12;满60减20（在线支付专享）</span>
+				</div>
+			</div>
+			<div class="discount-item">
+				<div class="discount-store">
+					<div class="store-logo">
+						<img src="http://p1.meituan.net/150.120.90/xianfu/54cda72754a18037e082a5eb3aa79296357875.jpg" alt="">
+					</div>
+					<div class="store-info">
+						<div class="store-title">玛莎拉蒂</div>
+						<div class="store-sale">
+							<div class="store-stars pull-left">
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+							</div>
+							<div class="month-sale pull-left"><span>月售196单</span></div>
+						</div>
+						<div class="delivery">
+							<span>起送价￥20</span>
+							<span class="devide-span">|</span>
+							<span>配送费￥6</span>
+							<span class="devide-span">|</span>
+							<span class="avg_delivery_time">31分钟送达</span>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="discount-box">
+					<img class="discount-icon" src="http://p0.meituan.net/xianfu/489603b79cd3a1ada6288c2a7c7badb42048.png">
+					<span>满24减12;满60减20（在线支付专享）</span>
+				</div>
+			</div>
+			<div class="load-more">
+				点击查看更多
+			</div>
+		</div>
+		<div class="discount-list">
+			<img src="http://p1.meituan.net/codeman/bbbb5d6f964417bf04336435db2670954871.png" alt="">
+			<div class="discount-item">
+				<div class="discount-store">
+					<div class="store-logo">
+						<img src="http://p1.meituan.net/150.120.90/xianfu/54cda72754a18037e082a5eb3aa79296357875.jpg" alt="">
+					</div>
+					<div class="store-info">
+						<div class="store-title">玛莎拉蒂</div>
+						<div class="store-sale">
+							<div class="store-stars pull-left">
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+							</div>
+							<div class="month-sale pull-left"><span>月售196单</span></div>
+						</div>
+						<div class="delivery">
+							<span>起送价￥20</span>
+							<span class="devide-span">|</span>
+							<span>配送费￥6</span>
+							<span class="devide-span">|</span>
+							<span class="avg_delivery_time">31分钟送达</span>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="discount-box">
+					<img class="discount-icon" src="http://p0.meituan.net/xianfu/489603b79cd3a1ada6288c2a7c7badb42048.png">
+					<span>满24减12;满60减20（在线支付专享）</span>
+				</div>
+			</div>
+			<div class="discount-item">
+				<div class="discount-store">
+					<div class="store-logo">
+						<img src="http://p1.meituan.net/150.120.90/xianfu/54cda72754a18037e082a5eb3aa79296357875.jpg" alt="">
+					</div>
+					<div class="store-info">
+						<div class="store-title">玛莎拉蒂</div>
+						<div class="store-sale">
+							<div class="store-stars pull-left">
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+							</div>
+							<div class="month-sale pull-left"><span>月售196单</span></div>
+						</div>
+						<div class="delivery">
+							<span>起送价￥20</span>
+							<span class="devide-span">|</span>
+							<span>配送费￥6</span>
+							<span class="devide-span">|</span>
+							<span class="avg_delivery_time">31分钟送达</span>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="discount-box">
+					<img class="discount-icon" src="http://p0.meituan.net/xianfu/489603b79cd3a1ada6288c2a7c7badb42048.png">
+					<span>满24减12;满60减20（在线支付专享）</span>
+				</div>
+			</div>
+			<div class="discount-item">
+				<div class="discount-store">
+					<div class="store-logo">
+						<img src="http://p1.meituan.net/150.120.90/xianfu/54cda72754a18037e082a5eb3aa79296357875.jpg" alt="">
+					</div>
+					<div class="store-info">
+						<div class="store-title">玛莎拉蒂</div>
+						<div class="store-sale">
+							<div class="store-stars pull-left">
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+								<i class="fa fa-arrow-right"></i>
+							</div>
+							<div class="month-sale pull-left"><span>月售196单</span></div>
+						</div>
+						<div class="delivery">
+							<span>起送价￥20</span>
+							<span class="devide-span">|</span>
+							<span>配送费￥6</span>
+							<span class="devide-span">|</span>
+							<span class="avg_delivery_time">31分钟送达</span>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="discount-box">
+					<img class="discount-icon" src="http://p0.meituan.net/xianfu/489603b79cd3a1ada6288c2a7c7badb42048.png">
+					<span>满24减12;满60减20（在线支付专享）</span>
+				</div>
+			</div>
+			<div class="load-more">
+				点击查看更多
+			</div>
+		</div>
+		<div class="activity-rule">
+			<div class="activity-rule-title border-1px-b">活动规则</div>
+			<div class="activity-rule-content">1.活动范围：全国；<br> 3.满减优惠可与美团红包、满返代金券等多种优惠同时使用，但不与折扣菜优惠同享；<br> 4.优惠仅限美团外卖及美团App下单且选择在线支付的订单享受。</div>
+		</div>
+	</div>
+</div>
+{template 'common'}
+{template 'footer'}

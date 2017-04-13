@@ -1,0 +1,329 @@
+{template 'header'}
+<style>
+	.page .content{
+		background-color: #fff;
+	}
+	.page .content .card{
+		box-shadow: 0 0;
+		padding-top: 0.6rem;
+		margin-top: 0;
+		margin-bottom: 0;
+		border-radius: 0;
+		background-color: #fff;
+		border-bottom: 1px solid #e0e0e0;
+	}
+	.page .content .card .card-content .image{
+		position: relative;
+	}
+	.page .content .card .card-content .image .label{
+		position: absolute;
+		left: 0;
+		z-index: 1;
+		width: 2.2rem;
+		height: 1.6rem;
+		color: #fff;
+		font-size: .75rem;
+		font-weight: 600;
+		text-align: center;
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: center;
+		background-image: url(http://p0.meituan.net/codeman/5532331d570296cec6f4598f18ac94671635.png);
+	}
+	.page .content .card .card-content .package{
+		color: #2f2f2f;
+		font-size: .8rem;
+		padding-bottom: .18rem;
+		font-weight: 500;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		line-height: .8rem;
+	}
+	.page .content .card .card-content .store-title{
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		color: rgba(137, 137, 137, 0.9);
+		font-size: .5rem;
+		margin-top: .2rem;
+	}
+	.page .content .card .card-content .store-title i{
+		margin-right: .2rem;
+	}
+	.page .content .card .card-content .discount-price{
+		margin-top: -0.2rem;
+		margin-bottom: .2rem;
+	}
+	.page .content .card .card-content .discount-price .price-title{
+		font-weight: bold;
+		font-size: 0.5rem;
+		color: #FB4E44;
+	}
+	.page .content .card .card-content .discount-price .now-price{
+		font-weight: 500;
+		font-size: 1rem;
+		color: #FB4E44;
+		margin-right: .14rem;
+		position: relative;
+		top: .14rem;
+
+	}
+	.page .content .card .card-content .discount-price .origin-price{
+		color: #CACACA;
+		font-size: 0.6rem;
+	}
+	.page .content .card .card-content .food-stock{
+		color: rgba(137, 137, 137, 0.9);
+		font-size: .5rem;
+		line-height: .5rem;
+	}
+	.page .content .card .card-content .button-danger{
+		padding: .17rem 0;
+		background: #FB4E44;
+		border-radius: .04rem;
+		border: none;
+		color: #fff;
+		text-align: center;
+		font-size: .7rem;
+		font-weight: 100;
+		font-family: inherit;
+	}
+	.page .content .activity-rule{
+		border: 10px solid #f0a30a;
+		margin: 0;
+		margin-top:0.02rem;
+		padding: 0;
+	}
+	.page .content .activity-rule .card-header{
+		height: .8rem;
+		line-height: .8rem;
+		font-size: 0.8rem;
+		color: #000;
+		text-align: center;
+		font-weight: bold;
+		font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	}
+	.page .content .activity-rule .card-header p{
+		margin: 0 auto;
+	}
+	.page .content .activity-rule .card-content .card-content-inner{
+		color: #333;
+		font-size: 0.7rem;
+		line-height: .8rem;
+		font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	}
+</style>
+<div class="page">
+	<header class="bar bar-nav">
+		<h1 class="title">标题</h1>
+	</header>
+	{template 'nav'}
+	<div class="content">
+		<div class="row">
+			<img src="http://p0.meituan.net/codeman/a426669093e0a3eaa47af3c656fa89a3367504.jpg" alt="">
+		</div>
+		<div class="card">
+			<div class="card-content row">
+				<div class="col-33 image">
+					<div class="label">必抢</div>
+					<img src="http://p0.meituan.net/270.176.90/xianfu/6e10790e6390390a1d054d803c6d77c398304.jpg.webp" alt="">
+				</div>
+				<div class="col-66">
+					<div class="package">鱼香肉丝套餐饭+豆浆</div>
+					<div class="store-title"><i class="fa fa-favor-fill"></i>廊利通风味餐厅</div>
+					<div class="row">
+						<div class="col-66">
+							<div class=" discount-price">
+								<span class="price-title">抢购价 ¥</span>
+								<span class="now-price">9.9</span>
+								<span class="origin-price">¥22</span>
+							</div>
+							<div class="food-stock">
+								库存: 19份
+							</div>
+						</div>
+						<div class="col-33">
+							<p><a href="#" class="button button-danger">马上抢</a></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-content row">
+				<div class="col-33 image">
+					<div class="label">必抢</div>
+					<img src="http://p0.meituan.net/270.176.90/xianfu/6e10790e6390390a1d054d803c6d77c398304.jpg.webp" alt="">
+				</div>
+				<div class="col-66">
+					<div class="package">鱼香肉丝套餐饭+豆浆</div>
+					<div class="store-title"><i class="fa fa-favor-fill"></i>廊利通风味餐厅</div>
+					<div class="row">
+						<div class="col-66">
+							<div class=" discount-price">
+								<span class="price-title">抢购价 ¥</span>
+								<span class="now-price">9.9</span>
+								<span class="origin-price">¥22</span>
+							</div>
+							<div class="food-stock">
+								库存: 19份
+							</div>
+						</div>
+						<div class="col-33">
+							<p><a href="#" class="button button-danger">马上抢</a></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-content row">
+				<div class="col-33 image">
+					<div class="label">必抢</div>
+					<img src="http://p0.meituan.net/270.176.90/xianfu/6e10790e6390390a1d054d803c6d77c398304.jpg.webp" alt="">
+				</div>
+				<div class="col-66">
+					<div class="package">鱼香肉丝套餐饭+豆浆</div>
+					<div class="store-title"><i class="fa fa-favor-fill"></i>廊利通风味餐厅</div>
+					<div class="row">
+						<div class="col-66">
+							<div class=" discount-price">
+								<span class="price-title">抢购价 ¥</span>
+								<span class="now-price">9.9</span>
+								<span class="origin-price">¥22</span>
+							</div>
+							<div class="food-stock">
+								库存: 19份
+							</div>
+						</div>
+						<div class="col-33">
+							<p><a href="#" class="button button-danger">马上抢</a></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card">
+		<div class="card-content row">
+			<div class="col-33 image">
+				<div class="label">必抢</div>
+				<img src="http://p0.meituan.net/270.176.90/xianfu/6e10790e6390390a1d054d803c6d77c398304.jpg.webp" alt="">
+			</div>
+			<div class="col-66">
+				<div class="package">鱼香肉丝套餐饭+豆浆</div>
+				<div class="store-title"><i class="fa fa-favor-fill"></i>廊利通风味餐厅</div>
+				<div class="row">
+					<div class="col-66">
+						<div class=" discount-price">
+							<span class="price-title">抢购价 ¥</span>
+							<span class="now-price">9.9</span>
+							<span class="origin-price">¥22</span>
+						</div>
+						<div class="food-stock">
+							库存: 19份
+						</div>
+					</div>
+					<div class="col-33">
+						<p><a href="#" class="button button-danger">马上抢</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+		<div class="card">
+		<div class="card-content row">
+			<div class="col-33 image">
+				<div class="label">必抢</div>
+				<img src="http://p0.meituan.net/270.176.90/xianfu/6e10790e6390390a1d054d803c6d77c398304.jpg.webp" alt="">
+			</div>
+			<div class="col-66">
+				<div class="package">鱼香肉丝套餐饭+豆浆</div>
+				<div class="store-title"><i class="fa fa-favor-fill"></i>廊利通风味餐厅</div>
+				<div class="row">
+					<div class="col-66">
+						<div class=" discount-price">
+							<span class="price-title">抢购价 ¥</span>
+							<span class="now-price">9.9</span>
+							<span class="origin-price">¥22</span>
+						</div>
+						<div class="food-stock">
+							库存: 19份
+						</div>
+					</div>
+					<div class="col-33">
+						<p><a href="#" class="button button-danger">马上抢</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+		<div class="card">
+		<div class="card-content row">
+			<div class="col-33 image">
+				<div class="label">必抢</div>
+				<img src="http://p0.meituan.net/270.176.90/xianfu/6e10790e6390390a1d054d803c6d77c398304.jpg.webp" alt="">
+			</div>
+			<div class="col-66">
+				<div class="package">鱼香肉丝套餐饭+豆浆</div>
+				<div class="store-title"><i class="fa fa-favor-fill"></i>廊利通风味餐厅</div>
+				<div class="row">
+					<div class="col-66">
+						<div class=" discount-price">
+							<span class="price-title">抢购价 ¥</span>
+							<span class="now-price">9.9</span>
+							<span class="origin-price">¥22</span>
+						</div>
+						<div class="food-stock">
+							库存: 19份
+						</div>
+					</div>
+					<div class="col-33">
+						<p><a href="#" class="button button-danger">马上抢</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+		<div class="card">
+		<div class="card-content row">
+			<div class="col-33 image">
+				<div class="label">必抢</div>
+				<img src="http://p0.meituan.net/270.176.90/xianfu/6e10790e6390390a1d054d803c6d77c398304.jpg.webp" alt="">
+			</div>
+			<div class="col-66">
+				<div class="package">鱼香肉丝套餐饭+豆浆</div>
+				<div class="store-title"><i class="fa fa-favor-fill"></i>廊利通风味餐厅</div>
+				<div class="row">
+					<div class="col-66">
+						<div class=" discount-price">
+							<span class="price-title">抢购价 ¥</span>
+							<span class="now-price">9.9</span>
+							<span class="origin-price">¥22</span>
+						</div>
+						<div class="food-stock">
+							库存: 19份
+						</div>
+					</div>
+					<div class="col-33">
+						<p><a href="#" class="button button-danger">马上抢</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+		<div class="card activity-rule">
+			<div class="card-header"><p>活动规则</p></div>
+			<div class="card-content">
+				<div class="card-content-inner">
+					1.活动时间：2016年11月25日-2016年12月11日；<br>
+					2.活动范围：限部分地区；<br>
+					3.优惠仅限美团外卖及美团App下单且选择在线支付的订单享受；<br>
+					4.折扣菜优惠不与满减优惠同时享用。
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{template 'common'}
+{template 'footer'}

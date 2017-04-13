@@ -1,0 +1,153 @@
+{template 'header'}
+<div class="page">
+	<header class="bar bar-nav">
+		<a class="pull-left back" href="javascript:;"><i class="fa fa-arrow-left"></i></a>
+		<h1 class="title">预订时间</h1>
+	</header>
+	{template 'nav'}
+	<div class="content">
+		<div class="wx-order-time">
+			<ul>
+				<li class="wxactive" data-value="{php echo date('Y-m-d');}">
+					<p>今天</p>
+					<span>{php echo date('m-d'); } {php echo date2week(time());}</span>
+				</li>
+				<li class="" data-value="{php echo date('Y-m-d', strtotime('+1 days'));}">
+					<p>明天</p>
+					<span>{php echo date('m-d', strtotime('+1 days')); } {php echo date2week(strtotime('+1 days'));}</span>
+				</li>
+				<li style="display: none" data-value="{php echo date('Y-m-d', strtotime('+2 days'));}">
+					<p>后天</p>
+					<span>{php echo date('m-d', strtotime('+2 days')); } {php echo date2week(strtotime('+2 days'));}</span>
+				</li>
+				<li style="display: none" data-value="{php echo date('Y-m-d', strtotime('+3 days'));}">
+					<p>{php echo date('m-d', strtotime('+3 days')); }</p>
+					<span>{php echo date2week(strtotime('+3 days'));}</span>
+				</li>
+				<li style="display: none" data-value="{php echo date('Y-m-d', strtotime('+4 days'));}">
+					<p>{php echo date('m-d', strtotime('+4 days')); }</p>
+					<span>{php echo date2week(strtotime('+4 days'));}</span>
+				</li>
+				<li style="display: none" data-value="{php echo date('Y-m-d', strtotime('+5 days'));}">
+					<p>{php echo date('m-d', strtotime('+5 days')); }</p>
+					<span>{php echo date2week(strtotime('+5 days'));}</span>
+				</li>
+				<li style="display: none" data-value="{php echo date('Y-m-d', strtotime('+6 days'));}">
+					<p>{php echo date('m-d', strtotime('+6 days')); }</p>
+					<span>{php echo date2week(strtotime('+6 days'));}</span>
+				</li>
+			</ul>
+		</div>
+		<div class="wx-order-con">
+			{loop $categorys $category}
+				<section>
+					<h5>{$category['title']}</h5>
+					<p>¥{$category['reservation_price']}起订</p>
+					<ul>
+						{loop $reserves[$category['id']] $row}
+							<li class="border-red time-point {if strtotime($row) < time()}time-disabled{/if}" data-value="{$row}" data-cid="{$category['id']}" data-flag="{if strtotime($row) < time()}0{else}1{/if}">
+								<a href="javascript:;">{$row}</a>
+							</li>
+						{/loop}
+					</ul>
+				</section>
+			{/loop}
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		var date = $('.wx-order-time li.wxactive').data('value');
+		var today = "{php echo date('Y-m-d');}";
+		if(date == today) {
+			$('.time-disabled').removeClass('border-red').addClass('border-gray');
+		}
+
+		$('.wx-order-time li').click(function(){
+			$('.wx-order-time li').removeClass('wxactive').hide();
+			$(this).prev().css({display: 'table-cell'});
+			$(this).next().css({display: 'table-cell'});
+			$(this).addClass('wxactive').css({display: 'table-cell'});
+
+			var date = $('.wx-order-time li.wxactive').data('value');
+			var today = "{php echo date('Y-m-d');}";
+			if(date == today) {
+				$('.time-disabled').removeClass('border-red').addClass('border-gray');
+			} else {
+				$('.time-disabled').addClass('border-red').removeClass('border-gray');
+			}
+		});
+
+		$('.time-point').click(function(){
+			if($(this).hasClass('border-gray')) {
+				return false;
+			}
+			var date = $('.wx-order-time li.wxactive').data('value');
+			var time = $(this).data('value');
+			var cid = $(this).data('cid');
+			location.href = "{php echo $this->createMobileUrl('reserve', array('op' => 'post', 'sid' => $sid))}" + '&date=' + date + '&time=' + time + '&cid=' + cid;
+		});
+
+		$('.prepayment-type').click(function(){
+			$('.prepayment-type').removeClass('active');
+			$(this).addClass('active');
+			if($(this).data('type') == 'order') {
+				var date = "{$date}";
+				var time = "{$time}";
+				var cid = "{$cid}";
+				location.href = "{php echo $this->createMobileUrl('dish', array('sid' => $sid, 'mode' => 4))}" + '&date=' + date + '&time=' + time + '&cid=' + cid;
+			} else {
+				$('#btnselect').removeClass('disable');
+			}
+		});
+
+		$('#btnselect').click(function(){
+			var type = $('.prepayment-type.active').data('type');
+			if(!type) {
+				alert('预定类型错误');
+				return false;
+			}
+			if(type == 'table') {
+				type = 3;
+			} else {
+				type = 4;
+			}
+			var realname = $.trim($('#realname').val());
+			if(!realname) {
+				alert('预定人不能为空');
+				return false;
+			}
+			var mobile = $.trim($('#mobile').val());
+			if(!realname) {
+				alert('手机号不能为空');
+				return false;
+			}
+			var note = $.trim($('#note').val());
+			var date = "{$date}";
+			var time = "{$time}";
+			var cid = "{$cid}";
+			var params = {
+				realname: realname,
+				mobile: mobile,
+				note: note,
+				date: date,
+				time: time,
+				cid: cid,
+				type: type,
+			};
+			$(this).addClass('disable');
+			$.post("{php echo $this->createMobileUrl('reserve', array('sid' => $sid, 'op' => 'order'));}", params, function(data){
+				var result = $.parseJSON(data);
+				if(result.message.errno != 0) {
+					alert(data.message.message);
+					$(this).removeClass('disable');
+					return false;
+				}
+				var id = result.message.message;
+				location.href = "{php echo $this->createMobileUrl('pay', array('sid' => $sid));}" + '&id=' + id;
+			});
+		});
+	});
+</script>
+{template 'common'}
+{template 'footer'}
